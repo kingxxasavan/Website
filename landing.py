@@ -329,6 +329,10 @@ st.markdown("""
         border-radius: 24px;
         padding: 3rem;
         backdrop-filter: blur(10px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
     
     .about-text {
@@ -336,6 +340,8 @@ st.markdown("""
         font-size: 1.1rem;
         line-height: 1.6;
         margin-bottom: 1rem;
+        text-align: center;
+        max-width: 600px;
     }
     
     /* Feature cards */
