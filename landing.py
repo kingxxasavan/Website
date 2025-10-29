@@ -395,10 +395,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Functional Hero Button - Routes to Login (handles sign-up too)
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
-    if st.button("Start Learning Free"):
-        st.switch_page("pages/login.py")
+if st.button("Start Learning Free", key="hero_start"):
+    st.switch_page("pages/login.py")
 
 st.markdown("</div>", unsafe_allow_html=True)
 
@@ -466,10 +464,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Functional CTA Button - Routes to Pricing (for plan selection before login)
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
-    if st.button("Get Started Free"):
-        st.switch_page("pages/pricing.py")
+if st.button("Get Started Free", key="cta_get_started"):
+    st.switch_page("pages/pricing.py")
 
 st.markdown("</div>", unsafe_allow_html=True)
 
