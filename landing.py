@@ -41,7 +41,7 @@ landing_html = """
         @keyframes float1 {0%, 100% {transform: translate(0, 0);} 50% {transform: translate(-100px, 100px);}}
         @keyframes float2 {0%, 100% {transform: translate(0, 0);} 50% {transform: translate(100px, -100px);}}
         
-        nav {position: relative; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 5rem; max-width: 1600px; margin: 1rem auto; background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 20px;}
+        nav {position: relative; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 5rem; max-width: 1600px; margin: 0 auto; background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 20px;}
         .logo {display: flex; align-items: center; gap: 0.5rem; font-size: 1.5rem; font-weight: 700; color: #fff; cursor: pointer;}
         .logo-icon {width: 35px; height: 35px; background: linear-gradient(135deg, #8b5cf6, #6366f1); border-radius: 8px; display: flex; align-items: center; justify-content: center;}
         .nav-links {display: flex; gap: 3rem; list-style: none;}
@@ -53,7 +53,7 @@ landing_html = """
         .nav-btn.primary {background: linear-gradient(135deg, #8b5cf6, #6366f1); border: none;}
         .nav-btn.primary:hover {box-shadow: 0 10px 40px rgba(139, 92, 246, 0.5); transform: translateY(-2px);}
         
-        .hero {position: relative; z-index: 10; max-width: 1600px; margin: 0 auto; padding: 3rem 5rem 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;}
+        .hero {position: relative; z-index: 10; max-width: 1600px; margin: 0 auto; padding: 2rem 5rem 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;}
         .hero-content h1 {font-size: 3.5rem; line-height: 1.1; margin-bottom: 1.2rem; font-weight: 300; letter-spacing: -2px; color: #fff;}
         .hero-content p {font-size: 1.1rem; color: #a0a0a0; margin-bottom: 2rem; line-height: 1.7; max-width: 500px;}
         .email-form {display: flex; gap: 1rem; margin-bottom: 1rem;}
