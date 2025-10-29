@@ -309,6 +309,28 @@ st.markdown("""
         font-size: 0.95rem;
     }
     
+    /* CTA Section */
+    .cta-section {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: rgba(139, 92, 246, 0.05);
+        border-radius: 24px;
+        margin: 4rem 2rem;
+        backdrop-filter: blur(10px);
+    }
+    
+    .cta-title {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: #fff;
+    }
+    
+    .cta-subtitle {
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 2rem;
+    }
+    
     /* Footer */
     .custom-footer {
         position: relative;
@@ -339,7 +361,7 @@ st.markdown("""
     <div class="glow-orb pink"></div>
 """, unsafe_allow_html=True)
 
-# Navigation with anchor links (updated to point to pages if multi-page)
+# Navigation (updated links for multi-page)
 st.markdown("""
     <div class="nav-container">
         <nav>
@@ -348,7 +370,7 @@ st.markdown("""
                 <span>CrypticX</span>
             </div>
             <div class="nav-links">
-                <a href="#home" class="nav-link">Home</a>
+                <a href="/" class="nav-link">Home</a>
                 <a href="/pricing" class="nav-link">Pricing</a>
                 <a href="/dashboard" class="nav-link">Dashboard</a>
                 <a href="/login" class="nav-link">Login</a>
@@ -363,7 +385,7 @@ st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 
 # Hero Section
 st.markdown("""
-    <div id="home" class="hero-section">
+    <div class="hero-section">
         <div class="welcome-badge">Welcome to CrypticX - The Ultimate Study Tool</div>
         <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
         <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
@@ -372,7 +394,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # About Us Section
-st.markdown('<div id="about" class="section">', unsafe_allow_html=True)
+st.markdown('<div class="section">', unsafe_allow_html=True)
 st.markdown('<h2 class="section-title">About Us</h2>', unsafe_allow_html=True)
 st.markdown('<p class="section-subtitle">Empowering students to reach their full potential</p>', unsafe_allow_html=True)
 st.markdown('<div class="about-content">', unsafe_allow_html=True)
@@ -387,7 +409,7 @@ st.markdown("""
 st.markdown('</div></div>', unsafe_allow_html=True)
 
 # Why Choose Us Section
-st.markdown('<div id="why-choose" class="section">', unsafe_allow_html=True)
+st.markdown('<div class="section">', unsafe_allow_html=True)
 st.markdown('<h2 class="section-title">Why Choose CrypticX</h2>', unsafe_allow_html=True)
 st.markdown('<p class="section-subtitle">The smartest way to study in 2025</p>', unsafe_allow_html=True)
 st.markdown('<div class="features-grid">', unsafe_allow_html=True)
@@ -427,100 +449,14 @@ st.markdown("""
 
 st.markdown('</div></div>', unsafe_allow_html=True)
 
-# Dashboard Section (kept as teaser on home)
-st.markdown('<div id="dashboard" class="section">', unsafe_allow_html=True)
-st.markdown('<h2 class="section-title">Your Dashboard</h2>', unsafe_allow_html=True)
-st.markdown('<p class="section-subtitle">Access all your AI-powered study tools</p>', unsafe_allow_html=True)
-
+# Final CTA Section
 st.markdown("""
-    <div class="features-grid">
-        <div class="feature-card">
-            <span class="feature-icon">🧠</span>
-            <h3>AI Explainer</h3>
-            <p>Ask any question and get instant, detailed explanations tailored to your learning level.</p>
-        </div>
-        <div class="feature-card">
-            <span class="feature-icon">📄</span>
-            <h3>PDF Summarizer</h3>
-            <p>Upload documents for quick summaries and key insights extracted in seconds.</p>
-        </div>
-        <div class="feature-card">
-            <span class="feature-icon">❓</span>
-            <h3>Quiz Generator</h3>
-            <p>Create practice tests from any study material to test your knowledge.</p>
-        </div>
-        <div class="feature-card">
-            <span class="feature-icon">🎴</span>
-            <h3>Flashcards</h3>
-            <p>Auto-generate flashcards from your notes for efficient memorization.</p>
-        </div>
-        <div class="feature-card">
-            <span class="feature-icon">📊</span>
-            <h3>Progress Tracker</h3>
-            <p>Monitor your learning journey with detailed analytics and insights.</p>
-        </div>
-        <div class="feature-card">
-            <span class="feature-icon">✍️</span>
-            <h3>Essay Assistant</h3>
-            <p>Get AI-powered help with writing, structuring, and improving your essays.</p>
-        </div>
+    <div class="cta-section">
+        <h2 class="cta-title">Ready to Unlock Your Potential?</h2>
+        <p class="cta-subtitle">Join thousands of students transforming their learning today.</p>
+        <button class="hero-cta" style="margin: 0;">Get Started Free</button>
     </div>
 """, unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
-
-# Login Section (kept as is, but could be moved to separate page)
-st.markdown('<div id="login" class="section">', unsafe_allow_html=True)
-st.markdown('<div class="about-content">', unsafe_allow_html=True)
-st.markdown('<h2 class="section-title">Welcome Back</h2>', unsafe_allow_html=True)
-st.markdown('<p class="section-subtitle">Sign in to continue your learning journey</p>', unsafe_allow_html=True)
-
-st.markdown("""
-    <style>
-        .auth-form {
-            max-width: 450px;
-            margin: 2rem auto;
-            background: rgba(139, 92, 246, 0.05);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            border-radius: 24px;
-            padding: 3rem;
-            backdrop-filter: blur(10px);
-        }
-        .stTextInput > div > div > input {
-            background: rgba(255, 255, 255, 0.05) !important;
-            border: 1px solid rgba(139, 92, 246, 0.3) !important;
-            border-radius: 12px !important;
-            color: #fff !important;
-            padding: 0.9rem !important;
-        }
-        .stTextInput > div > div > input:focus {
-            border-color: #8b5cf6 !important;
-            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2) !important;
-        }
-        .stButton > button {
-            width: 100%;
-            padding: 0.9rem !important;
-            border-radius: 12px !important;
-            background: linear-gradient(135deg, #8b5cf6, #ec4899) !important;
-            color: #fff !important;
-            font-weight: 600 !important;
-            border: none !important;
-            margin-top: 1rem !important;
-        }
-    </style>
-    <div class="auth-form">
-""", unsafe_allow_html=True)
-
-email = st.text_input("Email", placeholder="your@email.com", key="login_email")
-password = st.text_input("Password", placeholder="••••••••", type="password", key="login_password")
-
-if st.button("Sign In", key="login_btn"):
-    if email and password:
-        st.success("✓ Welcome back! Redirecting to dashboard...")
-    else:
-        st.error("Please fill in all fields")
-
-st.markdown("</div>", unsafe_allow_html=True)
-st.markdown('</div></div>', unsafe_allow_html=True)
 
 # Close content wrapper
 st.markdown('</div>', unsafe_allow_html=True)
