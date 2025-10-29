@@ -62,7 +62,7 @@ landing_html = """
         .cta-btn:hover {box-shadow: 0 15px 50px rgba(139, 92, 246, 0.5); transform: translateY(-3px);}
         .hero-note {font-size: 0.9rem; color: #666;}
         
-        .section {position: relative; z-index: 10; max-width: 1600px; margin: 4rem auto; padding: 0 5rem;}
+        .section {position: relative; z-index: 10; max-width: 1600px; margin: 4rem auto; padding: 0 5rem 4rem 5rem;}
         .section-header {text-align: center; margin-bottom: 3rem;}
         .section-title {font-size: 2.8rem; font-weight: 300; margin-bottom: 1rem;}
         .section-subtitle {font-size: 1.1rem; color: #a0a0a0;}
@@ -93,13 +93,11 @@ landing_html = """
         .page.active {display: block; animation: fadeIn 0.5s ease-in;}
         @keyframes fadeIn {from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);}}
         
-        footer {position: relative; z-index: 10; border-top: 1px solid rgba(139, 92, 246, 0.2); margin-top: 3rem; padding: 2rem 5rem; text-align: center; color: #666; background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(20px);}
-        
         @media (max-width: 1024px) {
             nav {padding: 1rem 2rem;}
             .nav-links {display: none;}
             .hero {grid-template-columns: 1fr; text-align: center; padding: 2rem;}
-            .section {padding: 0 2rem;}
+            .section {padding: 0 2rem 2rem 2rem;}
             .features-grid {grid-template-columns: 1fr;}
             .info-grid {grid-template-columns: 1fr;}
             .stats-container {grid-template-columns: repeat(2, 1fr);}
@@ -404,10 +402,6 @@ landing_html = """
             </div>
         </section>
     </div>
-    
-    <footer>
-        <p>© 2025 CrypticX. Empowering students with AI. All rights reserved.</p>
-    </footer>
     
     <script>
         function showPage(pageName) {
