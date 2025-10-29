@@ -420,6 +420,267 @@ landing_html = """
             50% { transform: translateY(-50px) scale(1.5); opacity: 1; }
         }
         
+        /* Info Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        
+        .info-card {
+            background: rgba(20, 20, 20, 0.6);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 25px;
+            padding: 3rem;
+            transition: all 0.3s;
+            backdrop-filter: blur(20px);
+        }
+        
+        .info-card:hover {
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.2);
+        }
+        
+        .info-number {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+        
+        .info-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+        
+        .info-card p {
+            color: #a0a0a0;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+        
+        /* Steps Container */
+        .steps-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 4rem;
+            flex-wrap: wrap;
+        }
+        
+        .step-card {
+            background: rgba(20, 20, 20, 0.6);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 25px;
+            padding: 3rem;
+            flex: 1;
+            min-width: 280px;
+            max-width: 350px;
+            text-align: center;
+            transition: all 0.3s;
+            backdrop-filter: blur(20px);
+        }
+        
+        .step-card:hover {
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+        }
+        
+        .step-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .step-number {
+            font-size: 0.85rem;
+            color: #8b5cf6;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+        
+        .step-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+        
+        .step-card p {
+            color: #a0a0a0;
+            line-height: 1.7;
+        }
+        
+        .step-arrow {
+            font-size: 3rem;
+            color: #8b5cf6;
+            animation: arrowPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes arrowPulse {
+            0%, 100% { opacity: 0.3; transform: translateX(0); }
+            50% { opacity: 1; transform: translateX(10px); }
+        }
+        
+        /* Stats Container */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            padding: 4rem;
+            background: rgba(139, 92, 246, 0.05);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 30px;
+            backdrop-filter: blur(20px);
+        }
+        
+        .stat-card {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            color: #a0a0a0;
+        }
+        
+        /* Testimonials */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        
+        .testimonial-card {
+            background: rgba(20, 20, 20, 0.6);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 25px;
+            padding: 2.5rem;
+            transition: all 0.3s;
+            backdrop-filter: blur(20px);
+        }
+        
+        .testimonial-card:hover {
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.2);
+        }
+        
+        .testimonial-rating {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .testimonial-text {
+            color: #e0e0e0;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .author-avatar {
+            font-size: 2.5rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 50%;
+        }
+        
+        .author-name {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.3rem;
+        }
+        
+        .author-role {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 5rem 4rem;
+            background: rgba(139, 92, 246, 0.05);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 30px;
+            backdrop-filter: blur(20px);
+        }
+        
+        .cta-title {
+            font-size: 3.5rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-text {
+            font-size: 1.3rem;
+            color: #a0a0a0;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            line-height: 1.7;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        .cta-btn.large {
+            padding: 1.5rem 3.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .cta-btn-secondary {
+            padding: 1.5rem 3.5rem;
+            border-radius: 15px;
+            border: 2px solid rgba(139, 92, 246, 0.5);
+            background: transparent;
+            color: #8b5cf6;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .cta-btn-secondary:hover {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: #8b5cf6;
+            transform: translateY(-3px);
+        }
+        
+        .cta-note {
+            font-size: 1rem;
+            color: #a0a0a0;
+        }
+        
         /* Features Section */
         .section {
             position: relative;
@@ -789,8 +1050,30 @@ landing_html = """
                 transform: scale(0.8);
             }
             .features-grid,
-            .pricing-grid {
+            .pricing-grid,
+            .testimonials-grid {
                 grid-template-columns: 1fr;
+            }
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .steps-container {
+                flex-direction: column;
+            }
+            .step-arrow {
+                transform: rotate(90deg);
+            }
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .cta-btn.large,
+            .cta-btn-secondary {
+                width: 100%;
+                max-width: 400px;
             }
             nav {
                 padding: 1rem 2rem;
@@ -862,6 +1145,156 @@ landing_html = """
                     <div class="particle"></div>
                     <div class="particle"></div>
                 </div>
+            </div>
+        </section>
+        
+        <!-- Why Choose Us Section -->
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">Why Choose CrypticX?</h2>
+                <p class="section-subtitle">The ultimate AI study companion for modern students</p>
+            </div>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-number">01</div>
+                    <h3>Powered by Advanced AI</h3>
+                    <p>Leveraging state-of-the-art artificial intelligence technology to provide accurate, instant, and personalized learning assistance. Our AI understands context and adapts to your unique learning style.</p>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-number">02</div>
+                    <h3>Save Time & Study Smarter</h3>
+                    <p>Cut your study time in half with intelligent summaries, instant explanations, and automated quiz generation. Focus on understanding concepts rather than spending hours reading through materials.</p>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-number">03</div>
+                    <h3>Proven Results</h3>
+                    <p>Join thousands of students who have improved their grades and understanding using CrypticX. Our users report 40% better retention and 35% improvement in test scores.</p>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-number">04</div>
+                    <h3>24/7 Availability</h3>
+                    <p>Study anytime, anywhere. CrypticX is always available to help you understand difficult concepts, prepare for exams, or complete assignments - even at 3 AM before your finals.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- How It Works Section -->
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">How CrypticX Works</h2>
+                <p class="section-subtitle">Three simple steps to academic success</p>
+            </div>
+            
+            <div class="steps-container">
+                <div class="step-card">
+                    <div class="step-icon">📤</div>
+                    <div class="step-number">STEP 1</div>
+                    <h3>Upload or Ask</h3>
+                    <p>Upload your study materials, PDFs, or simply type your question. CrypticX accepts documents up to 50MB and supports multiple formats including PDF, DOCX, and TXT files.</p>
+                </div>
+                
+                <div class="step-arrow">→</div>
+                
+                <div class="step-card">
+                    <div class="step-icon">🤖</div>
+                    <div class="step-number">STEP 2</div>
+                    <h3>AI Processes</h3>
+                    <p>Our advanced AI analyzes your content, identifies key concepts, and prepares personalized responses. The AI considers your learning history and preferences for optimal results.</p>
+                </div>
+                
+                <div class="step-arrow">→</div>
+                
+                <div class="step-card">
+                    <div class="step-icon">✨</div>
+                    <div class="step-number">STEP 3</div>
+                    <h3>Learn & Excel</h3>
+                    <p>Receive instant explanations, summaries, or quizzes tailored to your needs. Review, practice, and master the material with interactive tools and progress tracking.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Stats Section -->
+        <section class="section">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label">Active Students</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1M+</div>
+                    <div class="stat-label">Questions Answered</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">Satisfaction Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Available Support</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Testimonials Section -->
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">What Students Say</h2>
+                <p class="section-subtitle">Real feedback from real students</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"CrypticX completely transformed how I study. I went from struggling with complex topics to acing my exams. The AI explanations are incredibly clear and easy to understand."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">👨‍🎓</div>
+                        <div>
+                            <div class="author-name">Alex Johnson</div>
+                            <div class="author-role">Computer Science Student</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"As a med student, I have tons of material to review. CrypticX's summarization feature saves me hours every week. It's like having a personal tutor available 24/7!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">👩‍⚕️</div>
+                        <div>
+                            <div class="author-name">Sarah Martinez</div>
+                            <div class="author-role">Medical Student</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"The quiz generator is a game-changer. I can test myself on any topic instantly. My grades have improved by 30% since I started using CrypticX last semester."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">👨‍💼</div>
+                        <div>
+                            <div class="author-name">Michael Chen</div>
+                            <div class="author-role">Business Major</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CTA Section -->
+        <section class="section">
+            <div class="cta-section">
+                <h2 class="cta-title">Ready to Transform Your Learning?</h2>
+                <p class="cta-text">Join over 50,000 students who are already studying smarter with CrypticX. Start your free trial today - no credit card required.</p>
+                <div class="cta-buttons">
+                    <button class="cta-btn large">Start Free Trial</button>
+                    <button class="cta-btn-secondary large" onclick="showPage('pricing')">View Pricing</button>
+                </div>
+                <p class="cta-note">✓ 14-day free trial  ✓ No credit card required  ✓ Cancel anytime</p>
             </div>
         </section>
     </div>
