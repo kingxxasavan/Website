@@ -107,9 +107,10 @@ st.markdown("""
         left: 0;
         right: 0;
         z-index: 1000;
-        background: rgba(10, 10, 15, 0.8);
+        background: transparent;
         backdrop-filter: blur(20px);
         border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+        transition: all 0.3s ease;
     }
     
     nav {
@@ -324,7 +325,6 @@ st.markdown("""
         max-width: 800px;
         width: 100%;
         margin: 0 auto;
-        text-align: center;
         background: rgba(139, 92, 246, 0.05);
         border: 1px solid rgba(139, 92, 246, 0.2);
         border-radius: 24px;
@@ -336,14 +336,18 @@ st.markdown("""
         align-items: center;
     }
     
+    .about-inner {
+        text-align: center;
+        max-width: 600px;
+        width: 100%;
+    }
+    
     .about-text {
         color: rgba(255, 255, 255, 0.7);
         font-size: 1.1rem;
         line-height: 1.6;
         margin-bottom: 1rem;
         text-align: center;
-        width: 100%;
-        max-width: 600px;
     }
     
     /* Feature cards */
@@ -647,7 +651,7 @@ st.markdown("""
 <div class="glow-orb pink"></div>
 """, unsafe_allow_html=True)
 
-# JavaScript for smooth scrolling (injected once)
+# JavaScript for smooth scrolling and nav hide on scroll
 st.markdown("""
 
 <script>
@@ -662,6 +666,19 @@ st.markdown("""
                 }
             });
         });
+
+        // Nav hide on scroll down
+        let lastScrollTop = 0;
+        window.addEventListener("scroll", function(){
+            let st = window.pageYOffset || document.documentElement.scrollTop;
+            const nav = document.querySelector('.nav-container');
+            if (st > lastScrollTop && st > 100) {
+                nav.style.transform = 'translateY(-100%)';
+            } else {
+                nav.style.transform = 'translateY(0)';
+            }
+            lastScrollTop = st <= 0 ? 0 : st;
+        }, false);
     });
 </script>
 
@@ -719,12 +736,14 @@ st.markdown('<h2 class="section-title">About Us</h2>', unsafe_allow_html=True)
 st.markdown('<p class="section-subtitle">Empowering students to reach their full potential</p>', unsafe_allow_html=True)
 st.markdown('<div class="about-content">', unsafe_allow_html=True)
 st.markdown("""
+<div class="about-inner">
 <p class="about-text">
 Founded by students for students, CrypticX uses AI to make studying efficient and engaging. Our mission: personalized learning for all.
 </p>
 <p class="about-text">
 Adapt to your style with tools based on learning science, simplifying complex concepts and accelerating your success.
 </p>
+</div>
 """, unsafe_allow_html=True)
 st.markdown('</div></div>', unsafe_allow_html=True)
 
