@@ -19,6 +19,10 @@ hide_streamlit_style = """
     .stDeployButton {display:none;}
     .stDecoration {display:none;}
     section.main > div {padding: 0;}
+    .stToolbar {display: none;}
+    div[data-testid="stToolbar"] {display: none;}
+    div[data-testid="stStatusWidget"] {display: none;}
+    #stDecoration {display: none;}
 </style>
 """
 
