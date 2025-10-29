@@ -211,6 +211,20 @@ st.markdown("""
     }
     
     /* Style for Streamlit buttons to match hero-cta */
+    .hero-button-container {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-top: 2rem;
+    }
+    
+    .cta-button-container {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-top: 2rem;
+    }
+    
     .stButton > button {
         padding: 1rem 2.5rem !important;
         border-radius: 50px !important;
@@ -222,8 +236,7 @@ st.markdown("""
         border: none !important;
         font-size: 1.1rem !important;
         box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4) !important;
-        margin: 0 auto !important;
-        display: block !important;
+        margin: 0 !important;
     }
     
     .stButton > button:hover {
@@ -392,13 +405,17 @@ st.markdown("""
         <div class="welcome-badge">Welcome to CrypticX - The Ultimate Study Tool</div>
         <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
         <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
+        <div class="hero-button-container">
 """, unsafe_allow_html=True)
 
 # Functional Hero Button - Routes to Login (handles sign-up too)
 if st.button("Start Learning Free", key="hero_start"):
     st.switch_page("pages/login.py")
 
-st.markdown("</div>", unsafe_allow_html=True)
+st.markdown("""
+        </div>
+    </div>
+""", unsafe_allow_html=True)
 
 # About Us Section
 st.markdown('<div class="section">', unsafe_allow_html=True)
@@ -461,13 +478,17 @@ st.markdown("""
     <div class="cta-section">
         <h2 class="cta-title">Ready to Unlock Your Potential?</h2>
         <p class="cta-subtitle">Join thousands of students transforming their learning today.</p>
+        <div class="cta-button-container">
 """, unsafe_allow_html=True)
 
 # Functional CTA Button - Routes to Pricing (for plan selection before login)
 if st.button("Get Started Free", key="cta_get_started"):
     st.switch_page("pages/pricing.py")
 
-st.markdown("</div>", unsafe_allow_html=True)
+st.markdown("""
+        </div>
+    </div>
+""", unsafe_allow_html=True)
 
 # Close content wrapper
 st.markdown('</div>', unsafe_allow_html=True)
