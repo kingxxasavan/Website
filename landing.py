@@ -1,5 +1,4 @@
 import streamlit as st
-from streamlit.switch_page_button import switch_page  # Note: Use st.switch_page in Streamlit 1.28+
 
 st.set_page_config(
     page_title="CrypticX - AI Study Tool",
@@ -399,7 +398,7 @@ st.markdown("""
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     if st.button("Start Learning Free"):
-        switch_page("pages/login.py")
+        st.switch_page("pages/login.py")
 
 st.markdown("</div>", unsafe_allow_html=True)
 
@@ -470,7 +469,7 @@ st.markdown("""
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     if st.button("Get Started Free"):
-        switch_page("pages/pricing.py")
+        st.switch_page("pages/pricing.py")
 
 st.markdown("</div>", unsafe_allow_html=True)
 
