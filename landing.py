@@ -730,12 +730,12 @@ st.markdown("""
 <div class="feature-card">
 <span class="feature-icon">💰</span>
 <h3>Affordable Excellence</h3>
-<p>Get premium tutoring quality at a fraction of the cost. Start free and upgrade only when you’re ready.</p>
+<p>Get premium tutoring quality at a fraction of the cost. Start free and upgrade only when you're ready.</p>
 </div>
 <div class="feature-card">
 <span class="feature-icon">📱</span>
 <h3>Study Anywhere</h3>
-<p>Access your learning tools from any device, anytime. Study on your schedule, not someone else’s.</p>
+<p>Access your learning tools from any device, anytime. Study on your schedule, not someone else's.</p>
 </div>
 <div class="feature-card">
 <span class="feature-icon">🔬</span>
@@ -745,7 +745,7 @@ st.markdown("""
 <div class="feature-card">
 <span class="feature-icon">🌟</span>
 <h3>Student Success</h3>
-<p>Join thousands of students who’ve improved their grades and confidence with CrypticX’s intelligent tools.</p>
+<p>Join thousands of students who've improved their grades and confidence with CrypticX's intelligent tools.</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -754,7 +754,7 @@ st.markdown('</div></div>', unsafe_allow_html=True)
 # Pricing Section
 st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
 st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
-st.markdown('<p class="section-subtitle">Start free, upgrade when you're ready</p>', unsafe_allow_html=True)
+st.markdown('<p class="section-subtitle">Start free, upgrade when you\'re ready</p>', unsafe_allow_html=True)
 
 st.markdown("""
 <div class="pricing-grid">
