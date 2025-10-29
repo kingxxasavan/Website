@@ -354,10 +354,24 @@ landing_html = """
                     <p class="section-subtitle">We'd love to hear from you</p>
                 </div>
                 <form onsubmit="event.preventDefault(); alert('Thank you! We will get back to you soon.');">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
-                        <input type="text" placeholder="First Name" required style="padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem;">
-                        <input type="text" placeholder="Last Name" required style="padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem;">
-                    </div>
+                    <input type="email" placeholder="Email" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
+                    <input type="text" placeholder="Subject" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
+                    <textarea placeholder="Message" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; min-height: 150px; margin-bottom: 1.5rem; font-family: inherit;"></textarea>
+                    <button type="submit" class="cta-btn" style="width: 100%;">Send Message</button>
+                </form>
+            </div>
+        </section>
+    </div>
+    
+    <!-- LOGIN PAGE -->
+    <div id="login" class="page">
+        <section class="section">
+            <div style="max-width: 500px; margin: 0 auto; background: rgba(20, 20, 20, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 25px; padding: 3rem; backdrop-filter: blur(20px);">
+                <div class="section-header">
+                    <h2 class="section-title">Welcome Back</h2>
+                    <p class="section-subtitle">Login to your CrypticX account</p>
+                </div>
+                <form onsubmit="event.preventDefault(); showPage('dashboard');">
                     <input type="email" placeholder="Email" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
                     <input type="password" placeholder="Password" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
                     <input type="password" placeholder="Confirm Password" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
@@ -387,26 +401,7 @@ landing_html = """
 </html>
 """
 
-components.html(landing_html, height=800, scrolling=True), 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
-                    <input type="text" placeholder="Subject" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
-                    <textarea placeholder="Message" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; min-height: 150px; margin-bottom: 1.5rem; font-family: inherit;"></textarea>
-                    <button type="submit" class="cta-btn" style="width: 100%;">Send Message</button>
-                </form>
-            </div>
-        </section>
-    </div>
-    
-    <!-- LOGIN PAGE -->
-    <div id="login" class="page">
-        <section class="section">
-            <div style="max-width: 500px; margin: 0 auto; background: rgba(20, 20, 20, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 25px; padding: 3rem; backdrop-filter: blur(20px);">
-                <div class="section-header">
-                    <h2 class="section-title">Welcome Back</h2>
-                    <p class="section-subtitle">Login to your CrypticX account</p>
-                </div>
-                <form onsubmit="event.preventDefault(); showPage('dashboard');">
-                    <input type="email" placeholder="Email" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
-                    <input type="password" placeholder="Password" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
+components.html(landing_html, height=800, scrolling=True)0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
                     <button type="submit" class="cta-btn" style="width: 100%;">Login</button>
                 </form>
                 <div style="text-align: center; margin-top: 1.5rem; color: #a0a0a0;">
@@ -426,4 +421,5 @@ components.html(landing_html, height=800, scrolling=True), 40, 0.8); border: 1px
                 </div>
                 <form onsubmit="event.preventDefault(); showPage('dashboard');">
                     <input type="text" placeholder="Full Name" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
-                    <input type="email" placeholder="Email" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40
+                    <input type="email" placeholder="Email" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
+                    <input type="password" placeholder="Password" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40,
