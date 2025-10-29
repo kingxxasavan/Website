@@ -1,22 +1,25 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="CrypticX - AI Study Tool",
-    page_icon="⚡",
-    layout="wide",
-    initial_sidebar_state="collapsed"
+page_title=“CrypticX - AI Study Tool”,
+page_icon=“⚡”,
+layout=“wide”,
+initial_sidebar_state=“collapsed”
 )
 
 # Initialize session state
-if 'current_section' not in st.session_state:
-    st.session_state.current_section = 'home'
-if 'logged_in' not in st.session_state:
-    st.session_state.logged_in = False
-if 'show_signup' not in st.session_state:
-    st.session_state.show_signup = False
+
+if ‘current_section’ not in st.session_state:
+st.session_state.current_section = ‘home’
+if ‘logged_in’ not in st.session_state:
+st.session_state.logged_in = False
+if ‘show_signup’ not in st.session_state:
+st.session_state.show_signup = False
 
 # Enhanced CSS with smooth scrolling and animations
-st.markdown("""
+
+st.markdown(”””
+
 <style>
     /* Hide Streamlit elements */
     #MainMenu {visibility: hidden !important;}
@@ -100,16 +103,26 @@ st.markdown("""
         animation: fadeInUp 0.6s ease-out forwards;
     }
     
-    /* Navigation */
+    /* Navigation with scroll effect */
     .nav-container {
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         z-index: 1000;
-        background: rgba(10, 10, 15, 0.8);
+        background: rgba(10, 10, 15, 0.7);
         backdrop-filter: blur(20px);
         border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+        transition: transform 0.3s ease-in-out, background 0.3s ease;
+    }
+    
+    .nav-container.hidden {
+        transform: translateY(-100%);
+    }
+    
+    .nav-container.scrolled {
+        background: rgba(10, 10, 15, 0.95);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
     
     nav {
@@ -319,12 +332,11 @@ st.markdown("""
         margin-bottom: 4rem;
     }
     
-    /* About content */
+    /* About content - FIXED CENTERING */
     .about-content {
         max-width: 800px;
         width: 100%;
         margin: 0 auto;
-        text-align: center;
         background: rgba(139, 92, 246, 0.05);
         border: 1px solid rgba(139, 92, 246, 0.2);
         border-radius: 24px;
@@ -334,16 +346,20 @@ st.markdown("""
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        text-align: center;
     }
     
     .about-text {
         color: rgba(255, 255, 255, 0.7);
         font-size: 1.1rem;
-        line-height: 1.6;
-        margin-bottom: 1rem;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
         text-align: center;
         width: 100%;
-        max-width: 600px;
+    }
+    
+    .about-text:last-child {
+        margin-bottom: 0;
     }
     
     /* Feature cards */
@@ -638,20 +654,24 @@ st.markdown("""
     }
 </style>
 
-""", unsafe_allow_html=True)
+“””, unsafe_allow_html=True)
 
 # Background elements
-st.markdown("""
+
+st.markdown(”””
+
 <div class="grid-background"></div>
 <div class="glow-orb purple"></div>
 <div class="glow-orb pink"></div>
 """, unsafe_allow_html=True)
 
-# JavaScript for smooth scrolling (injected once)
-st.markdown("""
+# JavaScript for smooth scrolling AND navbar hide/show
+
+st.markdown(”””
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Smooth scrolling for anchor links
         const links = document.querySelectorAll('a[href^="#"]');
         links.forEach(link => {
             link.addEventListener('click', function(e) {
@@ -662,13 +682,42 @@ st.markdown("""
                 }
             });
         });
+        
+        // Navbar hide/show on scroll
+        let lastScrollTop = 0;
+        const navbar = document.querySelector('.nav-container');
+        const scrollThreshold = 100;
+        
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Add scrolled class when scrolled down
+            if (scrollTop > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            
+            // Hide/show navbar based on scroll direction
+            if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
+                // Scrolling down
+                navbar.classList.add('hidden');
+            } else {
+                // Scrolling up
+                navbar.classList.remove('hidden');
+            }
+            
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        }, false);
     });
 </script>
 
-""", unsafe_allow_html=True)
+“””, unsafe_allow_html=True)
 
 # Navigation
-st.markdown(f"""
+
+st.markdown(f”””
+
 <div class="nav-container">
 <nav>
 <div class="logo">
@@ -687,10 +736,13 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # Content wrapper
-st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
+
+st.markdown(’<div class="content-wrapper">’, unsafe_allow_html=True)
 
 # Hero Section
-st.markdown("""
+
+st.markdown(”””
+
 <div id="home" class="hero-section">
 <div class="welcome-badge">✨ Welcome to CrypticX - The Ultimate Study Tool</div>
 <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
@@ -714,11 +766,13 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # About Us Section
-st.markdown('<div id="about" class="section">', unsafe_allow_html=True)
-st.markdown('<h2 class="section-title">About Us</h2>', unsafe_allow_html=True)
-st.markdown('<p class="section-subtitle">Empowering students to reach their full potential</p>', unsafe_allow_html=True)
-st.markdown('<div class="about-content">', unsafe_allow_html=True)
-st.markdown("""
+
+st.markdown(’<div id="about" class="section">’, unsafe_allow_html=True)
+st.markdown(’<h2 class="section-title">About Us</h2>’, unsafe_allow_html=True)
+st.markdown(’<p class="section-subtitle">Empowering students to reach their full potential</p>’, unsafe_allow_html=True)
+st.markdown(’<div class="about-content">’, unsafe_allow_html=True)
+st.markdown(”””
+
 <p class="about-text">
 Founded by students for students, CrypticX uses AI to make studying efficient and engaging. Our mission: personalized learning for all.
 </p>
@@ -729,12 +783,14 @@ Adapt to your style with tools based on learning science, simplifying complex co
 st.markdown('</div></div>', unsafe_allow_html=True)
 
 # Why Choose Us Section
-st.markdown('<div id="why-choose" class="section">', unsafe_allow_html=True)
-st.markdown('<h2 class="section-title">Why Choose CrypticX</h2>', unsafe_allow_html=True)
-st.markdown('<p class="section-subtitle">The smartest way to study in 2025</p>', unsafe_allow_html=True)
-st.markdown('<div class="features-grid">', unsafe_allow_html=True)
 
-st.markdown("""
+st.markdown(’<div id="why-choose" class="section">’, unsafe_allow_html=True)
+st.markdown(’<h2 class="section-title">Why Choose CrypticX</h2>’, unsafe_allow_html=True)
+st.markdown(’<p class="section-subtitle">The smartest way to study in 2025</p>’, unsafe_allow_html=True)
+st.markdown(’<div class="features-grid">’, unsafe_allow_html=True)
+
+st.markdown(”””
+
 <div class="feature-card">
 <span class="feature-icon">⚡</span>
 <h3>Lightning Fast</h3>
@@ -765,70 +821,4 @@ st.markdown("""
 <h3>Student Success</h3>
 <p>Join thousands of students who've improved their grades and confidence with CrypticX's intelligent tools.</p>
 </div>
-""", unsafe_allow_html=True)
-
-st.markdown('</div></div>', unsafe_allow_html=True)
-
-# Pricing Section
-st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
-st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
-st.markdown('<p class="section-subtitle">Start free, upgrade when you\'re ready</p>', unsafe_allow_html=True)
-
-st.markdown("""
-<div class="pricing-grid">
-    <div class="pricing-card">
-        <h3>Free</h3>
-        <div class="price">$0<span class="price-period">/mo</span></div>
-        <div class="feature-list">
-            ✓ 10 AI questions/day<br>
-            ✓ Basic summaries<br>
-            ✓ 5 quizzes/week<br>
-            ✓ Community support
-        </div>
-        <button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Start Free</button>
-    </div>
-    <div class="pricing-card featured">
-        <div class="pricing-badge">⭐ MOST POPULAR</div>
-        <h3>Pro</h3>
-        <div class="price">$15<span class="price-period">/mo</span></div>
-        <div class="feature-list">
-            ✓ Unlimited AI questions<br>
-            ✓ Advanced summaries<br>
-            ✓ Unlimited quizzes<br>
-            ✓ PDF upload (100MB)<br>
-            ✓ Priority support<br>
-            ✓ Progress analytics
-        </div>
-        <button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Get Pro</button>
-    </div>
-    <div class="pricing-card">
-        <h3>Enterprise</h3>
-        <div class="price">$35<span class="price-period">/mo</span></div>
-        <div class="feature-list">
-            ✓ Everything in Pro<br>
-            ✓ Team accounts<br>
-            ✓ Advanced analytics<br>
-            ✓ Custom integrations<br>
-            ✓ Dedicated support<br>
-            ✓ Unlimited storage
-        </div>
-        <button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Contact Us</button>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
-
-# Close content wrapper
-st.markdown('</div>', unsafe_allow_html=True)
-
-# Footer
-st.markdown("""
-<div class="custom-footer">
-    <p>&copy; 2025 CrypticX. All rights reserved.</p>
-    <div class="footer-links">
-        <a href="#" class="footer-link">Privacy</a>
-        <a href="#" class="footer-link">Terms</a>
-        <a href="#" class="footer-link">Contact</a>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+""",
