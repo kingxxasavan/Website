@@ -198,7 +198,7 @@ with nav_cols[6]:
     if st.button("Login", key="nav_login", type="primary"):
         set_page("login")
 
-# PAGE FUNCTIONS
+# --- PAGE FUNCTIONS ---
 def show_home_page():
     st.markdown("""
     <section class="hero">
@@ -513,40 +513,6 @@ def show_login_page():
     
     st.markdown("""
         <div style="text-align: center; margin-top: 1.5rem; color: #a0a0a0;">
-            Already have an account? <a href="#" style="color: #8b5cf6; text-decoration: none; font-weight: 600;">Login</a>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    if st.button("Go to Login", key="signup_to_login", use_container_width=True):
-        set_page("login")
-        st.rerun()
-
-# PAGE ROUTER
-page_name = st.session_state.current_page
-
-if page_name == "home":
-    show_home_page()
-elif page_name == "dashboard":
-    show_dashboard_page()
-elif page_name == "features":
-    show_features_page()
-elif page_name == "pricing":
-    show_pricing_page()
-elif page_name == "contact":
-    show_contact_page()
-elif page_name == "login":
-    show_login_page()
-elif page_name == "signup":
-    show_signup_page()
-else:
-    show_home_page()
-
-# Footer
-st.markdown("""
-    <footer class="custom-footer">
-        <p>© 2025 CrypticX. Empowering students with AI. All rights reserved.</p>
-    </footer>
-""", unsafe_allow_html=True)0a0a0;">
             Don't have an account? <a href="#" style="color: #8b5cf6; text-decoration: none; font-weight: 600;">Sign up</a>
         </div>
     """, unsafe_allow_html=True)
@@ -584,4 +550,40 @@ def show_signup_page():
             st.error("Please fill in all fields")
     
     st.markdown("""
-        <div style="text-align: center; margin-top: 1.5rem; color: #a
+        <div style="text-align: center; margin-top: 1.5rem; color: #a0a0a0;">
+            Already have an account? <a href="#" style="color: #8b5cf6; text-decoration: none; font-weight: 600;">Login</a>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    if st.button("Go to Login", key="signup_to_login", use_container_width=True):
+        set_page("login")
+        st.rerun()
+
+# --- PAGE ROUTER ---
+# This must come AFTER all the show_..._page() functions are defined.
+page_name = st.session_state.current_page
+
+if page_name == "home":
+    show_home_page()
+elif page_name == "dashboard":
+    show_dashboard_page()
+elif page_name == "features":
+    show_features_page()
+elif page_name == "pricing":
+    show_pricing_page()
+elif page_name == "contact":
+    show_contact_page()
+elif page_name == "login":
+    show_login_page()
+elif page_name == "signup":
+    show_signup_page()
+else:
+    show_home_page()
+
+# --- Footer ---
+# This should be the last thing in the script.
+st.markdown("""
+    <footer class="custom-footer">
+        <p>© 2025 CrypticX. Empowering students with AI. All rights reserved.</p>
+    </footer>
+""", unsafe_allow_html=True)
