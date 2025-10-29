@@ -210,21 +210,14 @@ st.markdown("""
         line-height: 1.7;
     }
     
-    /* Style for Streamlit buttons to match hero-cta */
+    /* Centering the button */
     .hero-button-container {
         display: flex;
         justify-content: center;
         width: 100%;
         margin-top: 2rem;
     }
-    
-    .cta-button-container {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        margin-top: 2rem;
-    }
-    
+
     .stButton > button {
         padding: 1rem 2.5rem !important;
         border-radius: 50px !important;
@@ -237,6 +230,7 @@ st.markdown("""
         font-size: 1.1rem !important;
         box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4) !important;
         margin: 0 !important;
+        display: block !important; /* Forces button to take up available space for centering */
     }
     
     .stButton > button:hover {
@@ -305,197 +299,46 @@ st.markdown("""
         border-color: rgba(139, 92, 246, 0.5);
         box-shadow: 0 20px 60px rgba(139, 92, 246, 0.2);
     }
-    
-    .feature-icon {
-        font-size: 3rem;
-        margin-bottom: 1.5rem;
-        display: block;
-    }
-    
-    .feature-card h3 {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-        color: #fff;
-        font-weight: 600;
-    }
-    
-    .feature-card p {
-        color: rgba(255, 255, 255, 0.6);
-        line-height: 1.7;
-        font-size: 0.95rem;
-    }
-    
-    /* CTA Section */
-    .cta-section {
-        text-align: center;
-        padding: 4rem 2rem;
-        background: rgba(139, 92, 246, 0.05);
-        border-radius: 24px;
-        margin: 4rem 2rem;
-        backdrop-filter: blur(10px);
-    }
-    
-    .cta-title {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        color: #fff;
-    }
-    
-    .cta-subtitle {
-        font-size: 1.2rem;
-        color: rgba(255, 255, 255, 0.6);
-        margin-bottom: 2rem;
-    }
-    
-    /* Footer */
-    .custom-footer {
-        position: relative;
-        z-index: 10;
-        border-top: 1px solid rgba(139, 92, 246, 0.1);
-        margin-top: 5rem;
-        padding: 3rem 2rem;
-        text-align: center;
-        color: rgba(255, 255, 255, 0.4);
-        background: rgba(10, 10, 15, 0.5);
-    }
-    
-    /* Responsive */
-    @media (max-width: 768px) {
-        nav {padding: 1rem 1.5rem;}
-        .nav-links {display: none;}
-        .hero-title {font-size: 2.5rem;}
-        .hero-subtitle {font-size: 1.1rem;}
-        .features-grid {grid-template-columns: 1fr;}
-    }
 </style>
 """, unsafe_allow_html=True)
 
-# Background elements
+# Add glowing orb and grid background
+st.markdown('<div class="grid-background"></div>', unsafe_allow_html=True)
+st.markdown('<div class="glow-orb purple"></div>', unsafe_allow_html=True)
+st.markdown('<div class="glow-orb pink"></div>', unsafe_allow_html=True)
+
+# Navigation
 st.markdown("""
-    <div class="grid-background"></div>
-    <div class="glow-orb purple"></div>
-    <div class="glow-orb pink"></div>
+<div class="nav-container">
+    <nav>
+        <div class="logo">
+            <span class="logo-icon">⚡</span>
+            <span>CrypticX</span>
+        </div>
+        <div class="nav-links">
+            <span class="nav-link">Features</span>
+            <span class="nav-link">About</span>
+            <span class="nav-link">Contact</span>
+        </div>
+        <button class="nav-cta" onclick="window.location.href='pages/login.py'">Login</button>
+    </nav>
+</div>
 """, unsafe_allow_html=True)
 
-# Navigation (updated links for multi-page)
-st.markdown("""
-    <div class="nav-container">
-        <nav>
-            <div class="logo">
-                <span class="logo-icon">⚡</span>
-                <span>CrypticX</span>
-            </div>
-            <div class="nav-links">
-                <a href="/" class="nav-link">Home</a>
-                <a href="/pricing" class="nav-link">Pricing</a>
-                <a href="/dashboard" class="nav-link">Dashboard</a>
-                <a href="/login" class="nav-link">Login</a>
-                <button class="nav-cta">Sign Up</button>
-            </div>
-        </nav>
-    </div>
-""", unsafe_allow_html=True)
 
-# Content wrapper
+# Hero section
 st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
+st.markdown('<section class="hero-section">', unsafe_allow_html=True)
+st.markdown('<span class="welcome-badge">⚡ The Future of Learning is Here</span>', unsafe_allow_html=True)
+st.markdown('<h1 class="hero-title">Unlock Your Academic Potential with AI</h1>', unsafe_allow_html=True)
+st.markdown('<p class="hero-subtitle">CrypticX is an advanced AI-powered study tool designed to help students learn faster, retain more, and ace their exams.</p>', unsafe_allow_html=True)
 
-# Hero Section
-st.markdown("""
-    <div class="hero-section">
-        <div class="welcome-badge">Welcome to CrypticX - The Ultimate Study Tool</div>
-        <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
-        <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
-        <div class="hero-button-container">
-""", unsafe_allow_html=True)
-
-# Functional Hero Button - Routes to Login (handles sign-up too)
-if st.button("Start Learning Free", key="hero_start"):
-    st.switch_page("pages/login.py")
-
-st.markdown("""
-        </div>
-    </div>
-""", unsafe_allow_html=True)
-
-# About Us Section
-st.markdown('<div class="section">', unsafe_allow_html=True)
-st.markdown('<h2 class="section-title">About Us</h2>', unsafe_allow_html=True)
-st.markdown('<p class="section-subtitle">Empowering students to reach their full potential</p>', unsafe_allow_html=True)
-st.markdown('<div class="about-content">', unsafe_allow_html=True)
-st.markdown("""
-    <p class="about-text">
-        CrypticX was founded by students, for students. We understand the challenges of modern education and created an AI-powered platform that makes studying more efficient, engaging, and effective. Our mission is to democratize access to personalized learning tools that help every student succeed.
-    </p>
-    <p class="about-text">
-        With cutting-edge artificial intelligence and a deep understanding of learning science, we've built tools that adapt to your unique learning style, making complex concepts easier to understand and helping you achieve your academic goals faster than ever before.
-    </p>
-""", unsafe_allow_html=True)
-st.markdown('</div></div>', unsafe_allow_html=True)
-
-# Why Choose Us Section
-st.markdown('<div class="section">', unsafe_allow_html=True)
-st.markdown('<h2 class="section-title">Why Choose CrypticX</h2>', unsafe_allow_html=True)
-st.markdown('<p class="section-subtitle">The smartest way to study in 2025</p>', unsafe_allow_html=True)
-st.markdown('<div class="features-grid">', unsafe_allow_html=True)
-
-st.markdown("""
-    <div class="feature-card">
-        <span class="feature-icon">⚡</span>
-        <h3>Lightning Fast</h3>
-        <p>Get instant answers to your questions. No more waiting hours for tutors or searching through endless resources.</p>
-    </div>
-    <div class="feature-card">
-        <span class="feature-icon">🎯</span>
-        <h3>Personalized Learning</h3>
-        <p>AI adapts to your learning style and pace, providing customized explanations that make sense to you.</p>
-    </div>
-    <div class="feature-card">
-        <span class="feature-icon">💰</span>
-        <h3>Affordable Excellence</h3>
-        <p>Get premium tutoring quality at a fraction of the cost. Start free and upgrade only when you're ready.</p>
-    </div>
-    <div class="feature-card">
-        <span class="feature-icon">📱</span>
-        <h3>Study Anywhere</h3>
-        <p>Access your learning tools from any device, anytime. Study on your schedule, not someone else's.</p>
-    </div>
-    <div class="feature-card">
-        <span class="feature-icon">🔬</span>
-        <h3>Proven Methods</h3>
-        <p>Built on learning science and cognitive psychology principles that are proven to improve retention and understanding.</p>
-    </div>
-    <div class="feature-card">
-        <span class="feature-icon">🌟</span>
-        <h3>Student Success</h3>
-        <p>Join thousands of students who've improved their grades and confidence with CrypticX's intelligent tools.</p>
-    </div>
-""", unsafe_allow_html=True)
-
-st.markdown('</div></div>', unsafe_allow_html=True)
-
-# Final CTA Section
-st.markdown("""
-    <div class="cta-section">
-        <h2 class="cta-title">Ready to Unlock Your Potential?</h2>
-        <p class="cta-subtitle">Join thousands of students transforming their learning today.</p>
-        <div class="cta-button-container">
-""", unsafe_allow_html=True)
-
-# Functional CTA Button - Routes to Pricing (for plan selection before login)
-if st.button("Get Started Free", key="cta_get_started"):
-    st.switch_page("pages/pricing.py")
-
-st.markdown("""
-        </div>
-    </div>
-""", unsafe_allow_html=True)
-
-# Close content wrapper
+# Center the Streamlit button
+with st.container():
+    col1, col2, col3 = st.columns([1, 0.5, 1])
+    with col2:
+        if st.button("Start Your Free Trial"):
+            st.switch_page("pages/login.py")
+            
+st.markdown('</section>', unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
-
-# Footer
-st.markdown("""
-    <footer class="custom-footer">
-        <p>© 2025 CrypticX • Empowering students with AI • Built with ❤️</p>
-    </footer>
-""", unsafe_allow_html=True)
