@@ -1590,4 +1590,4 @@ landing_html = """
 </html>
 """
 
-components.html(landing_html, height=5500, scrolling=True)
+components.html(landing_html, height=3800, scrolling=False)
