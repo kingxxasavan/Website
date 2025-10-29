@@ -339,7 +339,7 @@ st.markdown("""
     <div class="glow-orb pink"></div>
 """, unsafe_allow_html=True)
 
-# Navigation with anchor links
+# Navigation with anchor links (updated to point to pages if multi-page)
 st.markdown("""
     <div class="nav-container">
         <nav>
@@ -349,9 +349,9 @@ st.markdown("""
             </div>
             <div class="nav-links">
                 <a href="#home" class="nav-link">Home</a>
-                <a href="#pricing" class="nav-link">Pricing</a>
-                <a href="#dashboard" class="nav-link">Dashboard</a>
-                <a href="#login" class="nav-link">Login</a>
+                <a href="/pricing" class="nav-link">Pricing</a>
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="/login" class="nav-link">Login</a>
                 <button class="nav-cta">Sign Up</button>
             </div>
         </nav>
@@ -427,156 +427,7 @@ st.markdown("""
 
 st.markdown('</div></div>', unsafe_allow_html=True)
 
-# Pricing Section
-st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
-st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
-st.markdown('<p class="section-subtitle">Start free, upgrade when you\'re ready</p>', unsafe_allow_html=True)
-
-st.markdown("""
-    <style>
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-        
-        .pricing-card {
-            background: rgba(139, 92, 246, 0.05);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            border-radius: 24px;
-            padding: 3rem 2.5rem;
-            text-align: center;
-            transition: all 0.4s;
-            position: relative;
-        }
-        
-        .pricing-card.featured {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.15));
-            border: 2px solid #8b5cf6;
-            transform: scale(1.05);
-        }
-        
-        .pricing-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
-        }
-        
-        .pricing-card.featured:hover {
-            transform: translateY(-10px) scale(1.07);
-        }
-        
-        .pricing-badge {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
-            color: white;
-            padding: 0.4rem 1.2rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        
-        .pricing-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #fff;
-        }
-        
-        .price {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin: 1.5rem 0;
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .price-period {
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        .feature-list {
-            text-align: left;
-            margin: 2rem 0;
-            color: rgba(255, 255, 255, 0.7);
-            line-height: 2.2;
-            font-size: 0.95rem;
-        }
-        
-        .pricing-button {
-            width: 100%;
-            padding: 0.9rem;
-            border-radius: 12px;
-            background: rgba(139, 92, 246, 0.2);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            color: #fff;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 1rem;
-        }
-        
-        .pricing-button:hover {
-            background: rgba(139, 92, 246, 0.3);
-            border-color: #8b5cf6;
-        }
-        
-        .pricing-card.featured .pricing-button {
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
-            border: none;
-        }
-    </style>
-    
-    <div class="pricing-grid">
-        <div class="pricing-card">
-            <h3>Free</h3>
-            <div class="price">$0<span class="price-period">/mo</span></div>
-            <div class="feature-list">
-                ✓ 10 AI questions/day<br>
-                ✓ Basic summaries<br>
-                ✓ 5 quizzes/week<br>
-                ✓ Community support
-            </div>
-            <button class="pricing-button">Start Free</button>
-        </div>
-        
-        <div class="pricing-card featured">
-            <div class="pricing-badge">⭐ MOST POPULAR</div>
-            <h3>Pro</h3>
-            <div class="price">$12<span class="price-period">/mo</span></div>
-            <div class="feature-list">
-                ✓ Unlimited AI questions<br>
-                ✓ Advanced summaries<br>
-                ✓ Unlimited quizzes<br>
-                ✓ PDF upload (100MB)<br>
-                ✓ Priority support<br>
-                ✓ Progress analytics
-            </div>
-            <button class="pricing-button">Try Pro Free</button>
-        </div>
-        
-        <div class="pricing-card">
-            <h3>Ultimate</h3>
-            <div class="price">$25<span class="price-period">/mo</span></div>
-            <div class="feature-list">
-                ✓ Everything in Pro<br>
-                ✓ Group collaboration<br>
-                ✓ Custom AI training<br>
-                ✓ 1-on-1 tutoring sessions<br>
-                ✓ Exam prep tools<br>
-                ✓ 24/7 VIP support
-            </div>
-            <button class="pricing-button">Contact Sales</button>
-        </div>
-    </div>
-""", unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
-
-# Dashboard Section
+# Dashboard Section (kept as teaser on home)
 st.markdown('<div id="dashboard" class="section">', unsafe_allow_html=True)
 st.markdown('<h2 class="section-title">Your Dashboard</h2>', unsafe_allow_html=True)
 st.markdown('<p class="section-subtitle">Access all your AI-powered study tools</p>', unsafe_allow_html=True)
@@ -617,7 +468,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Login Section
+# Login Section (kept as is, but could be moved to separate page)
 st.markdown('<div id="login" class="section">', unsafe_allow_html=True)
 st.markdown('<div class="about-content">', unsafe_allow_html=True)
 st.markdown('<h2 class="section-title">Welcome Back</h2>', unsafe_allow_html=True)
