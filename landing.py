@@ -175,27 +175,19 @@ st.markdown("""
         position: relative;
     }
     
-    .beta-badge {
+    .welcome-badge {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        background: rgba(139, 92, 246, 0.15);
-        border: 1px solid rgba(139, 92, 246, 0.3);
-        padding: 0.5rem 1.2rem;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 0.6rem 1.5rem;
         border-radius: 50px;
-        font-size: 0.85rem;
-        color: #8b5cf6;
-        font-weight: 600;
+        font-size: 0.9rem;
+        color: #fff;
+        font-weight: 500;
         margin-bottom: 2rem;
-    }
-    
-    .beta-badge::before {
-        content: "NEW";
-        background: #8b5cf6;
-        color: white;
-        padding: 0.15rem 0.5rem;
-        border-radius: 20px;
-        font-size: 0.7rem;
+        backdrop-filter: blur(10px);
     }
     
     .hero-title {
@@ -463,6 +455,8 @@ st.markdown("""
             </div>
             <div class="nav-links">
                 <a href="#home" class="nav-link">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#why-choose" class="nav-link">Why Choose Us</a>
                 <a href="#features" class="nav-link">Features</a>
                 <a href="#pricing" class="nav-link">Pricing</a>
                 <a href="#contact" class="nav-link">Contact</a>
@@ -478,14 +472,91 @@ st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 # Hero Section
 st.markdown("""
     <div id="home" class="hero-section">
-        <div class="beta-badge">AI Study Tool v4.5 Beta is available</div>
-        <h1 class="hero-title">Revolutionizing the Future of Learning</h1>
-        <p class="hero-subtitle">Discover what drives results and what doesn't to boost your academic success with AI-powered study tools.</p>
-        <button class="hero-cta" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Take Free Trial</button>
+        <div class="welcome-badge">Welcome to CrypticX - The Ultimate Study Tool</div>
+        <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
+        <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
+        <button class="hero-cta" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Start Learning Free</button>
     </div>
 """, unsafe_allow_html=True)
 
-# Features Section
+# About Us Section
+st.markdown("""
+    <div id="about" class="section">
+        <h2 class="section-title">About Us</h2>
+        <p class="section-subtitle">Empowering students to reach their full potential</p>
+        
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <p style="color: rgba(255, 255, 255, 0.7); font-size: 1.1rem; line-height: 1.9; margin-bottom: 2rem;">
+                CrypticX was founded by students, for students. We understand the challenges of modern education and created an AI-powered platform that makes studying more efficient, engaging, and effective. Our mission is to democratize access to personalized learning tools that help every student succeed.
+            </p>
+            <p style="color: rgba(255, 255, 255, 0.7); font-size: 1.1rem; line-height: 1.9;">
+                With cutting-edge artificial intelligence and a deep understanding of learning science, we've built tools that adapt to your unique learning style, making complex concepts easier to understand and helping you achieve your academic goals faster than ever before.
+            </p>
+        </div>
+    </div>
+""", unsafe_allow_html=True)
+
+# Why Choose Us Section
+st.markdown("""
+    <div id="why-choose" class="section">
+        <h2 class="section-title">Why Choose CrypticX</h2>
+        <p class="section-subtitle">The smartest way to study in 2025</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="feature-icon">⚡</span>
+                <h3>Lightning Fast</h3>
+                <p>Get instant answers to your questions. No more waiting hours for tutors or searching through endless resources.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🎯</span>
+                <h3>Personalized Learning</h3>
+                <p>AI adapts to your learning style and pace, providing customized explanations that make sense to you.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">💰</span>
+                <h3>Affordable Excellence</h3>
+                <p>Get premium tutoring quality at a fraction of the cost. Start free and upgrade only when you're ready.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">📱</span>
+                <h3>Study Anywhere</h3>
+                <p>Access your learning tools from any device, anytime. Study on your schedule, not someone else's.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🔬</span>
+                <h3>Proven Methods</h3>
+                <p>Built on learning science and cognitive psychology principles that are proven to improve retention and understanding.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🌟</span>
+                <h3>Student Success</h3>
+                <p>Join thousands of students who've improved their grades and confidence with CrypticX's intelligent tools.</p>
+            </div>
+        </div>
+    </div>
+""", unsafe_allow_html=True)
+
+# Contact Section
+st.markdown("""
+    <div id="contact" class="section">
+        <div class="contact-container">
+            <h2 style='text-align: center; margin-bottom: 2rem; font-size: 2.5rem;'>Get In Touch</h2>
+""", unsafe_allow_html=True)
+
+name = st.text_input("Name", placeholder="Your name", label_visibility="collapsed", key="contact_name")
+email = st.text_input("Email", placeholder="your@email.com", label_visibility="collapsed", key="contact_email")
+message = st.text_area("Message", placeholder="How can we help?", height=150, label_visibility="collapsed", key="contact_msg")
+
+if st.button("Send Message", key="contact_btn", type="primary", use_container_width=True):
+    if name and email and message:
+        st.success("✓ Thanks! We'll get back to you within 24 hours.")
+    else:
+        st.error("Please fill in all fields")
+
+st.markdown('</div></div>', unsafe_allow_html=True)
+
+# Features Section (Separate Page)
 st.markdown("""
     <div id="features" class="section">
         <h2 class="section-title">Powerful Study Features</h2>
@@ -526,7 +597,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Pricing Section
+# Pricing Section (Separate Page)
 st.markdown("""
     <div id="pricing" class="section">
         <h2 class="section-title">Choose Your Plan</h2>
@@ -576,25 +647,6 @@ st.markdown("""
         </div>
     </div>
 """, unsafe_allow_html=True)
-
-# Contact Section
-st.markdown("""
-    <div id="contact" class="section">
-        <div class="contact-container">
-            <h2 style='text-align: center; margin-bottom: 2rem; font-size: 2.5rem;'>Get In Touch</h2>
-""", unsafe_allow_html=True)
-
-name = st.text_input("Name", placeholder="Your name", label_visibility="collapsed", key="contact_name")
-email = st.text_input("Email", placeholder="your@email.com", label_visibility="collapsed", key="contact_email")
-message = st.text_area("Message", placeholder="How can we help?", height=150, label_visibility="collapsed", key="contact_msg")
-
-if st.button("Send Message", key="contact_btn", type="primary", use_container_width=True):
-    if name and email and message:
-        st.success("✓ Thanks! We'll get back to you within 24 hours.")
-    else:
-        st.error("Please fill in all fields")
-
-st.markdown('</div></div>', unsafe_allow_html=True)
 
 # Close content wrapper
 st.markdown('</div>', unsafe_allow_html=True)
