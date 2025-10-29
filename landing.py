@@ -8,6 +8,48 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+# Hide Streamlit default elements and make fullscreen
+hide_streamlit_style = """
+<style>
+    /* Hide Streamlit branding and menu */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    
+    /* Remove padding and margins */
+    .block-container {
+        padding-top: 0rem;
+        padding-bottom: 0rem;
+        padding-left: 0rem;
+        padding-right: 0rem;
+        margin: 0;
+    }
+    
+    /* Make iframe fullscreen */
+    .main .block-container {
+        max-width: 100%;
+        padding: 0;
+    }
+    
+    /* Remove any default Streamlit spacing */
+    .stApp {
+        margin: 0;
+        padding: 0;
+    }
+    
+    /* Hide the top toolbar */
+    .stDeployButton {display:none;}
+    .stDecoration {display:none;}
+    
+    /* Ensure full viewport height */
+    section.main > div {
+        padding: 0;
+    }
+</style>
+"""
+
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 landing_html = """
 <!DOCTYPE html>
 <html lang="en">
@@ -26,6 +68,8 @@ landing_html = """
             background: #000000;
             color: #ffffff;
             overflow-x: hidden;
+            margin: 0;
+            padding: 0;
         }
         
         /* Animated gradient background */
@@ -1015,11 +1059,19 @@ landing_html = """
             z-index: 10;
             border-top: 1px solid rgba(139, 92, 246, 0.2);
             margin-top: 3rem;
+            margin-bottom: 0;
             padding: 2rem 5rem;
             text-align: center;
             color: #666;
             background: rgba(20, 20, 20, 0.6);
             backdrop-filter: blur(20px);
+        }
+        
+        /* Remove any extra space at bottom */
+        html, body {
+            height: auto;
+            margin: 0;
+            padding: 0;
         }
         
         /* Page Transitions */
@@ -1527,15 +1579,10 @@ landing_html = """
     
     <script>
         function showPage(pageName) {
-            // Hide all pages
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
             });
-            
-            // Show selected page
             document.getElementById(pageName).classList.add('active');
-            
-            // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
@@ -1543,4 +1590,4 @@ landing_html = """
 </html>
 """
 
-components.html(landing_html, height=5800, scrolling=True)
+components.html(landing_html, height=6000, scrolling=True)
