@@ -320,7 +320,7 @@ st.markdown("""
         margin-bottom: 4rem;
     }
     
-    /* About content */
+    /* Enhanced About Us Centering */
     .about-content {
         max-width: 800px;
         width: 100%;
@@ -332,23 +332,35 @@ st.markdown("""
         backdrop-filter: blur(10px);
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        min-height: 200px;
+        justify-content: center;  /* Vertical center */
+        align-items: center;      /* Horizontal center */
+        min-height: 300px;        /* Increased for better vertical space */
+        height: auto;             /* Lets it flex naturally */
     }
-    
+
     .about-inner {
         text-align: center;
         max-width: 600px;
         width: 100%;
+        margin: 0;                /* No extra margins to push text off-center */
+        padding: 0;               /* Ensure no padding fights flex */
     }
-    
+
     .about-text {
         color: rgba(255, 255, 255, 0.7);
         font-size: 1.1rem;
         line-height: 1.6;
-        margin-bottom: 1rem;
+        margin: 0 0 1rem 0;       /* Tighten bottom margin */
         text-align: center;
+    }
+
+    /* Optional: If you want the subtitle inside the box too */
+    .section-subtitle {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 1.15rem;
+        text-align: center;
+        margin-bottom: 1.5rem;    /* Reduced for tighter fit */
+        width: 100%;              /* Full width for centering */
     }
     
     /* Feature cards */
@@ -734,16 +746,17 @@ st.markdown("""
 # About Us Section
 st.markdown('<div id="about" class="section">', unsafe_allow_html=True)
 st.markdown('<h2 class="section-title">About Us</h2>', unsafe_allow_html=True)
-st.markdown('<p class="section-subtitle">Empowering students to reach their full potential</p>', unsafe_allow_html=True)
+
 st.markdown('<div class="about-content">', unsafe_allow_html=True)
+st.markdown('<div class="about-inner">', unsafe_allow_html=True)
+st.markdown('<p class="section-subtitle">Empowering students to reach their full potential</p>', unsafe_allow_html=True)
 st.markdown("""
-<div class="about-inner">
 <p class="about-text">
 Founded by students for students, CrypticX uses AI to make studying efficient and engaging. Our mission is personalized learning for all, adapting to your style with tools based on learning science to simplify complex concepts and accelerate your success.
 </p>
-</div>
 """, unsafe_allow_html=True)
-st.markdown('</div></div>', unsafe_allow_html=True)
+st.markdown('</div></div>', unsafe_allow_html=True)  # Close inner, content
+st.markdown('</div>', unsafe_allow_html=True)  # Close section
 
 # Why Choose Us Section
 st.markdown('<div id="why-choose" class="section">', unsafe_allow_html=True)
