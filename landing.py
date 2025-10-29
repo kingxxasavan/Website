@@ -1014,8 +1014,8 @@ landing_html = """
             position: relative;
             z-index: 10;
             border-top: 1px solid rgba(139, 92, 246, 0.2);
-            margin-top: 8rem;
-            padding: 3rem 5rem;
+            margin-top: 3rem;
+            padding: 2rem 5rem;
             text-align: center;
             color: #666;
             background: rgba(20, 20, 20, 0.6);
@@ -1543,4 +1543,4 @@ landing_html = """
 </html>
 """
 
-components.html(landing_html, height=6500, scrolling=True)
+components.html(landing_html, height=6000, scrolling=True)
