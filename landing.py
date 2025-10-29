@@ -8,43 +8,17 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Hide Streamlit default elements and make fullscreen
 hide_streamlit_style = """
 <style>
-    /* Hide Streamlit branding and menu */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
-    
-    /* Remove padding and margins */
-    .block-container {
-        padding-top: 0rem;
-        padding-bottom: 0rem;
-        padding-left: 0rem;
-        padding-right: 0rem;
-        margin: 0;
-    }
-    
-    /* Make iframe fullscreen */
-    .main .block-container {
-        max-width: 100%;
-        padding: 0;
-    }
-    
-    /* Remove any default Streamlit spacing */
-    .stApp {
-        margin: 0;
-        padding: 0;
-    }
-    
-    /* Hide the top toolbar */
+    .block-container {padding: 0; margin: 0;}
+    .main .block-container {max-width: 100%; padding: 0;}
+    .stApp {margin: 0; padding: 0;}
     .stDeployButton {display:none;}
     .stDecoration {display:none;}
-    
-    /* Ensure full viewport height */
-    section.main > div {
-        padding: 0;
-    }
+    section.main > div {padding: 0;}
 </style>
 """
 
@@ -57,1084 +31,78 @@ landing_html = """
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #000000;
-            color: #ffffff;
-            overflow-x: hidden;
-            margin: 0;
-            padding: 0;
-        }
-        
-        /* Animated gradient background */
-        .bg-gradient {
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(ellipse at top right, rgba(88, 28, 135, 0.3) 0%, transparent 50%),
-                        radial-gradient(ellipse at bottom left, rgba(29, 78, 216, 0.3) 0%, transparent 50%),
-                        #000000;
-            z-index: 0;
-        }
-        
-        /* Glowing orbs */
-        .glow-orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(100px);
-            pointer-events: none;
-            z-index: 1;
-        }
-        
-        .orb1 {
-            top: -10%;
-            right: -5%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(139, 92, 246, 0.4), transparent);
-            animation: float1 20s ease-in-out infinite;
-        }
-        
-        .orb2 {
-            bottom: -10%;
-            left: -5%;
-            width: 700px;
-            height: 700px;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.4), transparent);
-            animation: float2 25s ease-in-out infinite;
-        }
-        
-        @keyframes float1 {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(-100px, 100px); }
-        }
-        
-        @keyframes float2 {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(100px, -100px); }
-        }
-        
-        /* Navigation */
-        nav {
-            position: relative;
-            z-index: 100;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.2rem 5rem;
-            max-width: 1600px;
-            margin: 1rem auto;
-            background: rgba(20, 20, 20, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            border-radius: 20px;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #ffffff;
-        }
-        
-        .logo-icon {
-            width: 35px;
-            height: 35px;
-            background: linear-gradient(135deg, #8b5cf6, #6366f1);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 3rem;
-            list-style: none;
-        }
-        
-        .nav-links a {
-            color: #a0a0a0;
-            text-decoration: none;
-            font-size: 1rem;
-            transition: color 0.3s;
-        }
-        
-        .nav-links a:hover {
-            color: #ffffff;
-        }
-        
-        .nav-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        .nav-btn {
-            padding: 0.7rem 1.8rem;
-            border-radius: 12px;
-            border: 1px solid rgba(139, 92, 246, 0.5);
-            background: transparent;
-            color: #ffffff;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.95rem;
-        }
-        
-        .nav-btn:hover {
-            background: rgba(139, 92, 246, 0.1);
-            border-color: #8b5cf6;
-        }
-        
-        .nav-btn.primary {
-            background: linear-gradient(135deg, #8b5cf6, #6366f1);
-            border: none;
-        }
-        
-        .nav-btn.primary:hover {
-            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.5);
-            transform: translateY(-2px);
-        }
-        
-        /* Hero Section */
-        .hero {
-            position: relative;
-            z-index: 10;
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 3rem 5rem 4rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-            min-height: auto;
-        }
-        
-        .hero-content h1 {
-            font-size: 3.5rem;
-            line-height: 1.1;
-            margin-bottom: 1.2rem;
-            font-weight: 300;
-            letter-spacing: -2px;
-            color: #ffffff;
-        }
-        
-        .hero-content p {
-            font-size: 1.1rem;
-            color: #a0a0a0;
-            margin-bottom: 2rem;
-            line-height: 1.7;
-            max-width: 500px;
-        }
-        
-        .email-form {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .email-input {
-            flex: 1;
-            padding: 1.2rem 1.5rem;
-            background: rgba(40, 40, 40, 0.8);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 15px;
-            color: #ffffff;
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.3s;
-        }
-        
-        .email-input:focus {
-            border-color: #8b5cf6;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
-        }
-        
-        .email-input::placeholder {
-            color: #666;
-        }
-        
-        .cta-btn {
-            padding: 1.2rem 2.5rem;
-            background: linear-gradient(135deg, #8b5cf6, #6366f1);
-            border: none;
-            border-radius: 15px;
-            color: #ffffff;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            white-space: nowrap;
-        }
-        
-        .cta-btn:hover {
-            box-shadow: 0 15px 50px rgba(139, 92, 246, 0.5);
-            transform: translateY(-3px);
-        }
-        
-        .hero-note {
-            font-size: 0.9rem;
-            color: #666;
-        }
-        
-        /* Hero Image - AI Robot */
-        .hero-visual {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            perspective: 1000px;
-        }
-        
-        .robot-container {
-            position: relative;
-            width: 400px;
-            height: 500px;
-            animation: floatRobot 6s ease-in-out infinite;
-        }
-        
-        @keyframes floatRobot {
-            0%, 100% { transform: translateY(0) rotateY(-5deg); }
-            50% { transform: translateY(-30px) rotateY(5deg); }
-        }
-        
-        /* Robot parts */
-        .robot-head {
-            position: absolute;
-            top: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 200px;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            border-radius: 40% 40% 45% 45%;
-            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.6),
-                        inset 0 -20px 40px rgba(0, 0, 0, 0.3);
-            border: 3px solid rgba(139, 92, 246, 0.5);
-        }
-        
-        .robot-eye {
-            position: absolute;
-            width: 70px;
-            height: 70px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: radial-gradient(circle, #8b5cf6 0%, #6366f1 50%, #1e3a8a 100%);
-            border-radius: 50%;
-            box-shadow: 0 0 40px #8b5cf6, 0 0 80px #6366f1, inset 0 0 20px rgba(255,255,255,0.3);
-            animation: eyeGlow 2s ease-in-out infinite;
-        }
-        
-        .eye-inner {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: radial-gradient(circle, #ffffff 0%, #a78bfa 100%);
-            border-radius: 50%;
-            box-shadow: 0 0 20px #ffffff;
-        }
-        
-        @keyframes eyeGlow {
-            0%, 100% { box-shadow: 0 0 40px #8b5cf6, 0 0 80px #6366f1, inset 0 0 20px rgba(255,255,255,0.3); }
-            50% { box-shadow: 0 0 60px #8b5cf6, 0 0 120px #6366f1, inset 0 0 30px rgba(255,255,255,0.5); }
-        }
-        
-        .robot-body {
-            position: absolute;
-            top: 230px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 180px;
-            height: 200px;
-            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
-            border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(37, 99, 235, 0.5),
-                        inset 0 -20px 40px rgba(0, 0, 0, 0.3);
-            border: 3px solid rgba(139, 92, 246, 0.5);
-        }
-        
-        .body-light {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: radial-gradient(circle, #6366f1, transparent);
-            border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
-        }
-        
-        .robot-arm {
-            position: absolute;
-            width: 80px;
-            height: 25px;
-            background: linear-gradient(90deg, #2563eb, #3b82f6);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4);
-            border: 2px solid rgba(139, 92, 246, 0.5);
-        }
-        
-        .arm-left {
-            top: 280px;
-            left: 30px;
-            transform: rotate(-20deg);
-            animation: armMove 3s ease-in-out infinite;
-        }
-        
-        .arm-right {
-            top: 280px;
-            right: 30px;
-            transform: rotate(20deg);
-            animation: armMove 3s ease-in-out infinite reverse;
-        }
-        
-        @keyframes armMove {
-            0%, 100% { transform: rotate(-20deg); }
-            50% { transform: rotate(-10deg); }
-        }
-        
-        .robot-leg {
-            position: absolute;
-            width: 40px;
-            height: 120px;
-            background: linear-gradient(180deg, #1e3a8a, #2563eb);
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(37, 99, 235, 0.4);
-            border: 2px solid rgba(139, 92, 246, 0.5);
-        }
-        
-        .leg-left {
-            bottom: 50px;
-            left: 170px;
-        }
-        
-        .leg-right {
-            bottom: 50px;
-            right: 170px;
-        }
-        
-        .robot-foot {
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 30px;
-            background: linear-gradient(135deg, #2563eb, #3b82f6);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.6);
-        }
-        
-        /* Floating particles */
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #8b5cf6;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #8b5cf6;
-            animation: particleFloat 8s ease-in-out infinite;
-        }
-        
-        .particle:nth-child(1) { top: 100px; left: 50px; animation-delay: 0s; }
-        .particle:nth-child(2) { top: 200px; right: 80px; animation-delay: 1s; }
-        .particle:nth-child(3) { bottom: 150px; left: 100px; animation-delay: 2s; }
-        .particle:nth-child(4) { top: 300px; right: 150px; animation-delay: 3s; }
-        
-        @keyframes particleFloat {
-            0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
-            50% { transform: translateY(-50px) scale(1.5); opacity: 1; }
-        }
-        
-        /* Info Grid */
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-        
-        .info-card {
-            background: rgba(20, 20, 20, 0.6);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            border-radius: 25px;
-            padding: 3rem;
-            transition: all 0.3s;
-            backdrop-filter: blur(20px);
-        }
-        
-        .info-card:hover {
-            border-color: rgba(139, 92, 246, 0.5);
-            transform: translateY(-5px);
-            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.2);
-        }
-        
-        .info-number {
-            font-size: 4rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #8b5cf6, #6366f1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
-            opacity: 0.3;
-        }
-        
-        .info-card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            font-weight: 400;
-        }
-        
-        .info-card p {
-            color: #a0a0a0;
-            line-height: 1.8;
-            font-size: 1.05rem;
-        }
-        
-        /* Steps Container */
-        .steps-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 4rem;
-            flex-wrap: wrap;
-        }
-        
-        .step-card {
-            background: rgba(20, 20, 20, 0.6);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            border-radius: 25px;
-            padding: 3rem;
-            flex: 1;
-            min-width: 280px;
-            max-width: 350px;
-            text-align: center;
-            transition: all 0.3s;
-            backdrop-filter: blur(20px);
-        }
-        
-        .step-card:hover {
-            border-color: rgba(139, 92, 246, 0.5);
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
-        }
-        
-        .step-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-        }
-        
-        .step-number {
-            font-size: 0.85rem;
-            color: #8b5cf6;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            letter-spacing: 2px;
-        }
-        
-        .step-card h3 {
-            font-size: 1.6rem;
-            margin-bottom: 1rem;
-            font-weight: 400;
-        }
-        
-        .step-card p {
-            color: #a0a0a0;
-            line-height: 1.7;
-        }
-        
-        .step-arrow {
-            font-size: 3rem;
-            color: #8b5cf6;
-            animation: arrowPulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes arrowPulse {
-            0%, 100% { opacity: 0.3; transform: translateX(0); }
-            50% { opacity: 1; transform: translateX(10px); }
-        }
-        
-        /* Stats Container */
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            padding: 4rem;
-            background: rgba(139, 92, 246, 0.05);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            border-radius: 30px;
-            backdrop-filter: blur(20px);
-        }
-        
-        .stat-card {
-            text-align: center;
-        }
-        
-        .stat-number {
-            font-size: 3.5rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #8b5cf6, #6366f1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-label {
-            font-size: 1.1rem;
-            color: #a0a0a0;
-        }
-        
-        /* Testimonials */
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-        
-        .testimonial-card {
-            background: rgba(20, 20, 20, 0.6);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            border-radius: 25px;
-            padding: 2.5rem;
-            transition: all 0.3s;
-            backdrop-filter: blur(20px);
-        }
-        
-        .testimonial-card:hover {
-            border-color: rgba(139, 92, 246, 0.5);
-            transform: translateY(-5px);
-            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.2);
-        }
-        
-        .testimonial-rating {
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .testimonial-text {
-            color: #e0e0e0;
-            line-height: 1.8;
-            margin-bottom: 2rem;
-            font-size: 1.05rem;
-        }
-        
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .author-avatar {
-            font-size: 2.5rem;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(139, 92, 246, 0.1);
-            border-radius: 50%;
-        }
-        
-        .author-name {
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 0.3rem;
-        }
-        
-        .author-role {
-            font-size: 0.9rem;
-            color: #a0a0a0;
-        }
-        
-        /* CTA Section */
-        .cta-section {
-            text-align: center;
-            padding: 5rem 4rem;
-            background: rgba(139, 92, 246, 0.05);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 30px;
-            backdrop-filter: blur(20px);
-        }
-        
-        .cta-title {
-            font-size: 3.5rem;
-            font-weight: 300;
-            margin-bottom: 1.5rem;
-        }
-        
-        .cta-text {
-            font-size: 1.3rem;
-            color: #a0a0a0;
-            max-width: 800px;
-            margin: 0 auto 3rem;
-            line-height: 1.7;
-        }
-        
-        .cta-buttons {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            margin-bottom: 2rem;
-        }
-        
-        .cta-btn.large {
-            padding: 1.5rem 3.5rem;
-            font-size: 1.2rem;
-        }
-        
-        .cta-btn-secondary {
-            padding: 1.5rem 3.5rem;
-            border-radius: 15px;
-            border: 2px solid rgba(139, 92, 246, 0.5);
-            background: transparent;
-            color: #8b5cf6;
-            font-size: 1.2rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .cta-btn-secondary:hover {
-            background: rgba(139, 92, 246, 0.1);
-            border-color: #8b5cf6;
-            transform: translateY(-3px);
-        }
-        
-        .cta-note {
-            font-size: 1rem;
-            color: #a0a0a0;
-        }
-        
-        /* Hero Section */
-        .section {
-            position: relative;
-            z-index: 10;
-            max-width: 1600px;
-            margin: 4rem auto;
-            padding: 0 5rem;
-        }
-        
-        .section-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        
-        .section-title {
-            font-size: 2.8rem;
-            font-weight: 300;
-            margin-bottom: 1rem;
-        }
-        
-        .section-subtitle {
-            font-size: 1.1rem;
-            color: #a0a0a0;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-        
-        .feature-card {
-            background: rgba(20, 20, 20, 0.6);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            border-radius: 25px;
-            padding: 3rem;
-            transition: all 0.3s;
-            backdrop-filter: blur(20px);
-        }
-        
-        .feature-card:hover {
-            border-color: rgba(139, 92, 246, 0.5);
-            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.2);
-            transform: translateY(-10px);
-        }
-        
-        .feature-icon {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.5));
-        }
-        
-        .feature-card h3 {
-            font-size: 1.6rem;
-            margin-bottom: 1rem;
-            font-weight: 400;
-        }
-        
-        .feature-card p {
-            color: #a0a0a0;
-            line-height: 1.7;
-            font-size: 1.05rem;
-        }
-        
-        /* Pricing Section */
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-        
-        .pricing-card {
-            background: rgba(20, 20, 20, 0.6);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            border-radius: 25px;
-            padding: 3rem;
-            text-align: center;
-            transition: all 0.3s;
-            backdrop-filter: blur(20px);
-        }
-        
-        .pricing-card.featured {
-            border-color: #8b5cf6;
-            transform: scale(1.05);
-            background: rgba(139, 92, 246, 0.05);
-        }
-        
-        .pricing-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
-        }
-        
-        .pricing-tag {
-            display: inline-block;
-            padding: 0.5rem 1.2rem;
-            background: rgba(139, 92, 246, 0.2);
-            border: 1px solid rgba(139, 92, 246, 0.5);
-            border-radius: 20px;
-            color: #8b5cf6;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
-        
-        .pricing-card h3 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            font-weight: 400;
-        }
-        
-        .price {
-            font-size: 3.5rem;
-            font-weight: 300;
-            margin-bottom: 2rem;
-        }
-        
-        .price-period {
-            font-size: 1rem;
-            color: #a0a0a0;
-        }
-        
-        .features-list {
-            list-style: none;
-            margin: 2rem 0;
-            text-align: left;
-        }
-        
-        .features-list li {
-            padding: 0.8rem 0;
-            color: #a0a0a0;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-        
-        .features-list li::before {
-            content: '✓';
-            color: #8b5cf6;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        
-        .price-btn {
-            width: 100%;
-            padding: 1rem;
-            border-radius: 15px;
-            border: 1px solid rgba(139, 92, 246, 0.5);
-            background: transparent;
-            color: #ffffff;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 2rem;
-        }
-        
-        .featured .price-btn {
-            background: linear-gradient(135deg, #8b5cf6, #6366f1);
-            border: none;
-        }
-        
-        .price-btn:hover {
-            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
-            transform: translateY(-3px);
-        }
-        
-        /* Contact Section */
-        .contact-container {
-            max-width: 900px;
-            margin: 8rem auto;
-            padding: 4rem;
-            background: rgba(20, 20, 20, 0.6);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            border-radius: 30px;
-            backdrop-filter: blur(20px);
-        }
-        
-        .contact-form {
-            display: grid;
-            gap: 1.5rem;
-        }
-        
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-        
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.7rem;
-        }
-        
-        .form-group label {
-            color: #a0a0a0;
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-        
-        .form-group input,
-        .form-group textarea {
-            padding: 1.2rem 1.5rem;
-            border-radius: 15px;
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            background: rgba(40, 40, 40, 0.8);
-            color: #ffffff;
-            font-size: 1rem;
-            transition: all 0.3s;
-            font-family: inherit;
-        }
-        
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #8b5cf6;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
-        }
-        
-        .form-group textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-        
-        .submit-btn {
-            padding: 1.3rem;
-            border-radius: 15px;
-            border: none;
-            background: linear-gradient(135deg, #8b5cf6, #6366f1);
-            color: #ffffff;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .submit-btn:hover {
-            box-shadow: 0 15px 50px rgba(139, 92, 246, 0.5);
-            transform: translateY(-3px);
-        }
-        
-        /* Auth Forms (Login/Signup) */
-        .auth-container {
-            max-width: 500px;
-            margin: 6rem auto;
-            padding: 3rem;
-            background: rgba(20, 20, 20, 0.8);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 25px;
-            backdrop-filter: blur(20px);
-        }
-        
-        .auth-header {
-            text-align: center;
-            margin-bottom: 2.5rem;
-        }
-        
-        .auth-header h2 {
-            font-size: 2.5rem;
-            font-weight: 400;
-            margin-bottom: 0.5rem;
-        }
-        
-        .auth-header p {
-            color: #a0a0a0;
-        }
-        
-        .social-login {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        
-        .social-btn {
-            padding: 1rem;
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            background: rgba(40, 40, 40, 0.6);
-            border-radius: 12px;
-            color: #ffffff;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-        
-        .social-btn:hover {
-            background: rgba(139, 92, 246, 0.1);
-            border-color: #8b5cf6;
-        }
-        
-        .divider {
-            text-align: center;
-            margin: 2rem 0;
-            color: #666;
-            position: relative;
-        }
-        
-        .divider::before,
-        .divider::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 40%;
-            height: 1px;
-            background: rgba(139, 92, 246, 0.2);
-        }
-        
-        .divider::before { left: 0; }
-        .divider::after { right: 0; }
-        
-        .auth-link {
-            text-align: center;
-            margin-top: 1.5rem;
-            color: #a0a0a0;
-        }
-        
-        .auth-link a {
-            color: #8b5cf6;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        
-        .auth-link a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Footer */
-        footer {
-            position: relative;
-            z-index: 10;
-            border-top: 1px solid rgba(139, 92, 246, 0.2);
-            margin-top: 3rem;
-            margin-bottom: 0;
-            padding: 2rem 5rem;
-            text-align: center;
-            color: #666;
-            background: rgba(20, 20, 20, 0.6);
-            backdrop-filter: blur(20px);
-        }
-        
-        /* Remove any extra space at bottom */
-        html, body {
-            height: auto;
-            margin: 0;
-            padding: 0;
-        }
-        
-        /* Page Transitions */
-        .page {
-            display: none;
-        }
-        
-        .page.active {
-            display: block;
-            animation: fadeIn 0.5s ease-in;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        * {margin: 0; padding: 0; box-sizing: border-box;}
+        body {font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #000; color: #fff; overflow-x: hidden;}
+        .bg-gradient {position: fixed; inset: 0; background: radial-gradient(ellipse at top right, rgba(88, 28, 135, 0.3) 0%, transparent 50%), radial-gradient(ellipse at bottom left, rgba(29, 78, 216, 0.3) 0%, transparent 50%), #000; z-index: 0;}
+        .glow-orb {position: fixed; border-radius: 50%; filter: blur(100px); pointer-events: none; z-index: 1;}
+        .orb1 {top: -10%; right: -5%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(139, 92, 246, 0.4), transparent); animation: float1 20s ease-in-out infinite;}
+        .orb2 {bottom: -10%; left: -5%; width: 700px; height: 700px; background: radial-gradient(circle, rgba(59, 130, 246, 0.4), transparent); animation: float2 25s ease-in-out infinite;}
+        @keyframes float1 {0%, 100% {transform: translate(0, 0);} 50% {transform: translate(-100px, 100px);}}
+        @keyframes float2 {0%, 100% {transform: translate(0, 0);} 50% {transform: translate(100px, -100px);}}
+        
+        nav {position: relative; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 5rem; max-width: 1600px; margin: 1rem auto; background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 20px;}
+        .logo {display: flex; align-items: center; gap: 0.5rem; font-size: 1.5rem; font-weight: 700; color: #fff; cursor: pointer;}
+        .logo-icon {width: 35px; height: 35px; background: linear-gradient(135deg, #8b5cf6, #6366f1); border-radius: 8px; display: flex; align-items: center; justify-content: center;}
+        .nav-links {display: flex; gap: 3rem; list-style: none;}
+        .nav-links a {color: #a0a0a0; text-decoration: none; font-size: 1rem; transition: color 0.3s;}
+        .nav-links a:hover {color: #fff;}
+        .nav-buttons {display: flex; gap: 1rem;}
+        .nav-btn {padding: 0.7rem 1.8rem; border-radius: 12px; border: 1px solid rgba(139, 92, 246, 0.5); background: transparent; color: #fff; font-weight: 500; cursor: pointer; transition: all 0.3s; font-size: 0.95rem;}
+        .nav-btn:hover {background: rgba(139, 92, 246, 0.1); border-color: #8b5cf6;}
+        .nav-btn.primary {background: linear-gradient(135deg, #8b5cf6, #6366f1); border: none;}
+        .nav-btn.primary:hover {box-shadow: 0 10px 40px rgba(139, 92, 246, 0.5); transform: translateY(-2px);}
+        
+        .hero {position: relative; z-index: 10; max-width: 1600px; margin: 0 auto; padding: 3rem 5rem 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;}
+        .hero-content h1 {font-size: 3.5rem; line-height: 1.1; margin-bottom: 1.2rem; font-weight: 300; letter-spacing: -2px; color: #fff;}
+        .hero-content p {font-size: 1.1rem; color: #a0a0a0; margin-bottom: 2rem; line-height: 1.7; max-width: 500px;}
+        .email-form {display: flex; gap: 1rem; margin-bottom: 1rem;}
+        .email-input {flex: 1; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; outline: none; transition: all 0.3s;}
+        .email-input:focus {border-color: #8b5cf6; box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);}
+        .cta-btn {padding: 1.2rem 2.5rem; background: linear-gradient(135deg, #8b5cf6, #6366f1); border: none; border-radius: 15px; color: #fff; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; white-space: nowrap;}
+        .cta-btn:hover {box-shadow: 0 15px 50px rgba(139, 92, 246, 0.5); transform: translateY(-3px);}
+        .hero-note {font-size: 0.9rem; color: #666;}
+        
+        .section {position: relative; z-index: 10; max-width: 1600px; margin: 4rem auto; padding: 0 5rem;}
+        .section-header {text-align: center; margin-bottom: 3rem;}
+        .section-title {font-size: 2.8rem; font-weight: 300; margin-bottom: 1rem;}
+        .section-subtitle {font-size: 1.1rem; color: #a0a0a0;}
+        
+        .features-grid {display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;}
+        .feature-card {background: rgba(20, 20, 20, 0.6); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 25px; padding: 3rem; transition: all 0.3s; backdrop-filter: blur(20px);}
+        .feature-card:hover {border-color: rgba(139, 92, 246, 0.5); box-shadow: 0 20px 60px rgba(139, 92, 246, 0.2); transform: translateY(-10px);}
+        .feature-icon {font-size: 3.5rem; margin-bottom: 1.5rem; filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.5));}
+        .feature-card h3 {font-size: 1.6rem; margin-bottom: 1rem; font-weight: 400;}
+        .feature-card p {color: #a0a0a0; line-height: 1.7; font-size: 1.05rem;}
+        
+        .info-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-top: 4rem;}
+        .info-card {background: rgba(20, 20, 20, 0.6); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 25px; padding: 3rem; transition: all 0.3s; backdrop-filter: blur(20px);}
+        .info-card:hover {border-color: rgba(139, 92, 246, 0.5); transform: translateY(-5px); box-shadow: 0 20px 60px rgba(139, 92, 246, 0.2);}
+        .info-number {font-size: 4rem; font-weight: 900; background: linear-gradient(135deg, #8b5cf6, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; opacity: 0.3;}
+        .info-card h3 {font-size: 1.8rem; margin-bottom: 1rem; font-weight: 400;}
+        .info-card p {color: #a0a0a0; line-height: 1.8; font-size: 1.05rem;}
+        
+        .stats-container {display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; padding: 4rem; background: rgba(139, 92, 246, 0.05); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 30px; backdrop-filter: blur(20px);}
+        .stat-card {text-align: center;}
+        .stat-number {font-size: 3.5rem; font-weight: 900; background: linear-gradient(135deg, #8b5cf6, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem;}
+        .stat-label {font-size: 1.1rem; color: #a0a0a0;}
+        
+        .price-btn {width: 100%; padding: 1rem; border-radius: 15px; border: 1px solid rgba(139, 92, 246, 0.5); background: transparent; color: #fff; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-top: 2rem;}
+        .price-btn:hover {box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4); transform: translateY(-3px);}
+        
+        .page {display: none;}
+        .page.active {display: block; animation: fadeIn 0.5s ease-in;}
+        @keyframes fadeIn {from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);}}
+        
+        footer {position: relative; z-index: 10; border-top: 1px solid rgba(139, 92, 246, 0.2); margin-top: 3rem; padding: 2rem 5rem; text-align: center; color: #666; background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(20px);}
         
         @media (max-width: 1024px) {
-            .hero {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-            .hero-content p {
-                max-width: 100%;
-            }
-            .robot-container {
-                transform: scale(0.8);
-            }
-            .features-grid,
-            .pricing-grid,
-            .testimonials-grid {
-                grid-template-columns: 1fr;
-            }
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-            .stats-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .steps-container {
-                flex-direction: column;
-            }
-            .step-arrow {
-                transform: rotate(90deg);
-            }
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            .cta-btn.large,
-            .cta-btn-secondary {
-                width: 100%;
-                max-width: 400px;
-            }
-            nav {
-                padding: 1rem 2rem;
-            }
-            .nav-links {
-                display: none;
-            }
-            .form-row {
-                grid-template-columns: 1fr;
-            }
+            nav {padding: 1rem 2rem;}
+            .nav-links {display: none;}
+            .hero {grid-template-columns: 1fr; text-align: center; padding: 2rem;}
+            .section {padding: 0 2rem;}
+            .features-grid {grid-template-columns: 1fr;}
+            .info-grid {grid-template-columns: 1fr;}
+            .stats-container {grid-template-columns: repeat(2, 1fr);}
         }
     </style>
 </head>
@@ -1144,18 +112,19 @@ landing_html = """
     <div class="glow-orb orb2"></div>
     
     <nav>
-        <div class="logo">
+        <div class="logo" onclick="showPage('home')">
             <div class="logo-icon">⚡</div>
             <span>CrypticX</span>
         </div>
         <ul class="nav-links">
             <li><a href="#" onclick="showPage('home')">Home</a></li>
+            <li><a href="#" onclick="showPage('dashboard')">Dashboard</a></li>
             <li><a href="#" onclick="showPage('features')">Features</a></li>
             <li><a href="#" onclick="showPage('pricing')">Pricing</a></li>
             <li><a href="#" onclick="showPage('contact')">Contact</a></li>
         </ul>
         <div class="nav-buttons">
-            <button class="nav-btn" onclick="showPage('login')">Sign Up</button>
+            <button class="nav-btn" onclick="showPage('signup')">Sign Up</button>
             <button class="nav-btn primary" onclick="showPage('login')">Login</button>
         </div>
     </nav>
@@ -1164,111 +133,46 @@ landing_html = """
     <div id="home" class="page active">
         <section class="hero">
             <div class="hero-content">
-                <h1>Get ready for the new era of AI</h1>
-                <p>Your all-in-one AI-powered study tool designed exclusively for students. Master complex concepts, ace your exams, and unlock your full academic potential with cutting-edge technology.</p>
-                <form class="email-form" onsubmit="event.preventDefault(); alert('Thank you for your interest!');">
+                <h1>Welcome to CrypticX</h1>
+                <p>The ultimate tool for school. Master complex concepts, ace your exams, and unlock your full academic potential with cutting-edge AI technology.</p>
+                <form class="email-form" onsubmit="event.preventDefault(); showPage('dashboard');">
                     <input type="email" class="email-input" placeholder="Enter email" required>
                     <button type="submit" class="cta-btn">Get Started</button>
                 </form>
                 <p class="hero-note">Start your learning journey today</p>
             </div>
-            
-            <div class="hero-visual">
-                <div class="robot-container">
-                    <div class="robot-head">
-                        <div class="robot-eye">
-                            <div class="eye-inner"></div>
-                        </div>
-                    </div>
-                    <div class="robot-body">
-                        <div class="body-light"></div>
-                    </div>
-                    <div class="robot-arm arm-left"></div>
-                    <div class="robot-arm arm-right"></div>
-                    <div class="robot-leg leg-left">
-                        <div class="robot-foot"></div>
-                    </div>
-                    <div class="robot-leg leg-right">
-                        <div class="robot-foot"></div>
-                    </div>
-                    <div class="particle"></div>
-                    <div class="particle"></div>
-                    <div class="particle"></div>
-                    <div class="particle"></div>
-                </div>
-            </div>
+            <div style="text-align: center; font-size: 10rem;">🤖</div>
         </section>
         
-        <!-- Why Choose Us Section -->
         <section class="section">
             <div class="section-header">
                 <h2 class="section-title">Why Choose CrypticX?</h2>
                 <p class="section-subtitle">The ultimate AI study companion for modern students</p>
             </div>
-            
             <div class="info-grid">
                 <div class="info-card">
                     <div class="info-number">01</div>
                     <h3>Powered by Advanced AI</h3>
-                    <p>Leveraging state-of-the-art artificial intelligence technology to provide accurate, instant, and personalized learning assistance. Our AI understands context and adapts to your unique learning style.</p>
+                    <p>Leveraging state-of-the-art artificial intelligence technology to provide accurate, instant, and personalized learning assistance.</p>
                 </div>
-                
                 <div class="info-card">
                     <div class="info-number">02</div>
                     <h3>Save Time & Study Smarter</h3>
-                    <p>Cut your study time in half with intelligent summaries, instant explanations, and automated quiz generation. Focus on understanding concepts rather than spending hours reading through materials.</p>
+                    <p>Cut your study time in half with intelligent summaries, instant explanations, and automated quiz generation.</p>
                 </div>
-                
                 <div class="info-card">
                     <div class="info-number">03</div>
                     <h3>Proven Results</h3>
-                    <p>Join thousands of students who have improved their grades and understanding using CrypticX. Our users report 40% better retention and 35% improvement in test scores.</p>
+                    <p>Join thousands of students who have improved their grades. Our users report 40% better retention and 35% improvement in test scores.</p>
                 </div>
-                
                 <div class="info-card">
                     <div class="info-number">04</div>
                     <h3>24/7 Availability</h3>
-                    <p>Study anytime, anywhere. CrypticX is always available to help you understand difficult concepts, prepare for exams, or complete assignments - even at 3 AM before your finals.</p>
+                    <p>Study anytime, anywhere. CrypticX is always available to help you understand difficult concepts.</p>
                 </div>
             </div>
         </section>
         
-        <!-- How It Works Section -->
-        <section class="section">
-            <div class="section-header">
-                <h2 class="section-title">How CrypticX Works</h2>
-                <p class="section-subtitle">Three simple steps to academic success</p>
-            </div>
-            
-            <div class="steps-container">
-                <div class="step-card">
-                    <div class="step-icon">📤</div>
-                    <div class="step-number">STEP 1</div>
-                    <h3>Upload or Ask</h3>
-                    <p>Upload your study materials, PDFs, or simply type your question. CrypticX accepts documents up to 50MB and supports multiple formats including PDF, DOCX, and TXT files.</p>
-                </div>
-                
-                <div class="step-arrow">→</div>
-                
-                <div class="step-card">
-                    <div class="step-icon">🤖</div>
-                    <div class="step-number">STEP 2</div>
-                    <h3>AI Processes</h3>
-                    <p>Our advanced AI analyzes your content, identifies key concepts, and prepares personalized responses. The AI considers your learning history and preferences for optimal results.</p>
-                </div>
-                
-                <div class="step-arrow">→</div>
-                
-                <div class="step-card">
-                    <div class="step-icon">✨</div>
-                    <div class="step-number">STEP 3</div>
-                    <h3>Learn & Excel</h3>
-                    <p>Receive instant explanations, summaries, or quizzes tailored to your needs. Review, practice, and master the material with interactive tools and progress tracking.</p>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Stats Section -->
         <section class="section">
             <div class="stats-container">
                 <div class="stat-card">
@@ -1289,63 +193,77 @@ landing_html = """
                 </div>
             </div>
         </section>
-        
-        <!-- Testimonials Section -->
+    </div>
+    
+    <!-- DASHBOARD PAGE -->
+    <div id="dashboard" class="page">
         <section class="section">
             <div class="section-header">
-                <h2 class="section-title">What Students Say</h2>
-                <p class="section-subtitle">Real feedback from real students</p>
+                <h2 class="section-title">Your Study Dashboard</h2>
+                <p class="section-subtitle">Access all your AI-powered study tools in one place</p>
             </div>
             
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-                    <p class="testimonial-text">"CrypticX completely transformed how I study. I went from struggling with complex topics to acing my exams. The AI explanations are incredibly clear and easy to understand."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">👨‍🎓</div>
-                        <div>
-                            <div class="author-name">Alex Johnson</div>
-                            <div class="author-role">Computer Science Student</div>
-                        </div>
-                    </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>AI Explainer</h3>
+                    <p>Get instant explanations for any concept or topic. Simply ask and learn.</p>
+                    <button class="price-btn" onclick="alert('AI Explainer - Coming Soon!')">Launch Tool</button>
                 </div>
                 
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-                    <p class="testimonial-text">"As a med student, I have tons of material to review. CrypticX's summarization feature saves me hours every week. It's like having a personal tutor available 24/7!"</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">👩‍⚕️</div>
-                        <div>
-                            <div class="author-name">Sarah Martinez</div>
-                            <div class="author-role">Medical Student</div>
-                        </div>
-                    </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📄</div>
+                    <h3>PDF Summarizer</h3>
+                    <p>Upload documents and get concise summaries in seconds.</p>
+                    <button class="price-btn" onclick="alert('PDF Summarizer - Coming Soon!')">Upload PDF</button>
                 </div>
                 
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-                    <p class="testimonial-text">"The quiz generator is a game-changer. I can test myself on any topic instantly. My grades have improved by 30% since I started using CrypticX last semester."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">👨‍💼</div>
-                        <div>
-                            <div class="author-name">Michael Chen</div>
-                            <div class="author-role">Business Major</div>
-                        </div>
-                    </div>
+                <div class="feature-card">
+                    <div class="feature-icon">❓</div>
+                    <h3>Quiz Generator</h3>
+                    <p>Create custom quizzes from any material to test your knowledge.</p>
+                    <button class="price-btn" onclick="alert('Quiz Generator - Coming Soon!')">Create Quiz</button>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🎴</div>
+                    <h3>Flashcard Maker</h3>
+                    <p>Generate smart flashcards automatically from your study materials.</p>
+                    <button class="price-btn" onclick="alert('Flashcard Maker - Coming Soon!')">Make Cards</button>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">✍️</div>
+                    <h3>Essay Helper</h3>
+                    <p>Get help structuring, outlining, and improving your essays.</p>
+                    <button class="price-btn" onclick="alert('Essay Helper - Coming Soon!')">Start Writing</button>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📅</div>
+                    <h3>Study Planner</h3>
+                    <p>Create personalized study schedules and track your progress.</p>
+                    <button class="price-btn" onclick="alert('Study Planner - Coming Soon!')">Plan Studies</button>
                 </div>
             </div>
-        </section>
-        
-        <!-- CTA Section -->
-        <section class="section">
-            <div class="cta-section">
-                <h2 class="cta-title">Ready to Transform Your Learning?</h2>
-                <p class="cta-text">Join over 50,000 students who are already studying smarter with CrypticX. Start your free trial today - no credit card required.</p>
-                <div class="cta-buttons">
-                    <button class="cta-btn large">Start Free Trial</button>
-                    <button class="cta-btn-secondary large" onclick="showPage('pricing')">View Pricing</button>
+            
+            <div class="stats-container" style="margin-top: 4rem;">
+                <div class="stat-card">
+                    <div class="stat-number">127</div>
+                    <div class="stat-label">Questions Asked</div>
                 </div>
-                <p class="cta-note">✓ 14-day free trial  ✓ No credit card required  ✓ Cancel anytime</p>
+                <div class="stat-card">
+                    <div class="stat-number">23</div>
+                    <div class="stat-label">PDFs Summarized</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">45</div>
+                    <div class="stat-label">Quizzes Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">89%</div>
+                    <div class="stat-label">Average Score</div>
+                </div>
             </div>
         </section>
     </div>
@@ -1364,31 +282,26 @@ landing_html = """
                     <h3>AI Explainer</h3>
                     <p>Break down the most complex topics into simple, digestible explanations tailored to your learning style.</p>
                 </div>
-                
                 <div class="feature-card">
                     <div class="feature-icon">📄</div>
                     <h3>Smart Summarizer</h3>
                     <p>Upload PDFs or paste notes and get concise, accurate summaries in seconds. Save hours of study time.</p>
                 </div>
-                
                 <div class="feature-card">
                     <div class="feature-icon">❓</div>
                     <h3>Quiz Generator</h3>
                     <p>Create custom quizzes and flashcards to test your knowledge and track your progress over time.</p>
                 </div>
-                
                 <div class="feature-card">
                     <div class="feature-icon">📊</div>
                     <h3>Progress Tracking</h3>
                     <p>Monitor your learning journey with detailed analytics and insights into your study patterns.</p>
                 </div>
-                
                 <div class="feature-card">
                     <div class="feature-icon">🎯</div>
                     <h3>Personalized Learning</h3>
                     <p>AI adapts to your learning pace and style, providing customized content recommendations.</p>
                 </div>
-                
                 <div class="feature-card">
                     <div class="feature-icon">⚡</div>
                     <h3>Lightning Fast</h3>
@@ -1406,50 +319,26 @@ landing_html = """
                 <p class="section-subtitle">Choose the plan that fits your needs</p>
             </div>
             
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <div class="pricing-tag">BASIC</div>
+            <div class="features-grid">
+                <div class="feature-card">
                     <h3>Free</h3>
-                    <div class="price">$0<span class="price-period">/month</span></div>
-                    <ul class="features-list">
-                        <li>10 AI explanations per day</li>
-                        <li>Basic summarization</li>
-                        <li>5 quizzes per week</li>
-                        <li>Community support</li>
-                        <li>Access to core features</li>
-                    </ul>
+                    <div style="font-size: 3rem; margin: 1rem 0;">$0<span style="font-size: 1rem; color: #a0a0a0;">/month</span></div>
+                    <p style="margin-bottom: 1.5rem;">• 10 AI explanations/day<br>• Basic summarization<br>• 5 quizzes/week<br>• Community support</p>
                     <button class="price-btn">Get Started</button>
                 </div>
                 
-                <div class="pricing-card featured">
-                    <div class="pricing-tag">⭐ MOST POPULAR</div>
+                <div class="feature-card" style="border-color: #8b5cf6; background: rgba(139, 92, 246, 0.05);">
+                    <div style="color: #8b5cf6; font-weight: 600; margin-bottom: 1rem;">⭐ MOST POPULAR</div>
                     <h3>Pro</h3>
-                    <div class="price">$9<span class="price-period">/month</span></div>
-                    <ul class="features-list">
-                        <li>Unlimited AI explanations</li>
-                        <li>Advanced summarization</li>
-                        <li>Unlimited quizzes</li>
-                        <li>PDF upload (up to 50MB)</li>
-                        <li>Priority support</li>
-                        <li>Progress tracking</li>
-                        <li>No ads</li>
-                    </ul>
-                    <button class="price-btn">Start Free Trial</button>
+                    <div style="font-size: 3rem; margin: 1rem 0;">$9<span style="font-size: 1rem; color: #a0a0a0;">/month</span></div>
+                    <p style="margin-bottom: 1.5rem;">• Unlimited AI explanations<br>• Advanced summarization<br>• Unlimited quizzes<br>• PDF upload (50MB)<br>• Priority support<br>• Progress tracking</p>
+                    <button class="price-btn" style="background: linear-gradient(135deg, #8b5cf6, #6366f1);">Start Free Trial</button>
                 </div>
                 
-                <div class="pricing-card">
-                    <div class="pricing-tag">PREMIUM</div>
+                <div class="feature-card">
                     <h3>Ultimate</h3>
-                    <div class="price">$19<span class="price-period">/month</span></div>
-                    <ul class="features-list">
-                        <li>Everything in Pro</li>
-                        <li>Study group collaboration</li>
-                        <li>Custom AI training</li>
-                        <li>1-on-1 tutoring sessions</li>
-                        <li>Exam preparation tools</li>
-                        <li>24/7 VIP support</li>
-                        <li>Unlimited storage</li>
-                    </ul>
+                    <div style="font-size: 3rem; margin: 1rem 0;">$19<span style="font-size: 1rem; color: #a0a0a0;">/month</span></div>
+                    <p style="margin-bottom: 1.5rem;">• Everything in Pro<br>• Study group collaboration<br>• Custom AI training<br>• 1-on-1 tutoring<br>• Exam prep tools<br>• 24/7 VIP support</p>
                     <button class="price-btn">Contact Sales</button>
                 </div>
             </div>
@@ -1458,119 +347,27 @@ landing_html = """
     
     <!-- CONTACT PAGE -->
     <div id="contact" class="page">
-        <div class="contact-container">
-            <div class="section-header">
-                <h2 class="section-title">Get In Touch</h2>
-                <p class="section-subtitle">We'd love to hear from you</p>
-            </div>
-            <form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you! We will get back to you soon.');">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>First Name</label>
-                        <input type="text" placeholder="John" required>
+        <section class="section">
+            <div style="max-width: 900px; margin: 0 auto; background: rgba(20, 20, 20, 0.6); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 30px; padding: 4rem; backdrop-filter: blur(20px);">
+                <div class="section-header">
+                    <h2 class="section-title">Get In Touch</h2>
+                    <p class="section-subtitle">We'd love to hear from you</p>
+                </div>
+                <form onsubmit="event.preventDefault(); alert('Thank you! We will get back to you soon.');">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <input type="text" placeholder="First Name" required style="padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem;">
+                        <input type="text" placeholder="Last Name" required style="padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem;">
                     </div>
-                    <div class="form-group">
-                        <label>Last Name</label>
-                        <input type="text" placeholder="Doe" required>
-                    </div>
+                    <input type="email" placeholder="Email" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
+                    <input type="password" placeholder="Password" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
+                    <input type="password" placeholder="Confirm Password" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
+                    <button type="submit" class="cta-btn" style="width: 100%;">Create Account</button>
+                </form>
+                <div style="text-align: center; margin-top: 1.5rem; color: #a0a0a0;">
+                    Already have an account? <a href="#" onclick="showPage('login')" style="color: #8b5cf6; text-decoration: none; font-weight: 600;">Login</a>
                 </div>
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" placeholder="john@example.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Subject</label>
-                    <input type="text" placeholder="How can we help?" required>
-                </div>
-                <div class="form-group">
-                    <label>Message</label>
-                    <textarea placeholder="Tell us more about your inquiry..." required></textarea>
-                </div>
-                <button type="submit" class="submit-btn">Send Message</button>
-            </form>
-        </div>
-    </div>
-    
-    <!-- LOGIN PAGE -->
-    <div id="login" class="page">
-        <div class="auth-container">
-            <div class="auth-header">
-                <h2>Welcome Back</h2>
-                <p>Login to your CrypticX account</p>
             </div>
-            
-            <div class="social-login">
-                <button class="social-btn">
-                    <span>🔵</span> Google
-                </button>
-                <button class="social-btn">
-                    <span>⚫</span> GitHub
-                </button>
-            </div>
-            
-            <div class="divider">or</div>
-            
-            <form class="contact-form" onsubmit="event.preventDefault(); alert('Login functionality coming soon!');">
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" placeholder="your@email.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" placeholder="••••••••" required>
-                </div>
-                <button type="submit" class="submit-btn">Login</button>
-            </form>
-            
-            <div class="auth-link">
-                Don't have an account? <a href="#" onclick="showPage('signup')">Sign up</a>
-            </div>
-        </div>
-    </div>
-    
-    <!-- SIGNUP PAGE -->
-    <div id="signup" class="page">
-        <div class="auth-container">
-            <div class="auth-header">
-                <h2>Create Account</h2>
-                <p>Join CrypticX today</p>
-            </div>
-            
-            <div class="social-login">
-                <button class="social-btn">
-                    <span>🔵</span> Google
-                </button>
-                <button class="social-btn">
-                    <span>⚫</span> GitHub
-                </button>
-            </div>
-            
-            <div class="divider">or</div>
-            
-            <form class="contact-form" onsubmit="event.preventDefault(); alert('Signup functionality coming soon!');">
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" placeholder="John Doe" required>
-                </div>
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" placeholder="your@email.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" placeholder="••••••••" required>
-                </div>
-                <div class="form-group">
-                    <label>Confirm Password</label>
-                    <input type="password" placeholder="••••••••" required>
-                </div>
-                <button type="submit" class="submit-btn">Create Account</button>
-            </form>
-            
-            <div class="auth-link">
-                Already have an account? <a href="#" onclick="showPage('login')">Login</a>
-            </div>
-        </div>
+        </section>
     </div>
     
     <footer>
@@ -1590,4 +387,43 @@ landing_html = """
 </html>
 """
 
-components.html(landing_html, height=3800, scrolling=False)
+components.html(landing_html, height=800, scrolling=True), 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
+                    <input type="text" placeholder="Subject" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
+                    <textarea placeholder="Message" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; min-height: 150px; margin-bottom: 1.5rem; font-family: inherit;"></textarea>
+                    <button type="submit" class="cta-btn" style="width: 100%;">Send Message</button>
+                </form>
+            </div>
+        </section>
+    </div>
+    
+    <!-- LOGIN PAGE -->
+    <div id="login" class="page">
+        <section class="section">
+            <div style="max-width: 500px; margin: 0 auto; background: rgba(20, 20, 20, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 25px; padding: 3rem; backdrop-filter: blur(20px);">
+                <div class="section-header">
+                    <h2 class="section-title">Welcome Back</h2>
+                    <p class="section-subtitle">Login to your CrypticX account</p>
+                </div>
+                <form onsubmit="event.preventDefault(); showPage('dashboard');">
+                    <input type="email" placeholder="Email" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
+                    <input type="password" placeholder="Password" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
+                    <button type="submit" class="cta-btn" style="width: 100%;">Login</button>
+                </form>
+                <div style="text-align: center; margin-top: 1.5rem; color: #a0a0a0;">
+                    Don't have an account? <a href="#" onclick="showPage('signup')" style="color: #8b5cf6; text-decoration: none; font-weight: 600;">Sign up</a>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- SIGNUP PAGE -->
+    <div id="signup" class="page">
+        <section class="section">
+            <div style="max-width: 500px; margin: 0 auto; background: rgba(20, 20, 20, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 25px; padding: 3rem; backdrop-filter: blur(20px);">
+                <div class="section-header">
+                    <h2 class="section-title">Create Account</h2>
+                    <p class="section-subtitle">Join CrypticX today</p>
+                </div>
+                <form onsubmit="event.preventDefault(); showPage('dashboard');">
+                    <input type="text" placeholder="Full Name" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
+                    <input type="email" placeholder="Email" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40
