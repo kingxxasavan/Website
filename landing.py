@@ -480,21 +480,23 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # About Us Section
+st.markdown('<div id="about" class="section">', unsafe_allow_html=True)
+st.markdown('<h2 class="section-title">About Us</h2>', unsafe_allow_html=True)
+st.markdown('<p class="section-subtitle">Empowering students to reach their full potential</p>', unsafe_allow_html=True)
+
+st.markdown('<div style="max-width: 800px; margin: 0 auto; text-align: center;">', unsafe_allow_html=True)
 st.markdown("""
-    <div id="about" class="section">
-        <h2 class="section-title">About Us</h2>
-        <p class="section-subtitle">Empowering students to reach their full potential</p>
-        
-        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
-            <p style="color: rgba(255, 255, 255, 0.7); font-size: 1.1rem; line-height: 1.9; margin-bottom: 2rem;">
-                CrypticX was founded by students, for students. We understand the challenges of modern education and created an AI-powered platform that makes studying more efficient, engaging, and effective. Our mission is to democratize access to personalized learning tools that help every student succeed.
-            </p>
-            <p style="color: rgba(255, 255, 255, 0.7); font-size: 1.1rem; line-height: 1.9;">
-                With cutting-edge artificial intelligence and a deep understanding of learning science, we've built tools that adapt to your unique learning style, making complex concepts easier to understand and helping you achieve your academic goals faster than ever before.
-            </p>
-        </div>
-    </div>
+<p style="color: rgba(255, 255, 255, 0.7); font-size: 1.1rem; line-height: 1.9; margin-bottom: 2rem;">
+CrypticX was founded by students, for students. We understand the challenges of modern education and created an AI-powered platform that makes studying more efficient, engaging, and effective. Our mission is to democratize access to personalized learning tools that help every student succeed.
+</p>
 """, unsafe_allow_html=True)
+
+st.markdown("""
+<p style="color: rgba(255, 255, 255, 0.7); font-size: 1.1rem; line-height: 1.9;">
+With cutting-edge artificial intelligence and a deep understanding of learning science, we've built tools that adapt to your unique learning style, making complex concepts easier to understand and helping you achieve your academic goals faster than ever before.
+</p>
+""", unsafe_allow_html=True)
+st.markdown('</div></div>', unsafe_allow_html=True)
 
 # Why Choose Us Section
 st.markdown("""
