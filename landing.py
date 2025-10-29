@@ -374,6 +374,27 @@ landing_html = """
                 <form onsubmit="event.preventDefault(); showPage('dashboard');">
                     <input type="email" placeholder="Email" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
                     <input type="password" placeholder="Password" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
+                    <button type="submit" class="cta-btn" style="width: 100%;">Login</button>
+                </form>
+                <div style="text-align: center; margin-top: 1.5rem; color: #a0a0a0;">
+                    Don't have an account? <a href="#" onclick="showPage('signup')" style="color: #8b5cf6; text-decoration: none; font-weight: 600;">Sign up</a>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- SIGNUP PAGE -->
+    <div id="signup" class="page">
+        <section class="section">
+            <div style="max-width: 500px; margin: 0 auto; background: rgba(20, 20, 20, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 25px; padding: 3rem; backdrop-filter: blur(20px);">
+                <div class="section-header">
+                    <h2 class="section-title">Create Account</h2>
+                    <p class="section-subtitle">Join CrypticX today</p>
+                </div>
+                <form onsubmit="event.preventDefault(); showPage('dashboard');">
+                    <input type="text" placeholder="Full Name" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
+                    <input type="email" placeholder="Email" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
+                    <input type="password" placeholder="Password" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
                     <input type="password" placeholder="Confirm Password" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
                     <button type="submit" class="cta-btn" style="width: 100%;">Create Account</button>
                 </form>
@@ -401,25 +422,4 @@ landing_html = """
 </html>
 """
 
-components.html(landing_html, height=800, scrolling=True)0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
-                    <button type="submit" class="cta-btn" style="width: 100%;">Login</button>
-                </form>
-                <div style="text-align: center; margin-top: 1.5rem; color: #a0a0a0;">
-                    Don't have an account? <a href="#" onclick="showPage('signup')" style="color: #8b5cf6; text-decoration: none; font-weight: 600;">Sign up</a>
-                </div>
-            </div>
-        </section>
-    </div>
-    
-    <!-- SIGNUP PAGE -->
-    <div id="signup" class="page">
-        <section class="section">
-            <div style="max-width: 500px; margin: 0 auto; background: rgba(20, 20, 20, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 25px; padding: 3rem; backdrop-filter: blur(20px);">
-                <div class="section-header">
-                    <h2 class="section-title">Create Account</h2>
-                    <p class="section-subtitle">Join CrypticX today</p>
-                </div>
-                <form onsubmit="event.preventDefault(); showPage('dashboard');">
-                    <input type="text" placeholder="Full Name" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
-                    <input type="email" placeholder="Email" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 15px; color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">
-                    <input type="password" placeholder="Password" required style="width: 100%; padding: 1.2rem 1.5rem; background: rgba(40, 40, 40,
+components.html(landing_html, height=800, scrolling=True)
