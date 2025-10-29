@@ -303,6 +303,10 @@ st.markdown("""
         max-width: 1200px;
         margin: 0 auto;
         padding: 6rem 2rem;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     
     .section-title {
@@ -317,50 +321,45 @@ st.markdown("""
         font-size: 1.15rem;
         color: rgba(255, 255, 255, 0.5);
         text-align: center;
-        margin-bottom: 4rem;
+        margin: 0;
+        width: 100%;
     }
     
-    /* Enhanced About Us Centering */
+    /* About content */
     .about-content {
         max-width: 800px;
         width: 100%;
-        margin: 0 auto;
+        margin: 0 auto 0;
         background: rgba(139, 92, 246, 0.05);
         border: 1px solid rgba(139, 92, 246, 0.2);
         border-radius: 24px;
-        padding: 3rem;
+        padding: 2rem;
         backdrop-filter: blur(10px);
         display: flex;
         flex-direction: column;
-        justify-content: center;  /* Vertical center */
-        align-items: center;      /* Horizontal center */
-        min-height: 300px;        /* Increased for better vertical space */
-        height: auto;             /* Lets it flex naturally */
+        justify-content: center;
+        align-items: center;
+        min-height: 250px;
+        height: auto;
     }
-
+    
     .about-inner {
         text-align: center;
         max-width: 600px;
         width: 100%;
-        margin: 0;                /* No extra margins to push text off-center */
-        padding: 0;               /* Ensure no padding fights flex */
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.5rem;
     }
-
+    
     .about-text {
         color: rgba(255, 255, 255, 0.7);
         font-size: 1.1rem;
         line-height: 1.6;
-        margin: 0 0 1rem 0;       /* Tighten bottom margin */
+        margin: 0;
         text-align: center;
-    }
-
-    /* Optional: If you want the subtitle inside the box too */
-    .section-subtitle {
-        color: rgba(255, 255, 255, 0.5);
-        font-size: 1.15rem;
-        text-align: center;
-        margin-bottom: 1.5rem;    /* Reduced for tighter fit */
-        width: 100%;              /* Full width for centering */
     }
     
     /* Feature cards */
@@ -749,13 +748,18 @@ st.markdown('<h2 class="section-title">About Us</h2>', unsafe_allow_html=True)
 
 st.markdown('<div class="about-content">', unsafe_allow_html=True)
 st.markdown('<div class="about-inner">', unsafe_allow_html=True)
-st.markdown('<p class="section-subtitle">Empowering students to reach their full potential</p>', unsafe_allow_html=True)
+
+# SINGLE BLOCK for all inner content—prevents spillover
 st.markdown("""
+<p class="section-subtitle">Empowering students to reach their full potential</p>
 <p class="about-text">
 Founded by students for students, CrypticX uses AI to make studying efficient and engaging. Our mission is personalized learning for all, adapting to your style with tools based on learning science to simplify complex concepts and accelerate your success.
 </p>
 """, unsafe_allow_html=True)
-st.markdown('</div></div>', unsafe_allow_html=True)  # Close inner, content
+
+st.markdown('</div>', unsafe_allow_html=True)  # Close inner
+st.markdown('</div>', unsafe_allow_html=True)  # Close content
+
 st.markdown('</div>', unsafe_allow_html=True)  # Close section
 
 # Why Choose Us Section
