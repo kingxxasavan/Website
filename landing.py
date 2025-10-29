@@ -322,6 +322,7 @@ st.markdown("""
     /* About content */
     .about-content {
         max-width: 800px;
+        width: 100%;
         margin: 0 auto;
         text-align: center;
         background: rgba(139, 92, 246, 0.05);
@@ -341,6 +342,7 @@ st.markdown("""
         line-height: 1.6;
         margin-bottom: 1rem;
         text-align: center;
+        width: 100%;
         max-width: 600px;
     }
     
