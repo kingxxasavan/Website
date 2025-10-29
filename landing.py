@@ -1,25 +1,22 @@
 import streamlit as st
 
 st.set_page_config(
-page_title="CrypticX - AI Study Tool”,
-page_icon=“⚡”,
-layout=“wide”,
-initial_sidebar_state=“collapsed”
+    page_title="CrypticX - AI Study Tool",
+    page_icon="⚡",
+    layout="wide",
+    initial_sidebar_state="collapsed"
 )
 
 # Initialize session state
-
-if ‘current_section’ not in st.session_state:
-st.session_state.current_section = ‘home’
-if ‘logged_in’ not in st.session_state:
-st.session_state.logged_in = False
-if ‘show_signup’ not in st.session_state:
-st.session_state.show_signup = False
+if 'current_section' not in st.session_state:
+    st.session_state.current_section = 'home'
+if 'logged_in' not in st.session_state:
+    st.session_state.logged_in = False
+if 'show_signup' not in st.session_state:
+    st.session_state.show_signup = False
 
 # Enhanced CSS with smooth scrolling and animations
-
-st.markdown(”””
-
+st.markdown("""
 <style>
     /* Hide Streamlit elements */
     #MainMenu {visibility: hidden !important;}
@@ -622,19 +619,17 @@ st.markdown(”””
     }
 </style>
 
-“””, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 # Background elements
-
-st.markdown(”””
+st.markdown("""
 <div class="grid-background"></div>
 <div class="glow-orb purple"></div>
 <div class="glow-orb pink"></div>
-“””, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 # JavaScript for smooth scrolling (injected once)
-
-st.markdown(”””
+st.markdown("""
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -651,11 +646,10 @@ st.markdown(”””
     });
 </script>
 
-“””, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 # Navigation
-
-st.markdown(f”””
+st.markdown(f"""
 <div class="nav-container">
 <nav>
 <div class="logo">
@@ -671,22 +665,19 @@ st.markdown(f”””
 </div>
 </nav>
 </div>
-“””, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 # Content wrapper
-
-st.markdown(’<div class="content-wrapper">’, unsafe_allow_html=True)
+st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 
 # Hero Section
-
-st.markdown(”””
+st.markdown("""
 <div id="home" class="hero-section">
 <div class="welcome-badge">✨ Welcome to CrypticX - The Ultimate Study Tool</div>
 <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
 <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
 <button class="hero-cta" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Start Learning Free</button>
 
-```
     <div class="stats-section">
         <div class="stat-item">
             <div class="stat-number">50K+</div>
@@ -702,34 +693,30 @@ st.markdown(”””
         </div>
     </div>
 </div>
-```
-
-“””, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 # About Us Section
-
-st.markdown(’<div id="about" class="section">’, unsafe_allow_html=True)
-st.markdown(’<h2 class="section-title">About Us</h2>’, unsafe_allow_html=True)
-st.markdown(’<p class="section-subtitle">Empowering students to reach their full potential</p>’, unsafe_allow_html=True)
-st.markdown(’<div class="about-content">’, unsafe_allow_html=True)
-st.markdown(”””
+st.markdown('<div id="about" class="section">', unsafe_allow_html=True)
+st.markdown('<h2 class="section-title">About Us</h2>', unsafe_allow_html=True)
+st.markdown('<p class="section-subtitle">Empowering students to reach their full potential</p>', unsafe_allow_html=True)
+st.markdown('<div class="about-content">', unsafe_allow_html=True)
+st.markdown("""
 <p class="about-text">
 CrypticX was founded by students, for students. We understand the challenges of modern education and created an AI-powered platform that makes studying more efficient, engaging, and effective. Our mission is to democratize access to personalized learning tools that help every student succeed.
 </p>
 <p class="about-text">
 With cutting-edge artificial intelligence and a deep understanding of learning science, we’ve built tools that adapt to your unique learning style, making complex concepts easier to understand and helping you achieve your academic goals faster than ever before.
 </p>
-“””, unsafe_allow_html=True)
-st.markdown(’</div></div>’, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
+st.markdown('</div></div>', unsafe_allow_html=True)
 
 # Why Choose Us Section
+st.markdown('<div id="why-choose" class="section">', unsafe_allow_html=True)
+st.markdown('<h2 class="section-title">Why Choose CrypticX</h2>', unsafe_allow_html=True)
+st.markdown('<p class="section-subtitle">The smartest way to study in 2025</p>', unsafe_allow_html=True)
+st.markdown('<div class="features-grid">', unsafe_allow_html=True)
 
-st.markdown(’<div id="why-choose" class="section">’, unsafe_allow_html=True)
-st.markdown(’<h2 class="section-title">Why Choose CrypticX</h2>’, unsafe_allow_html=True)
-st.markdown(’<p class="section-subtitle">The smartest way to study in 2025</p>’, unsafe_allow_html=True)
-st.markdown(’<div class="features-grid">’, unsafe_allow_html=True)
-
-st.markdown(”””
+st.markdown("""
 <div class="feature-card">
 <span class="feature-icon">⚡</span>
 <h3>Lightning Fast</h3>
@@ -760,17 +747,16 @@ st.markdown(”””
 <h3>Student Success</h3>
 <p>Join thousands of students who’ve improved their grades and confidence with CrypticX’s intelligent tools.</p>
 </div>
-“””, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
-st.markdown(’</div></div>’, unsafe_allow_html=True)
+st.markdown('</div></div>', unsafe_allow_html=True)
 
 # Pricing Section
+st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
+st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
+st.markdown('<p class="section-subtitle">Start free, upgrade when you're ready</p>', unsafe_allow_html=True)
 
-st.markdown(’<div id="pricing" class="section">’, unsafe_allow_html=True)
-st.markdown(’<h2 class="section-title">Choose Your Plan</h2>’, unsafe_allow_html=True)
-st.markdown(’<p class="section-subtitle">Start free, upgrade when you're ready</p>’, unsafe_allow_html=True)
-
-st.markdown(”””
+st.markdown("""
 <div class="pricing-grid">
 <div class="pricing-card">
 <h3>Free</h3>
@@ -784,7 +770,6 @@ st.markdown(”””
 <button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Start Free</button>
 </div>
 
-```
     <div class="pricing-card featured">
         <div class="pricing-badge">⭐ MOST POPULAR</div>
         <h3>Pro</h3>
@@ -797,4 +782,4 @@ st.markdown(”””
             ✓ Priority support<br>
             ✓ Progress analytics
         </div>
-```
+""", unsafe_allow_html=True)
