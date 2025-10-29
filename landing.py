@@ -321,45 +321,7 @@ st.markdown("""
         font-size: 1.15rem;
         color: rgba(255, 255, 255, 0.5);
         text-align: center;
-        margin: 0;
-        width: 100%;
-    }
-    
-    /* About content */
-    .about-content {
-        max-width: 800px;
-        width: 100%;
-        margin: 0 auto 0;
-        background: rgba(139, 92, 246, 0.05);
-        border: 1px solid rgba(139, 92, 246, 0.2);
-        border-radius: 24px;
-        padding: 2rem;
-        backdrop-filter: blur(10px);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        min-height: 250px;
-        height: auto;
-    }
-    
-    .about-inner {
-        text-align: center;
-        max-width: 600px;
-        width: 100%;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 0.5rem;
-    }
-    
-    .about-text {
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 1.1rem;
-        line-height: 1.6;
-        margin: 0;
-        text-align: center;
+        margin-bottom: 4rem;
     }
     
     /* Feature cards */
@@ -741,26 +703,6 @@ st.markdown("""
 </div>
 </div>
 """, unsafe_allow_html=True)
-
-# About Us Section
-st.markdown('<div id="about" class="section">', unsafe_allow_html=True)
-st.markdown('<h2 class="section-title">About Us</h2>', unsafe_allow_html=True)
-
-st.markdown('<div class="about-content">', unsafe_allow_html=True)
-st.markdown('<div class="about-inner">', unsafe_allow_html=True)
-
-# SINGLE BLOCK for all inner content—prevents spillover
-st.markdown("""
-<p class="section-subtitle">Empowering students to reach their full potential</p>
-<p class="about-text">
-Founded by students for students, CrypticX uses AI to make studying efficient and engaging. Our mission is personalized learning for all, adapting to your style with tools based on learning science to simplify complex concepts and accelerate your success.
-</p>
-""", unsafe_allow_html=True)
-
-st.markdown('</div>', unsafe_allow_html=True)  # Close inner
-st.markdown('</div>', unsafe_allow_html=True)  # Close content
-
-st.markdown('</div>', unsafe_allow_html=True)  # Close section
 
 # Why Choose Us Section
 st.markdown('<div id="why-choose" class="section">', unsafe_allow_html=True)
