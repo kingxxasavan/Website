@@ -210,32 +210,22 @@ st.markdown("""
         line-height: 1.7;
     }
     
-    /* Centering the button */
-    .hero-button-container {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        margin-top: 2rem;
-    }
-
-    .stButton > button {
-        padding: 1rem 2.5rem !important;
-        border-radius: 50px !important;
-        background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%) !important;
-        color: #fff !important;
-        font-weight: 600 !important;
-        cursor: pointer !important;
-        transition: all 0.3s !important;
-        border: none !important;
-        font-size: 1.1rem !important;
-        box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4) !important;
-        margin: 0 !important;
-        display: block !important; /* Forces button to take up available space for centering */
+    .hero-cta {
+        padding: 1rem 2.5rem;
+        border-radius: 50px;
+        background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: none;
+        font-size: 1.1rem;
+        box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
     }
     
-    .stButton > button:hover {
-        transform: translateY(-3px) !important;
-        box-shadow: 0 12px 40px rgba(139, 92, 246, 0.6) !important;
+    .hero-cta:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 40px rgba(139, 92, 246, 0.6);
     }
     
     /* Section styling */
@@ -299,46 +289,394 @@ st.markdown("""
         border-color: rgba(139, 92, 246, 0.5);
         box-shadow: 0 20px 60px rgba(139, 92, 246, 0.2);
     }
+    
+    .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+        display: block;
+    }
+    
+    .feature-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: #fff;
+        font-weight: 600;
+    }
+    
+    .feature-card p {
+        color: rgba(255, 255, 255, 0.6);
+        line-height: 1.7;
+        font-size: 0.95rem;
+    }
+    
+    /* Footer */
+    .custom-footer {
+        position: relative;
+        z-index: 10;
+        border-top: 1px solid rgba(139, 92, 246, 0.1);
+        margin-top: 5rem;
+        padding: 3rem 2rem;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.4);
+        background: rgba(10, 10, 15, 0.5);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        nav {padding: 1rem 1.5rem;}
+        .nav-links {display: none;}
+        .hero-title {font-size: 2.5rem;}
+        .hero-subtitle {font-size: 1.1rem;}
+        .features-grid {grid-template-columns: 1fr;}
+    }
 </style>
 """, unsafe_allow_html=True)
 
-# Add glowing orb and grid background
-st.markdown('<div class="grid-background"></div>', unsafe_allow_html=True)
-st.markdown('<div class="glow-orb purple"></div>', unsafe_allow_html=True)
-st.markdown('<div class="glow-orb pink"></div>', unsafe_allow_html=True)
-
-# Navigation
+# Background elements
 st.markdown("""
-<div class="nav-container">
-    <nav>
-        <div class="logo">
-            <span class="logo-icon">⚡</span>
-            <span>CrypticX</span>
-        </div>
-        <div class="nav-links">
-            <span class="nav-link">Features</span>
-            <span class="nav-link">About</span>
-            <span class="nav-link">Contact</span>
-        </div>
-        <button class="nav-cta" onclick="window.location.href='pages/login.py'">Login</button>
-    </nav>
-</div>
+    <div class="grid-background"></div>
+    <div class="glow-orb purple"></div>
+    <div class="glow-orb pink"></div>
 """, unsafe_allow_html=True)
 
+# Navigation with anchor links
+st.markdown("""
+    <div class="nav-container">
+        <nav>
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <span>CrypticX</span>
+            </div>
+            <div class="nav-links">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#pricing" class="nav-link">Pricing</a>
+                <a href="#dashboard" class="nav-link">Dashboard</a>
+                <a href="#login" class="nav-link">Login</a>
+                <button class="nav-cta">Sign Up</button>
+            </div>
+        </nav>
+    </div>
+""", unsafe_allow_html=True)
 
-# Hero section
+# Content wrapper
 st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
-st.markdown('<section class="hero-section">', unsafe_allow_html=True)
-st.markdown('<span class="welcome-badge">⚡ The Future of Learning is Here</span>', unsafe_allow_html=True)
-st.markdown('<h1 class="hero-title">Unlock Your Academic Potential with AI</h1>', unsafe_allow_html=True)
-st.markdown('<p class="hero-subtitle">CrypticX is an advanced AI-powered study tool designed to help students learn faster, retain more, and ace their exams.</p>', unsafe_allow_html=True)
 
-# Center the Streamlit button
-with st.container():
-    col1, col2, col3 = st.columns([1, 0.5, 1])
-    with col2:
-        if st.button("Start Your Free Trial"):
-            st.switch_page("pages/login.py")
-            
-st.markdown('</section>', unsafe_allow_html=True)
+# Hero Section
+st.markdown("""
+    <div id="home" class="hero-section">
+        <div class="welcome-badge">Welcome to CrypticX - The Ultimate Study Tool</div>
+        <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
+        <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
+        <button class="hero-cta">Start Learning Free</button>
+    </div>
+""", unsafe_allow_html=True)
+
+# About Us Section
+st.markdown('<div id="about" class="section">', unsafe_allow_html=True)
+st.markdown('<h2 class="section-title">About Us</h2>', unsafe_allow_html=True)
+st.markdown('<p class="section-subtitle">Empowering students to reach their full potential</p>', unsafe_allow_html=True)
+st.markdown('<div class="about-content">', unsafe_allow_html=True)
+st.markdown("""
+    <p class="about-text">
+        CrypticX was founded by students, for students. We understand the challenges of modern education and created an AI-powered platform that makes studying more efficient, engaging, and effective. Our mission is to democratize access to personalized learning tools that help every student succeed.
+    </p>
+    <p class="about-text">
+        With cutting-edge artificial intelligence and a deep understanding of learning science, we've built tools that adapt to your unique learning style, making complex concepts easier to understand and helping you achieve your academic goals faster than ever before.
+    </p>
+""", unsafe_allow_html=True)
+st.markdown('</div></div>', unsafe_allow_html=True)
+
+# Why Choose Us Section
+st.markdown('<div id="why-choose" class="section">', unsafe_allow_html=True)
+st.markdown('<h2 class="section-title">Why Choose CrypticX</h2>', unsafe_allow_html=True)
+st.markdown('<p class="section-subtitle">The smartest way to study in 2025</p>', unsafe_allow_html=True)
+st.markdown('<div class="features-grid">', unsafe_allow_html=True)
+
+st.markdown("""
+    <div class="feature-card">
+        <span class="feature-icon">⚡</span>
+        <h3>Lightning Fast</h3>
+        <p>Get instant answers to your questions. No more waiting hours for tutors or searching through endless resources.</p>
+    </div>
+    <div class="feature-card">
+        <span class="feature-icon">🎯</span>
+        <h3>Personalized Learning</h3>
+        <p>AI adapts to your learning style and pace, providing customized explanations that make sense to you.</p>
+    </div>
+    <div class="feature-card">
+        <span class="feature-icon">💰</span>
+        <h3>Affordable Excellence</h3>
+        <p>Get premium tutoring quality at a fraction of the cost. Start free and upgrade only when you're ready.</p>
+    </div>
+    <div class="feature-card">
+        <span class="feature-icon">📱</span>
+        <h3>Study Anywhere</h3>
+        <p>Access your learning tools from any device, anytime. Study on your schedule, not someone else's.</p>
+    </div>
+    <div class="feature-card">
+        <span class="feature-icon">🔬</span>
+        <h3>Proven Methods</h3>
+        <p>Built on learning science and cognitive psychology principles that are proven to improve retention and understanding.</p>
+    </div>
+    <div class="feature-card">
+        <span class="feature-icon">🌟</span>
+        <h3>Student Success</h3>
+        <p>Join thousands of students who've improved their grades and confidence with CrypticX's intelligent tools.</p>
+    </div>
+""", unsafe_allow_html=True)
+
+st.markdown('</div></div>', unsafe_allow_html=True)
+
+# Pricing Section
+st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
+st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
+st.markdown('<p class="section-subtitle">Start free, upgrade when you\'re ready</p>', unsafe_allow_html=True)
+
+st.markdown("""
+    <style>
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .pricing-card {
+            background: rgba(139, 92, 246, 0.05);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 24px;
+            padding: 3rem 2.5rem;
+            text-align: center;
+            transition: all 0.4s;
+            position: relative;
+        }
+        
+        .pricing-card.featured {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.15));
+            border: 2px solid #8b5cf6;
+            transform: scale(1.05);
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+        }
+        
+        .pricing-card.featured:hover {
+            transform: translateY(-10px) scale(1.07);
+        }
+        
+        .pricing-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+            padding: 0.4rem 1.2rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .pricing-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+        
+        .price {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin: 1.5rem 0;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .price-period {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .feature-list {
+            text-align: left;
+            margin: 2rem 0;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 2.2;
+            font-size: 0.95rem;
+        }
+        
+        .pricing-button {
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 12px;
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+        
+        .pricing-button:hover {
+            background: rgba(139, 92, 246, 0.3);
+            border-color: #8b5cf6;
+        }
+        
+        .pricing-card.featured .pricing-button {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border: none;
+        }
+    </style>
+    
+    <div class="pricing-grid">
+        <div class="pricing-card">
+            <h3>Free</h3>
+            <div class="price">$0<span class="price-period">/mo</span></div>
+            <div class="feature-list">
+                ✓ 10 AI questions/day<br>
+                ✓ Basic summaries<br>
+                ✓ 5 quizzes/week<br>
+                ✓ Community support
+            </div>
+            <button class="pricing-button">Start Free</button>
+        </div>
+        
+        <div class="pricing-card featured">
+            <div class="pricing-badge">⭐ MOST POPULAR</div>
+            <h3>Pro</h3>
+            <div class="price">$12<span class="price-period">/mo</span></div>
+            <div class="feature-list">
+                ✓ Unlimited AI questions<br>
+                ✓ Advanced summaries<br>
+                ✓ Unlimited quizzes<br>
+                ✓ PDF upload (100MB)<br>
+                ✓ Priority support<br>
+                ✓ Progress analytics
+            </div>
+            <button class="pricing-button">Try Pro Free</button>
+        </div>
+        
+        <div class="pricing-card">
+            <h3>Ultimate</h3>
+            <div class="price">$25<span class="price-period">/mo</span></div>
+            <div class="feature-list">
+                ✓ Everything in Pro<br>
+                ✓ Group collaboration<br>
+                ✓ Custom AI training<br>
+                ✓ 1-on-1 tutoring sessions<br>
+                ✓ Exam prep tools<br>
+                ✓ 24/7 VIP support
+            </div>
+            <button class="pricing-button">Contact Sales</button>
+        </div>
+    </div>
+""", unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
+
+# Dashboard Section
+st.markdown('<div id="dashboard" class="section">', unsafe_allow_html=True)
+st.markdown('<h2 class="section-title">Your Dashboard</h2>', unsafe_allow_html=True)
+st.markdown('<p class="section-subtitle">Access all your AI-powered study tools</p>', unsafe_allow_html=True)
+
+st.markdown("""
+    <div class="features-grid">
+        <div class="feature-card">
+            <span class="feature-icon">🧠</span>
+            <h3>AI Explainer</h3>
+            <p>Ask any question and get instant, detailed explanations tailored to your learning level.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">📄</span>
+            <h3>PDF Summarizer</h3>
+            <p>Upload documents for quick summaries and key insights extracted in seconds.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">❓</span>
+            <h3>Quiz Generator</h3>
+            <p>Create practice tests from any study material to test your knowledge.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">🎴</span>
+            <h3>Flashcards</h3>
+            <p>Auto-generate flashcards from your notes for efficient memorization.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">📊</span>
+            <h3>Progress Tracker</h3>
+            <p>Monitor your learning journey with detailed analytics and insights.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">✍️</span>
+            <h3>Essay Assistant</h3>
+            <p>Get AI-powered help with writing, structuring, and improving your essays.</p>
+        </div>
+    </div>
+""", unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
+
+# Login Section
+st.markdown('<div id="login" class="section">', unsafe_allow_html=True)
+st.markdown('<div class="about-content">', unsafe_allow_html=True)
+st.markdown('<h2 class="section-title">Welcome Back</h2>', unsafe_allow_html=True)
+st.markdown('<p class="section-subtitle">Sign in to continue your learning journey</p>', unsafe_allow_html=True)
+
+st.markdown("""
+    <style>
+        .auth-form {
+            max-width: 450px;
+            margin: 2rem auto;
+            background: rgba(139, 92, 246, 0.05);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 24px;
+            padding: 3rem;
+            backdrop-filter: blur(10px);
+        }
+        .stTextInput > div > div > input {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(139, 92, 246, 0.3) !important;
+            border-radius: 12px !important;
+            color: #fff !important;
+            padding: 0.9rem !important;
+        }
+        .stTextInput > div > div > input:focus {
+            border-color: #8b5cf6 !important;
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2) !important;
+        }
+        .stButton > button {
+            width: 100%;
+            padding: 0.9rem !important;
+            border-radius: 12px !important;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899) !important;
+            color: #fff !important;
+            font-weight: 600 !important;
+            border: none !important;
+            margin-top: 1rem !important;
+        }
+    </style>
+    <div class="auth-form">
+""", unsafe_allow_html=True)
+
+email = st.text_input("Email", placeholder="your@email.com", key="login_email")
+password = st.text_input("Password", placeholder="••••••••", type="password", key="login_password")
+
+if st.button("Sign In", key="login_btn"):
+    if email and password:
+        st.success("✓ Welcome back! Redirecting to dashboard...")
+    else:
+        st.error("Please fill in all fields")
+
+st.markdown("</div>", unsafe_allow_html=True)
+st.markdown('</div></div>', unsafe_allow_html=True)
+
+# Close content wrapper
+st.markdown('</div>', unsafe_allow_html=True)
+
+# Footer
+st.markdown("""
+    <footer class="custom-footer">
+        <p>© 2025 CrypticX • Empowering students with AI • Built with ❤️</p>
+    </footer>
+""", unsafe_allow_html=True)
