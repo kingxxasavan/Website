@@ -7,8 +7,8 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Complete CSS injection - combines hide_streamlit_style + landing page styles
-all_css = """
+# Enhanced CSS with better colors and spacing
+st.markdown("""
 <style>
     /* Hide Streamlit elements */
     #MainMenu {visibility: hidden !important;}
@@ -17,573 +17,581 @@ all_css = """
     .stDeployButton {display: none !important;}
     .stDecoration {display: none !important;}
     
-    /* Remove padding */
+    /* Reset padding */
     .block-container {padding: 0 !important; margin: 0 !important;}
     .main .block-container {max-width: 100% !important; padding: 0 !important;}
     .stApp {margin: 0 !important; padding: 0 !important;}
     section.main > div {padding: 0 !important;}
     div[data-testid="stAppViewContainer"] {padding: 0 !important; margin: 0 !important;}
     
-    /* Original landing page styles */
+    /* Base styles */
     * {margin: 0; padding: 0; box-sizing: border-box;}
     html, body {margin: 0 !important; padding: 0 !important; overflow-x: hidden;}
     
     .stApp {
-        background: #000;
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
         color: #fff;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: 'Inter', 'Segoe UI', sans-serif;
     }
     
-    .bg-gradient {position: fixed; inset: 0; background: radial-gradient(ellipse at top right, rgba(88, 28, 135, 0.3) 0%, transparent 50%), radial-gradient(ellipse at bottom left, rgba(29, 78, 216, 0.3) 0%, transparent 50%), #000; z-index: 0; pointer-events: none;}
-    .glow-orb {position: fixed; border-radius: 50%; filter: blur(100px); pointer-events: none; z-index: 1;}
-    .orb1 {top: -10%; right: -5%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(139, 92, 246, 0.4), transparent); animation: float1 20s ease-in-out infinite;}
-    .orb2 {bottom: -10%; left: -5%; width: 700px; height: 700px; background: radial-gradient(circle, rgba(59, 130, 246, 0.4), transparent); animation: float2 25s ease-in-out infinite;}
-    @keyframes float1 {0%, 100% {transform: translate(0, 0);} 50% {transform: translate(-100px, 100px);}}
-    @keyframes float2 {0%, 100% {transform: translate(0, 0);} 50% {transform: translate(100px, -100px);}}
+    /* Animated background */
+    .bg-gradient {
+        position: fixed;
+        inset: 0;
+        background: 
+            radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3), transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.3), transparent 50%),
+            radial-gradient(circle at 40% 20%, rgba(72, 85, 218, 0.2), transparent 50%);
+        z-index: 0;
+        animation: gradientShift 15s ease infinite;
+    }
     
-    nav {position: relative; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 5rem; max-width: 1600px; margin: 0 auto 2rem; background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 20px;}
-    .logo {display: flex; align-items: center; gap: 0.5rem; font-size: 1.5rem; font-weight: 700; color: #fff; cursor: pointer;}
-    .logo-icon {width: 35px; height: 35px; background: linear-gradient(135deg, #8b5cf6, #6366f1); border-radius: 8px; display: flex; align-items: center; justify-content: center;}
+    @keyframes gradientShift {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.8; }
+    }
     
-    /* Streamlit button styling */
+    /* Navigation */
+    nav {
+        position: relative;
+        z-index: 100;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 3rem;
+        max-width: 1400px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #fff;
+        cursor: pointer;
+    }
+    
+    .logo-icon {
+        font-size: 2rem;
+        filter: drop-shadow(0 0 10px rgba(138, 43, 226, 0.8));
+    }
+    
+    /* Button styling */
     .stButton > button {
         all: unset;
-        padding: 0.7rem 1.8rem;
-        border-radius: 12px;
-        border: 1px solid rgba(139, 92, 246, 0.5);
-        background: transparent;
+        padding: 0.6rem 1.5rem;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.1);
         color: #fff !important;
         font-weight: 500;
         cursor: pointer;
         transition: all 0.3s;
         font-size: 0.95rem;
-        text-align: center;
-    }
-    .stButton > button:hover {
-        background: rgba(139, 92, 246, 0.1);
-        border-color: #8b5cf6;
+        border: 1px solid rgba(255, 255, 255, 0.2);
     }
     
-    /* Primary button style */
-    button[kind="primary"] {
-        background: linear-gradient(135deg, #8b5cf6, #6366f1) !important;
-        border: none !important;
-    }
-    button[kind="primary"]:hover {
-        box-shadow: 0 10px 40px rgba(139, 92, 246, 0.5);
+    .stButton > button:hover {
+        background: rgba(255, 255, 255, 0.15);
         transform: translateY(-2px);
     }
     
-    .hero {position: relative; z-index: 10; max-width: 1600px; margin: 0 auto; padding: 3rem 5rem 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;}
-    .hero-content h1 {font-size: 3.5rem; line-height: 1.1; margin-bottom: 1.2rem; font-weight: 300; letter-spacing: -2px; color: #fff;}
-    .hero-content p {font-size: 1.1rem; color: #a0a0a0; margin-bottom: 2rem; line-height: 1.7; max-width: 500px;}
-    .hero-note {font-size: 0.9rem; color: #666;}
+    button[kind="primary"] {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        border: none !important;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
     
-    .section {position: relative; z-index: 10; max-width: 1600px; margin: 4rem auto; padding: 0 5rem;}
-    .section-header {text-align: center; margin-bottom: 3rem;}
-    .section-title {font-size: 2.8rem; font-weight: 300; margin-bottom: 1rem;}
-    .section-subtitle {font-size: 1.1rem; color: #a0a0a0;}
+    button[kind="primary"]:hover {
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        transform: translateY(-3px);
+    }
     
-    .features-grid {display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;}
-    .feature-card {background: rgba(20, 20, 20, 0.6); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 25px; padding: 3rem; transition: all 0.3s; backdrop-filter: blur(20px);}
-    .feature-card:hover {border-color: rgba(139, 92, 246, 0.5); box-shadow: 0 20px 60px rgba(139, 92, 246, 0.2); transform: translateY(-10px);}
-    .feature-icon {font-size: 3.5rem; margin-bottom: 1.5rem; filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.5));}
-    .feature-card h3 {font-size: 1.6rem; margin-bottom: 1rem; font-weight: 400;}
-    .feature-card p {color: #a0a0a0; line-height: 1.7; font-size: 1.05rem;}
+    /* Hero section */
+    .hero {
+        position: relative;
+        z-index: 10;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 5rem 2rem;
+        text-align: center;
+    }
     
-    .info-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-top: 4rem;}
-    .info-card {background: rgba(20, 20, 20, 0.6); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 25px; padding: 3rem; transition: all 0.3s; backdrop-filter: blur(20px);}
-    .info-card:hover {border-color: rgba(139, 92, 246, 0.5); transform: translateY(-5px); box-shadow: 0 20px 60px rgba(139, 92, 246, 0.2);}
-    .info-number {font-size: 4rem; font-weight: 900; background: linear-gradient(135deg, #8b5cf6, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; opacity: 0.3;}
-    .info-card h3 {font-size: 1.8rem; margin-bottom: 1rem; font-weight: 400;}
-    .info-card p {color: #a0a0a0; line-height: 1.8; font-size: 1.05rem;}
+    .hero h1 {
+        font-size: 4rem;
+        font-weight: 800;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
     
-    .stats-container {display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; padding: 4rem; background: rgba(139, 92, 246, 0.05); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 30px; backdrop-filter: blur(20px);}
-    .stat-card {text-align: center;}
-    .stat-number {font-size: 3.5rem; font-weight: 900; background: linear-gradient(135deg, #8b5cf6, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem;}
-    .stat-label {font-size: 1.1rem; color: #a0a0a0;}
+    .hero p {
+        font-size: 1.3rem;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 3rem;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.6;
+    }
+    
+    .cta-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+    
+    /* Sections */
+    .section {
+        position: relative;
+        z-index: 10;
+        max-width: 1200px;
+        margin: 4rem auto;
+        padding: 0 2rem;
+    }
+    
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1rem;
+        color: #fff;
+    }
+    
+    .section-subtitle {
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.7);
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+    
+    /* Feature cards */
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+    
+    .feature-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 2.5rem;
+        transition: all 0.3s;
+        backdrop-filter: blur(10px);
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+        border-color: rgba(102, 126, 234, 0.5);
+    }
+    
+    .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+        display: block;
+    }
+    
+    .feature-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: #fff;
+    }
+    
+    .feature-card p {
+        color: rgba(255, 255, 255, 0.7);
+        line-height: 1.6;
+    }
+    
+    /* Pricing cards */
+    .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+    
+    .pricing-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 2.5rem;
+        text-align: center;
+        transition: all 0.3s;
+    }
+    
+    .pricing-card.featured {
+        background: rgba(102, 126, 234, 0.1);
+        border: 2px solid #667eea;
+        transform: scale(1.05);
+    }
+    
+    .pricing-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+    }
+    
+    .price {
+        font-size: 3rem;
+        font-weight: 800;
+        margin: 1rem 0;
+        color: #667eea;
+    }
+    
+    .price-period {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .feature-list {
+        text-align: left;
+        margin: 2rem 0;
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 2;
+    }
     
     /* Form styling */
-    .stTextInput > div > div > input {
-        background: rgba(40, 40, 40, 0.8) !important;
-        border: 1px solid rgba(139, 92, 246, 0.3) !important;
-        border-radius: 15px !important;
-        color: #fff !important;
-        font-size: 1rem !important;
-        padding: 1.2rem 1.5rem !important;
-    }
-    .stTextInput > div > div > input:focus {
-        border-color: #8b5cf6 !important;
-        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1) !important;
-    }
-    
+    .stTextInput > div > div > input,
     .stTextArea > div > div > textarea {
-        background: rgba(40, 40, 40, 0.8) !important;
-        border: 1px solid rgba(139, 92, 246, 0.3) !important;
-        border-radius: 15px !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        border-radius: 12px !important;
         color: #fff !important;
         font-size: 1rem !important;
+        padding: 1rem !important;
     }
     
+    .stTextInput > div > div > input:focus,
+    .stTextArea > div > div > textarea:focus {
+        border-color: #667eea !important;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2) !important;
+    }
+    
+    /* Auth container */
+    .auth-container {
+        max-width: 450px;
+        margin: 3rem auto;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 25px;
+        padding: 3rem;
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Footer */
     .custom-footer {
         position: relative;
         z-index: 10;
-        border-top: 1px solid rgba(139, 92, 246, 0.2);
-        margin-top: 3rem;
-        padding: 2rem 5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: 5rem;
+        padding: 2rem;
         text-align: center;
-        color: #666;
-        background: rgba(20, 20, 20, 0.6);
-        backdrop-filter: blur(20px);
+        color: rgba(255, 255, 255, 0.6);
+        background: rgba(255, 255, 255, 0.02);
     }
     
-    @media (max-width: 1024px) {
-        nav {padding: 1rem 2rem;}
-        .hero {grid-template-columns: 1fr; text-align: center; padding: 2rem;}
-        .section {padding: 0 2rem;}
-        .features-grid {grid-template-columns: 1fr;}
-        .info-grid {grid-template-columns: 1fr;}
-        .stats-container {grid-template-columns: repeat(2, 1fr);}
+    /* Responsive */
+    @media (max-width: 768px) {
+        nav {padding: 1rem;}
+        .hero h1 {font-size: 2.5rem;}
+        .hero p {font-size: 1.1rem;}
+        .features-grid, .pricing-grid {grid-template-columns: 1fr;}
+        .pricing-card.featured {transform: scale(1);}
     }
 </style>
-"""
-
-st.markdown(all_css, unsafe_allow_html=True)
-
-# Background elements (always visible)
-st.markdown("""
-    <div class="bg-gradient"></div>
-    <div class="glow-orb orb1"></div>
-    <div class="glow-orb orb2"></div>
 """, unsafe_allow_html=True)
 
-# Session state for navigation
+# Background
+st.markdown('<div class="bg-gradient"></div>', unsafe_allow_html=True)
+
+# Session state
 if 'current_page' not in st.session_state:
     st.session_state.current_page = 'home'
+if 'show_auth_modal' not in st.session_state:
+    st.session_state.show_auth_modal = False
+if 'auth_mode' not in st.session_state:
+    st.session_state.auth_mode = 'login'
 
 def set_page(page_name):
     st.session_state.current_page = page_name
+    st.session_state.show_auth_modal = False
 
-# Navigation bar
+def show_auth(mode='login'):
+    st.session_state.show_auth_modal = True
+    st.session_state.auth_mode = mode
+
+# Navigation
 st.markdown("""
     <nav>
         <div class="logo">
-            <div class="logo-icon">⚡</div>
+            <span class="logo-icon">⚡</span>
             <span>CrypticX</span>
         </div>
     </nav>
 """, unsafe_allow_html=True)
 
-# Navigation buttons
-nav_cols = st.columns([1, 1, 1, 1, 1, 1, 1])
+nav_cols = st.columns([1, 1, 1, 1, 6, 1, 1])
 with nav_cols[0]:
     if st.button("Home", key="nav_home"):
         set_page("home")
 with nav_cols[1]:
-    if st.button("Dashboard", key="nav_dashboard"):
-        set_page("dashboard")
-with nav_cols[2]:
     if st.button("Features", key="nav_features"):
         set_page("features")
-with nav_cols[3]:
+with nav_cols[2]:
     if st.button("Pricing", key="nav_pricing"):
         set_page("pricing")
-with nav_cols[4]:
+with nav_cols[3]:
     if st.button("Contact", key="nav_contact"):
         set_page("contact")
 with nav_cols[5]:
-    if st.button("Sign Up", key="nav_signup"):
-        set_page("signup")
+    if st.button("Login", key="nav_login"):
+        show_auth('login')
 with nav_cols[6]:
-    if st.button("Login", key="nav_login", type="primary"):
-        set_page("login")
+    if st.button("Sign Up", key="nav_signup", type="primary"):
+        show_auth('signup')
 
-# --- PAGE FUNCTIONS ---
-def show_home_page():
-    st.markdown("""
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Welcome to CrypticX</h1>
-            <p>The ultimate tool for school. Master complex concepts, ace your exams, and unlock your full academic potential with cutting-edge AI technology.</p>
-        </div>
-        <div style="text-align: center; font-size: 10rem;">🤖</div>
-    </section>
-    """, unsafe_allow_html=True)
+# Auth Modal
+if st.session_state.show_auth_modal:
+    st.markdown('<div class="auth-container">', unsafe_allow_html=True)
     
-    # Native Streamlit form
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        email = st.text_input("Enter email", placeholder="Enter your email", label_visibility="collapsed")
-    with col2:
-        if st.button("Get Started", key="home_cta", type="primary"):
-            if email:
-                st.success(f"Welcome! Redirecting to dashboard...")
-                set_page("dashboard")
+    if st.session_state.auth_mode == 'login':
+        st.markdown("<h2 style='text-align: center; margin-bottom: 1rem;'>Welcome Back</h2>", unsafe_allow_html=True)
+        email = st.text_input("Email", placeholder="your@email.com", key="login_email")
+        password = st.text_input("Password", placeholder="••••••••", type="password", key="login_password")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Login", key="login_btn", type="primary", use_container_width=True):
+                if email and password:
+                    st.success("Login successful!")
+                    set_page("dashboard")
+                    st.rerun()
+                else:
+                    st.error("Please fill all fields")
+        with col2:
+            if st.button("Sign Up Instead", key="switch_signup", use_container_width=True):
+                st.session_state.auth_mode = 'signup'
+                st.rerun()
+    else:
+        st.markdown("<h2 style='text-align: center; margin-bottom: 1rem;'>Create Account</h2>", unsafe_allow_html=True)
+        name = st.text_input("Full Name", placeholder="John Doe", key="signup_name")
+        email = st.text_input("Email", placeholder="your@email.com", key="signup_email")
+        password = st.text_input("Password", placeholder="••••••••", type="password", key="signup_password")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Sign Up", key="signup_btn", type="primary", use_container_width=True):
+                if name and email and password:
+                    st.success("Account created!")
+                    set_page("dashboard")
+                    st.rerun()
+                else:
+                    st.error("Please fill all fields")
+        with col2:
+            if st.button("Login Instead", key="switch_login", use_container_width=True):
+                st.session_state.auth_mode = 'login'
                 st.rerun()
     
-    st.markdown('<p class="hero-note">Start your learning journey today</p>', unsafe_allow_html=True)
-    
-    st.markdown("""
-    <section class="section">
-        <div class="section-header">
-            <h2 class="section-title">Why Choose CrypticX?</h2>
-            <p class="section-subtitle">The ultimate AI study companion for modern students</p>
-        </div>
-        <div class="info-grid">
-            <div class="info-card">
-                <div class="info-number">01</div>
-                <h3>Powered by Advanced AI</h3>
-                <p>Leveraging state-of-the-art artificial intelligence technology to provide accurate, instant, and personalized learning assistance.</p>
-            </div>
-            <div class="info-card">
-                <div class="info-number">02</div>
-                <h3>Save Time & Study Smarter</h3>
-                <p>Cut your study time in half with intelligent summaries, instant explanations, and automated quiz generation.</p>
-            </div>
-            <div class="info-card">
-                <div class="info-number">03</div>
-                <h3>Proven Results</h3>
-                <p>Join thousands of students who have improved their grades. Our users report 40% better retention and 35% improvement in test scores.</p>
-            </div>
-            <div class="info-card">
-                <div class="info-number">04</div>
-                <h3>24/7 Availability</h3>
-                <p>Study anytime, anywhere. CrypticX is always available to help you understand difficult concepts.</p>
-            </div>
-        </div>
-    </section>
-    
-    <section class="section">
-        <div class="stats-container">
-            <div class="stat-card">
-                <div class="stat-number">50K+</div>
-                <div class="stat-label">Active Students</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">1M+</div>
-                <div class="stat-label">Questions Answered</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">95%</div>
-                <div class="stat-label">Satisfaction Rate</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">24/7</div>
-                <div class="stat-label">Available Support</div>
-            </div>
-        </div>
-    </section>
-    """, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
-def show_dashboard_page():
+# PAGE CONTENT
+if st.session_state.current_page == 'home' and not st.session_state.show_auth_modal:
     st.markdown("""
-    <section class="section">
-        <div class="section-header">
-            <h2 class="section-title">Your Study Dashboard</h2>
-            <p class="section-subtitle">Access all your AI-powered study tools in one place</p>
-        </div>
-    </section>
+    <div class="hero">
+        <h1>Study Smarter with AI</h1>
+        <p>Master any subject with personalized AI tutoring, instant explanations, and smart study tools designed for modern students.</p>
+    </div>
     """, unsafe_allow_html=True)
     
-    # Feature cards with actual functionality
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.markdown("""
-        <div class="feature-card">
-            <div class="feature-icon">🧠</div>
-            <h3>AI Explainer</h3>
-            <p>Get instant explanations for any concept or topic. Simply ask and learn.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        if st.button("Launch Tool", key="tool_explainer"):
-            st.info("AI Explainer - Coming Soon!")
-    
+    col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
-        st.markdown("""
-        <div class="feature-card">
-            <div class="feature-icon">📄</div>
-            <h3>PDF Summarizer</h3>
-            <p>Upload documents and get concise summaries in seconds.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        uploaded_file = st.file_uploader("Upload PDF", type=["pdf"], key="pdf_upload", label_visibility="collapsed")
-        if uploaded_file:
-            st.success(f"Processing {uploaded_file.name}...")
-    
-    with col3:
-        st.markdown("""
-        <div class="feature-card">
-            <div class="feature-icon">❓</div>
-            <h3>Quiz Generator</h3>
-            <p>Create custom quizzes from any material to test your knowledge.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        if st.button("Create Quiz", key="tool_quiz"):
-            st.info("Quiz Generator - Coming Soon!")
-    
-    col4, col5, col6 = st.columns(3)
-    
-    with col4:
-        st.markdown("""
-        <div class="feature-card">
-            <div class="feature-icon">🎴</div>
-            <h3>Flashcard Maker</h3>
-            <p>Generate smart flashcards automatically from your study materials.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        if st.button("Make Cards", key="tool_flashcard"):
-            st.info("Flashcard Maker - Coming Soon!")
-    
-    with col5:
-        st.markdown("""
-        <div class="feature-card">
-            <div class="feature-icon">✍️</div>
-            <h3>Essay Helper</h3>
-            <p>Get help structuring, outlining, and improving your essays.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        if st.button("Start Writing", key="tool_essay"):
-            st.info("Essay Helper - Coming Soon!")
-    
-    with col6:
-        st.markdown("""
-        <div class="feature-card">
-            <div class="feature-icon">📅</div>
-            <h3>Study Planner</h3>
-            <p>Create personalized study schedules and track your progress.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        if st.button("Plan Studies", key="tool_planner"):
-            st.info("Study Planner - Coming Soon!")
+        if st.button("Get Started Free", key="hero_cta", type="primary", use_container_width=True):
+            show_auth('signup')
+            st.rerun()
     
     st.markdown("""
-    <div class="stats-container" style="margin-top: 4rem;">
-        <div class="stat-card">
-            <div class="stat-number">127</div>
-            <div class="stat-label">Questions Asked</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">23</div>
-            <div class="stat-label">PDFs Summarized</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">45</div>
-            <div class="stat-label">Quizzes Completed</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">89%</div>
-            <div class="stat-label">Average Score</div>
+    <div class="section">
+        <h2 class="section-title">Why Students Choose CrypticX</h2>
+        <p class="section-subtitle">Powerful AI tools designed to help you excel</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="feature-icon">🎯</span>
+                <h3>Instant Answers</h3>
+                <p>Get explanations for any topic in seconds. Never get stuck on homework again.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">📚</span>
+                <h3>Smart Summaries</h3>
+                <p>Upload textbooks or notes and get concise summaries that save hours of reading.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">✨</span>
+                <h3>Practice Quizzes</h3>
+                <p>Auto-generate quizzes from any material to test your knowledge and track progress.</p>
+            </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-def show_features_page():
+elif st.session_state.current_page == 'features':
     st.markdown("""
-    <section class="section">
-        <div class="section-header">
-            <h2 class="section-title">Powerful Features</h2>
-            <p class="section-subtitle">Everything you need to excel in your studies</p>
-        </div>
+    <div class="section">
+        <h2 class="section-title">Powerful Study Features</h2>
+        <p class="section-subtitle">Everything you need to ace your classes</p>
         
         <div class="features-grid">
             <div class="feature-card">
-                <div class="feature-icon">🧠</div>
-                <h3>AI Explainer</h3>
-                <p>Break down the most complex topics into simple, digestible explanations tailored to your learning style.</p>
+                <span class="feature-icon">🤖</span>
+                <h3>AI Tutor</h3>
+                <p>24/7 access to an intelligent tutor that explains concepts in your learning style.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">📄</div>
-                <h3>Smart Summarizer</h3>
-                <p>Upload PDFs or paste notes and get concise, accurate summaries in seconds. Save hours of study time.</p>
+                <span class="feature-icon">📄</span>
+                <h3>Document Analysis</h3>
+                <p>Upload PDFs, Word docs, or slides and get instant summaries and key points.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">❓</div>
-                <h3>Quiz Generator</h3>
-                <p>Create custom quizzes and flashcards to test your knowledge and track your progress over time.</p>
+                <span class="feature-icon">🎴</span>
+                <h3>Flashcard Generator</h3>
+                <p>Automatically create flashcards from your study materials for efficient memorization.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">📊</div>
+                <span class="feature-icon">📊</span>
                 <h3>Progress Tracking</h3>
-                <p>Monitor your learning journey with detailed analytics and insights into your study patterns.</p>
+                <p>Monitor your learning with detailed analytics and personalized recommendations.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🎯</div>
-                <h3>Personalized Learning</h3>
-                <p>AI adapts to your learning pace and style, providing customized content recommendations.</p>
+                <span class="feature-icon">✍️</span>
+                <h3>Essay Helper</h3>
+                <p>Get help outlining, structuring, and improving your essays with AI feedback.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <h3>Lightning Fast</h3>
-                <p>Get instant responses powered by cutting-edge AI technology for seamless learning experience.</p>
+                <span class="feature-icon">🔒</span>
+                <h3>Privacy First</h3>
+                <p>Your data is encrypted and never shared. Study with complete peace of mind.</p>
             </div>
         </div>
-    </section>
+    </div>
     """, unsafe_allow_html=True)
 
-def show_pricing_page():
+elif st.session_state.current_page == 'pricing':
     st.markdown("""
-    <section class="section">
-        <div class="section-header">
-            <h2 class="section-title">Simple Pricing</h2>
-            <p class="section-subtitle">Choose the plan that fits your needs</p>
-        </div>
+    <div class="section">
+        <h2 class="section-title">Choose Your Plan</h2>
+        <p class="section-subtitle">Start free, upgrade when you're ready</p>
         
-        <div class="features-grid">
-            <div class="feature-card">
+        <div class="pricing-grid">
+            <div class="pricing-card">
                 <h3>Free</h3>
-                <div style="font-size: 3rem; margin: 1rem 0;">$0<span style="font-size: 1rem; color: #a0a0a0;">/month</span></div>
-                <p style="margin-bottom: 1.5rem;">• 10 AI explanations/day<br>• Basic summarization<br>• 5 quizzes/week<br>• Community support</p>
+                <div class="price">$0<span class="price-period">/mo</span></div>
+                <div class="feature-list">
+                    ✓ 10 AI questions/day<br>
+                    ✓ Basic summaries<br>
+                    ✓ 5 quizzes/week<br>
+                    ✓ Community support
+                </div>
             </div>
             
-            <div class="feature-card" style="border-color: #8b5cf6; background: rgba(139, 92, 246, 0.05);">
-                <div style="color: #8b5cf6; font-weight: 600; margin-bottom: 1rem;">⭐ MOST POPULAR</div>
+            <div class="pricing-card featured">
+                <div style="color: #667eea; font-weight: 700; margin-bottom: 1rem;">⭐ MOST POPULAR</div>
                 <h3>Pro</h3>
-                <div style="font-size: 3rem; margin: 1rem 0;">$9<span style="font-size: 1rem; color: #a0a0a0;">/month</span></div>
-                <p style="margin-bottom: 1.5rem;">• Unlimited AI explanations<br>• Advanced summarization<br>• Unlimited quizzes<br>• PDF upload (50MB)<br>• Priority support<br>• Progress tracking</p>
+                <div class="price">$12<span class="price-period">/mo</span></div>
+                <div class="feature-list">
+                    ✓ Unlimited AI questions<br>
+                    ✓ Advanced summaries<br>
+                    ✓ Unlimited quizzes<br>
+                    ✓ PDF upload (100MB)<br>
+                    ✓ Priority support<br>
+                    ✓ Progress analytics
+                </div>
             </div>
             
-            <div class="feature-card">
+            <div class="pricing-card">
                 <h3>Ultimate</h3>
-                <div style="font-size: 3rem; margin: 1rem 0;">$19<span style="font-size: 1rem; color: #a0a0a0;">/month</span></div>
-                <p style="margin-bottom: 1.5rem;">• Everything in Pro<br>• Study group collaboration<br>• Custom AI training<br>• 1-on-1 tutoring<br>• Exam prep tools<br>• 24/7 VIP support</p>
+                <div class="price">$25<span class="price-period">/mo</span></div>
+                <div class="feature-list">
+                    ✓ Everything in Pro<br>
+                    ✓ Group collaboration<br>
+                    ✓ Custom AI training<br>
+                    ✓ 1-on-1 tutoring sessions<br>
+                    ✓ Exam prep tools<br>
+                    ✓ 24/7 VIP support
+                </div>
             </div>
         </div>
-    </section>
+    </div>
     """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns(3)
     with col1:
-        if st.button("Get Started", key="price_free", use_container_width=True):
-            set_page("signup")
+        if st.button("Start Free", key="price_free", use_container_width=True):
+            show_auth('signup')
             st.rerun()
     with col2:
-        if st.button("Start Free Trial", key="price_pro", type="primary", use_container_width=True):
-            set_page("signup")
+        if st.button("Try Pro Free", key="price_pro", type="primary", use_container_width=True):
+            show_auth('signup')
             st.rerun()
     with col3:
-        if st.button("Contact Sales", key="price_ultimate", use_container_width=True):
+        if st.button("Contact Sales", key="price_ult", use_container_width=True):
             set_page("contact")
             st.rerun()
 
-def show_contact_page():
-    st.markdown("""
-    <section class="section">
-        <div style="max-width: 900px; margin: 0 auto; background: rgba(20, 20, 20, 0.6); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 30px; padding: 4rem; backdrop-filter: blur(20px);">
-            <div class="section-header">
-                <h2 class="section-title">Get In Touch</h2>
-                <p class="section-subtitle">We'd love to hear from you</p>
-            </div>
-        </div>
-    </section>
-    """, unsafe_allow_html=True)
+elif st.session_state.current_page == 'contact':
+    st.markdown('<div class="auth-container">', unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center; margin-bottom: 2rem;'>Get In Touch</h2>", unsafe_allow_html=True)
     
+    name = st.text_input("Name", placeholder="Your name")
     email = st.text_input("Email", placeholder="your@email.com")
-    subject = st.text_input("Subject", placeholder="How can we help?")
-    message = st.text_area("Message", placeholder="Tell us more...", height=150)
+    message = st.text_area("Message", placeholder="How can we help?", height=150)
     
-    if st.button("Send Message", key="contact_submit", type="primary", use_container_width=True):
-        if email and subject and message:
-            st.success("Thank you! We will get back to you soon.")
-        else:
-            st.error("Please fill in all fields")
-
-def show_login_page():
-    st.markdown("""
-    <section class="section">
-        <div style="max-width: 500px; margin: 0 auto; background: rgba(20, 20, 20, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 25px; padding: 3rem; backdrop-filter: blur(20px);">
-            <div class="section-header">
-                <h2 class="section-title">Welcome Back</h2>
-                <p class="section-subtitle">Login to your CrypticX account</p>
-            </div>
-        </div>
-    </section>
-    """, unsafe_allow_html=True)
-    
-    email = st.text_input("Email", placeholder="your@email.com", key="login_email")
-    password = st.text_input("Password", placeholder="••••••••", type="password", key="login_password")
-    
-    if st.button("Login", key="login_submit", type="primary", use_container_width=True):
-        if email and password:
-            st.success("Login successful! Redirecting...")
-            set_page("dashboard")
-            st.rerun()
-        else:
-            st.error("Please enter email and password")
-    
-    st.markdown("""
-        <div style="text-align: center; margin-top: 1.5rem; color: #a0a0a0;">
-            Don't have an account? <a href="#" style="color: #8b5cf6; text-decoration: none; font-weight: 600;">Sign up</a>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    if st.button("Go to Sign Up", key="login_to_signup", use_container_width=True):
-        set_page("signup")
-        st.rerun()
-
-def show_signup_page():
-    st.markdown("""
-    <section class="section">
-        <div style="max-width: 500px; margin: 0 auto; background: rgba(20, 20, 20, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 25px; padding: 3rem; backdrop-filter: blur(20px);">
-            <div class="section-header">
-                <h2 class="section-title">Create Account</h2>
-                <p class="section-subtitle">Join CrypticX today</p>
-            </div>
-        </div>
-    </section>
-    """, unsafe_allow_html=True)
-    
-    name = st.text_input("Full Name", placeholder="John Doe", key="signup_name")
-    email = st.text_input("Email", placeholder="your@email.com", key="signup_email")
-    password = st.text_input("Password", placeholder="••••••••", type="password", key="signup_password")
-    confirm = st.text_input("Confirm Password", placeholder="••••••••", type="password", key="signup_confirm")
-    
-    if st.button("Create Account", key="signup_submit", type="primary", use_container_width=True):
-        if name and email and password and confirm:
-            if password == confirm:
-                st.success("Account created! Redirecting...")
-                set_page("dashboard")
-                st.rerun()
-            else:
-                st.error("Passwords don't match")
+    if st.button("Send Message", key="contact_btn", type="primary", use_container_width=True):
+        if name and email and message:
+            st.success("Thanks! We'll get back to you within 24 hours.")
         else:
             st.error("Please fill in all fields")
     
+    st.markdown('</div>', unsafe_allow_html=True)
+
+elif st.session_state.current_page == 'dashboard':
     st.markdown("""
-        <div style="text-align: center; margin-top: 1.5rem; color: #a0a0a0;">
-            Already have an account? <a href="#" style="color: #8b5cf6; text-decoration: none; font-weight: 600;">Login</a>
+    <div class="section">
+        <h2 class="section-title">Your Dashboard</h2>
+        <p class="section-subtitle">Access all your study tools</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="feature-icon">🧠</span>
+                <h3>AI Explainer</h3>
+                <p>Ask any question and get instant, detailed explanations.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">📄</span>
+                <h3>PDF Summarizer</h3>
+                <p>Upload documents for quick summaries and key insights.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">❓</span>
+                <h3>Quiz Generator</h3>
+                <p>Create practice tests from any study material.</p>
+            </div>
         </div>
+    </div>
     """, unsafe_allow_html=True)
-    
-    if st.button("Go to Login", key="signup_to_login", use_container_width=True):
-        set_page("login")
-        st.rerun()
 
-# --- PAGE ROUTER ---
-# This must come AFTER all the show_..._page() functions are defined.
-page_name = st.session_state.current_page
-
-if page_name == "home":
-    show_home_page()
-elif page_name == "dashboard":
-    show_dashboard_page()
-elif page_name == "features":
-    show_features_page()
-elif page_name == "pricing":
-    show_pricing_page()
-elif page_name == "contact":
-    show_contact_page()
-elif page_name == "login":
-    show_login_page()
-elif page_name == "signup":
-    show_signup_page()
-else:
-    show_home_page()
-
-# --- Footer ---
-# This should be the last thing in the script.
+# Footer
 st.markdown("""
     <footer class="custom-footer">
-        <p>© 2025 CrypticX. Empowering students with AI. All rights reserved.</p>
+        <p>© 2025 CrypticX • Empowering students with AI</p>
     </footer>
 """, unsafe_allow_html=True)
