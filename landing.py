@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit.switch_page_button import switch_page  # Note: Use st.switch_page in Streamlit 1.28+
 
 st.set_page_config(
     page_title="CrypticX - AI Study Tool",
@@ -210,22 +211,25 @@ st.markdown("""
         line-height: 1.7;
     }
     
-    .hero-cta {
-        padding: 1rem 2.5rem;
-        border-radius: 50px;
-        background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-        color: #fff;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
-        border: none;
-        font-size: 1.1rem;
-        box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
+    /* Style for Streamlit buttons to match hero-cta */
+    .stButton > button {
+        padding: 1rem 2.5rem !important;
+        border-radius: 50px !important;
+        background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%) !important;
+        color: #fff !important;
+        font-weight: 600 !important;
+        cursor: pointer !important;
+        transition: all 0.3s !important;
+        border: none !important;
+        font-size: 1.1rem !important;
+        box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4) !important;
+        margin: 0 auto !important;
+        display: block !important;
     }
     
-    .hero-cta:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 40px rgba(139, 92, 246, 0.6);
+    .stButton > button:hover {
+        transform: translateY(-3px) !important;
+        box-shadow: 0 12px 40px rgba(139, 92, 246, 0.6) !important;
     }
     
     /* Section styling */
@@ -389,9 +393,15 @@ st.markdown("""
         <div class="welcome-badge">Welcome to CrypticX - The Ultimate Study Tool</div>
         <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
         <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
-        <button class="hero-cta">Start Learning Free</button>
-    </div>
 """, unsafe_allow_html=True)
+
+# Functional Hero Button - Routes to Login (handles sign-up too)
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    if st.button("Start Learning Free"):
+        switch_page("pages/login.py")
+
+st.markdown("</div>", unsafe_allow_html=True)
 
 # About Us Section
 st.markdown('<div class="section">', unsafe_allow_html=True)
@@ -454,9 +464,15 @@ st.markdown("""
     <div class="cta-section">
         <h2 class="cta-title">Ready to Unlock Your Potential?</h2>
         <p class="cta-subtitle">Join thousands of students transforming their learning today.</p>
-        <button class="hero-cta" style="margin: 0;">Get Started Free</button>
-    </div>
 """, unsafe_allow_html=True)
+
+# Functional CTA Button - Routes to Pricing (for plan selection before login)
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    if st.button("Get Started Free"):
+        switch_page("pages/pricing.py")
+
+st.markdown("</div>", unsafe_allow_html=True)
 
 # Close content wrapper
 st.markdown('</div>', unsafe_allow_html=True)
