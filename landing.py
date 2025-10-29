@@ -1,4 +1,6 @@
 import streamlit as st
+import pyrebase
+import os
 
 st.set_page_config(
     page_title="CrypticX - AI Study Tool",
@@ -7,6 +9,23 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+# Load Firebase configuration from Streamlit secrets
+# Assumes secrets.toml has:
+# [firebase]
+# apiKey = "your-api-key-here"
+# authDomain = "your-project.firebaseapp.com"
+# databaseURL = "https://your-project-default-rtdb.firebaseio.com"
+# projectId = "your-project-id"
+# storageBucket = "your-project.appspot.com"
+# messagingSenderId = "123456789"
+# appId = "your-app-id"
+firebase_config = st.secrets["firebase"]
+
+# Initialize Firebase
+firebase = pyrebase.initialize_app(firebase_config)
+auth = firebase.auth()
+db = firebase.database()
+
 # Initialize session state
 if 'current_section' not in st.session_state:
     st.session_state.current_section = 'home'
@@ -14,8 +33,10 @@ if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
 if 'show_signup' not in st.session_state:
     st.session_state.show_signup = False
+if 'user_id' not in st.session_state:
+    st.session_state.user_id = None
 
-# Enhanced CSS with smooth scrolling and animations
+# Enhanced CSS with smooth scrolling, animations, and auth styles
 st.markdown("""
 <style>
     /* Hide Streamlit elements */
@@ -309,6 +330,12 @@ st.markdown("""
         align-items: center;
     }
     
+    #login .section {
+        min-height: 100vh;
+        padding: 2rem;
+        justify-content: center;
+    }
+    
     .section-title {
         font-size: 3rem;
         font-weight: 700;
@@ -480,12 +507,13 @@ st.markdown("""
     /* Auth form */
     .auth-form {
         max-width: 450px;
-        margin: 2rem auto;
+        width: 100%;
         background: rgba(139, 92, 246, 0.05);
         border: 1px solid rgba(139, 92, 246, 0.2);
         border-radius: 24px;
         padding: 3rem;
         backdrop-filter: blur(10px);
+        text-align: center;
     }
     
     .auth-tabs {
@@ -510,6 +538,19 @@ st.markdown("""
         background: rgba(139, 92, 246, 0.2);
         border-color: #8b5cf6;
         color: #fff;
+    }
+    
+    .auth-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: #fff;
+    }
+    
+    .auth-subtitle {
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 2rem;
+        font-size: 1rem;
     }
     
     .stTextInput > div > div > input {
@@ -541,6 +582,69 @@ st.markdown("""
     .stButton > button:hover {
         transform: translateY(-2px) !important;
         box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4) !important;
+    }
+    
+    .stCheckbox > div > label {
+        color: rgba(255, 255, 255, 0.8) !important;
+        font-size: 0.9rem !important;
+    }
+    
+    /* Social buttons */
+    .social-container {
+        text-align: center;
+        margin: 2rem 0;
+    }
+    
+    .social-btn {
+        display: block;
+        width: 100%;
+        padding: 1rem;
+        border-radius: 50px;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+    }
+    
+    .social-btn.google {
+        background: #fff;
+        color: #4285f4;
+        box-shadow: 0 2px 10px rgba(66, 133, 244, 0.2);
+    }
+    
+    .social-btn.google:hover {
+        background: #f8f9fa;
+        transform: translateY(-1px);
+    }
+    
+    .social-btn.fb {
+        background: #1877f2;
+        color: #fff;
+        box-shadow: 0 2px 10px rgba(24, 119, 242, 0.3);
+    }
+    
+    .social-btn.fb:hover {
+        background: #166fe5;
+        transform: translateY(-1px);
+    }
+    
+    .divider {
+        text-align: center;
+        margin: 1.5rem 0;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.9rem;
+    }
+    
+    .switch-link {
+        color: #8b5cf6;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    
+    .switch-link:hover {
+        text-decoration: underline;
     }
     
     /* Success message */
@@ -613,6 +717,7 @@ st.markdown("""
         }
         .section-title {font-size: 2rem;}
         .pricing-card.featured {transform: scale(1);}
+        .auth-form {padding: 2rem; margin: 1rem;}
     }
 </style>
 
@@ -658,7 +763,23 @@ st.markdown("""
 
 """, unsafe_allow_html=True)
 
-# Navigation
+# Navigation - Conditional based on login state
+nav_links_html = ""
+if st.session_state.logged_in:
+    nav_links_html = """
+    <a href="#home" class="nav-link">Home</a>
+    <a href="#pricing" class="nav-link">Pricing</a>
+    <a href="#dashboard" class="nav-link">Dashboard</a>
+    <button class="nav-cta" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'}); if (window.location.hash !== '#login') window.location.hash = 'login';">Profile</button>
+    """
+else:
+    nav_links_html = """
+    <a href="#home" class="nav-link">Home</a>
+    <a href="#pricing" class="nav-link">Pricing</a>
+    <a href="#login" class="nav-link">Login</a>
+    <button class="nav-cta" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'});">Sign Up</button>
+    """
+
 st.markdown(f"""
 <div class="nav-container">
 <nav>
@@ -667,11 +788,7 @@ st.markdown(f"""
 <span>CrypticX</span>
 </div>
 <div class="nav-links">
-<a href="#home" class="nav-link {'active' if st.session_state.current_section == 'home' else ''}">Home</a>
-<a href="#pricing" class="nav-link {'active' if st.session_state.current_section == 'pricing' else ''}">Pricing</a>
-<a href="#dashboard" class="nav-link {'active' if st.session_state.current_section == 'dashboard' else ''}">Dashboard</a>
-<a href="#login" class="nav-link {'active' if st.session_state.current_section == 'login' else ''}">Login</a>
-<button class="nav-cta" onclick="document.getElementById('login').scrollIntoView({{behavior: 'smooth'}})">Sign Up</button>
+{nav_links_html}
 </div>
 </nav>
 </div>
@@ -792,6 +909,108 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
+
+# Login/Signup Section - New Addition
+st.markdown('<div id="login" class="section">', unsafe_allow_html=True)
+
+if st.session_state.logged_in:
+    st.markdown('<div class="auth-form fade-in-up">', unsafe_allow_html=True)
+    st.markdown('<h2 class="auth-title">Welcome Back!</h2>', unsafe_allow_html=True)
+    st.markdown('<p class="auth-subtitle">You are logged in to CrypticX. Ready to master your studies?</p>', unsafe_allow_html=True)
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        if st.button("Go to Dashboard", use_container_width=True):
+            st.markdown('<script>document.getElementById("dashboard").scrollIntoView({behavior: "smooth"});</script>', unsafe_allow_html=True)
+    with col2:
+        if st.button("Logout", use_container_width=True):
+            st.session_state.logged_in = False
+            st.session_state.user_id = None
+            st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
+else:
+    st.markdown('<div class="auth-form fade-in-up">', unsafe_allow_html=True)
+    # Tabs for Sign In / Sign Up
+    tab1, tab2 = st.tabs(["Sign In", "Sign Up"])
+
+    with tab1:
+        st.markdown('<h3 class="auth-title">Sign In</h3>', unsafe_allow_html=True)
+        st.markdown('<p class="auth-subtitle">Access your personalized learning dashboard.</p>', unsafe_allow_html=True)
+
+        email = st.text_input("Email address", placeholder="example@youremail.com", key="login_email")
+        password = st.text_input("Password", type="password", placeholder="Enter your password", key="login_pass")
+
+        if st.button("Sign In", disabled=not (email and password)):
+            if email and password:
+                try:
+                    user = auth.sign_in_with_email_and_password(email, password)
+                    st.session_state.logged_in = True
+                    st.session_state.user_id = user['localId']
+                    st.success("Welcome back to CrypticX!")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Sign in failed: {str(e)}")
+            else:
+                st.error("Please enter your email and password.")
+
+        st.markdown('<div class="divider">or</div>', unsafe_allow_html=True)
+        st.markdown('<div class="social-container">', unsafe_allow_html=True)
+        st.markdown('<button class="social-btn google">Sign in with Google</button>', unsafe_allow_html=True)
+        st.markdown('<button class="social-btn fb">Sign in with Facebook</button>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('<p style="color: rgba(255,255,255,0.6);">New to CrypticX? <a href="#" class="switch-link" onclick="this.parentElement.parentElement.parentElement.parentElement.querySelector(\'[data-testid=\\"stTabViewContainer\\"]\').querySelector(\'button:last-child\').click(); return false;">Sign up here</a></p>', unsafe_allow_html=True)
+
+    with tab2:
+        st.markdown('<h3 class="auth-title">Create Account</h3>', unsafe_allow_html=True)
+        st.markdown('<p class="auth-subtitle">Join thousands of students mastering their studies with AI-powered tools.</p>', unsafe_allow_html=True)
+
+        full_name = st.text_input("Full name", placeholder="John Carter", key="signup_name")
+        email = st.text_input("Email address", placeholder="example@youremail.com", key="signup_email")
+        password = st.text_input("Password", type="password", placeholder="Enter your password", key="signup_pass")
+
+        agree = st.checkbox("I have read and accept the Terms & Conditions, Privacy Policy")
+
+        col1, col2 = st.columns([3, 1])
+        with col1:
+            if st.button("Create Account", disabled=not (full_name and email and password and agree)):
+                try:
+                    user = auth.create_user_with_email_and_password(email, password)
+                    db.child("users").child(user['localId']).set({
+                        "name": full_name,
+                        "email": email,
+                        "created_at": str(firebase.database.ServerValue.TIMESTAMP)
+                    })
+                    st.session_state.logged_in = True
+                    st.session_state.user_id = user['localId']
+                    st.success("Account created successfully! Welcome to CrypticX.")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Sign up failed: {str(e)}")
+        with col2:
+            st.empty()
+
+        st.markdown('<div class="divider">or</div>', unsafe_allow_html=True)
+        st.markdown('<div class="social-container">', unsafe_allow_html=True)
+        st.markdown('<button class="social-btn google">Sign up with Google</button>', unsafe_allow_html=True)
+        st.markdown('<button class="social-btn fb">Sign up with Facebook</button>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('<p style="color: rgba(255,255,255,0.6);">Already have an account? <a href="#" class="switch-link" onclick="this.parentElement.parentElement.parentElement.parentElement.querySelector(\'[data-testid=\\"stTabViewContainer\\"]\').querySelector(\'button:first-child\').click(); return false;">Sign in here</a></p>', unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
+
+# Dashboard Placeholder Section (Optional - Expand as Needed)
+st.markdown('<div id="dashboard" class="section">', unsafe_allow_html=True)
+if st.session_state.logged_in:
+    st.markdown('<h2 class="section-title">Dashboard</h2>', unsafe_allow_html=True)
+    user_data = db.child("users").child(st.session_state.user_id).get().val()
+    user_name = user_data.get("name", "Student") if user_data else "Student"
+    st.markdown('<p class="section-subtitle">Your personalized learning hub. Welcome, ' + user_name + '!</p>', unsafe_allow_html=True)
+    # Add dashboard content here (e.g., progress charts, recent activity)
+    st.info("Dashboard coming soon - Your AI study tools await!")
+else:
+    st.warning("Please log in to access the dashboard.")
 st.markdown('</div>', unsafe_allow_html=True)
 
 # Close content wrapper
