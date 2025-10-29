@@ -13,16 +13,21 @@ hide_streamlit_style = """
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {display: none;}
+    
+    /* Remove all padding and margins from the main container */
     .block-container {padding: 0; margin: 0;}
     .main .block-container {max-width: 100%; padding: 0;}
     .stApp {margin: 0; padding: 0;}
-    .stDeployButton {display:none;}
-    .stDecoration {display:none;}
     section.main > div {padding: 0;}
-    .stToolbar {display: none;}
+
+    /* Hide Streamlit's default UI elements */
+    .stDeployButton {display: none;}
     div[data-testid="stToolbar"] {display: none;}
     div[data-testid="stStatusWidget"] {display: none;}
-    #stDecoration {display: none;}
+    div[data-testid="stDecoration"] {display: none;}
+    
+    /* Hide the component's fullscreen button */
+    iframe[title="streamlit.components.v1.html"] ~ div[data-testid="stFullScreenFrame"] {display: none;}
 </style>
 """
 
