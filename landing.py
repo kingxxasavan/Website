@@ -1,6 +1,4 @@
 import streamlit as st
-from streamlit.runtime.scriptrunner import script_runner
-import streamlit as st
 
 st.set_page_config(
     page_title="CrypticX - AI Study Tool",
@@ -479,7 +477,7 @@ st.markdown("""
         border: none;
     }
     
-    /* Auth form styles for consistency */
+    /* Auth form */
     .auth-form {
         max-width: 450px;
         margin: 2rem auto;
@@ -488,6 +486,30 @@ st.markdown("""
         border-radius: 24px;
         padding: 3rem;
         backdrop-filter: blur(10px);
+    }
+    
+    .auth-tabs {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .auth-tab {
+        flex: 1;
+        padding: 0.8rem;
+        border-radius: 12px;
+        background: transparent;
+        border: 1px solid rgba(139, 92, 246, 0.3);
+        color: rgba(255, 255, 255, 0.6);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .auth-tab.active {
+        background: rgba(139, 92, 246, 0.2);
+        border-color: #8b5cf6;
+        color: #fff;
     }
     
     .stTextInput > div > div > input {
@@ -603,7 +625,7 @@ st.markdown("""
 <div class="glow-orb pink"></div>
 """, unsafe_allow_html=True)
 
-# JavaScript for smooth scrolling and nav hide on scroll (keep for internal scrolls)
+# JavaScript for smooth scrolling and nav hide on scroll
 st.markdown("""
 
 <script>
@@ -636,8 +658,8 @@ st.markdown("""
 
 """, unsafe_allow_html=True)
 
-# Navigation - Updated to use Streamlit for auth links
-st.markdown("""
+# Navigation
+st.markdown(f"""
 <div class="nav-container">
 <nav>
 <div class="logo">
@@ -645,11 +667,11 @@ st.markdown("""
 <span>CrypticX</span>
 </div>
 <div class="nav-links">
-<a href="#home" class="nav-link">Home</a>
-<a href="#pricing" class="nav-link">Pricing</a>
-<a href="#dashboard" class="nav-link">Dashboard</a>
-<a href="#" class="nav-link" onclick="window.location.href='/login'">Login</a>  <!-- Fallback JS for login -->
-<button class="nav-cta" onclick="window.location.href='/login'">Sign Up</button>  <!-- Fallback JS for signup -->
+<a href="#home" class="nav-link {'active' if st.session_state.current_section == 'home' else ''}">Home</a>
+<a href="#pricing" class="nav-link {'active' if st.session_state.current_section == 'pricing' else ''}">Pricing</a>
+<a href="#dashboard" class="nav-link {'active' if st.session_state.current_section == 'dashboard' else ''}">Dashboard</a>
+<a href="#login" class="nav-link {'active' if st.session_state.current_section == 'login' else ''}">Login</a>
+<button class="nav-cta" onclick="document.getElementById('login').scrollIntoView({{behavior: 'smooth'}})">Sign Up</button>
 </div>
 </nav>
 </div>
@@ -658,19 +680,13 @@ st.markdown("""
 # Content wrapper
 st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 
-# Hero Section - Updated CTA to use Streamlit navigation
+# Hero Section
 st.markdown("""
 <div id="home" class="hero-section">
 <div class="welcome-badge">✨ Welcome to CrypticX - The Ultimate Study Tool</div>
 <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
 <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
-""", unsafe_allow_html=True)
-
-# Hero CTA Button - Use Streamlit button for navigation
-if st.button("Start Learning Free", key="hero_cta", help="Go to Login"):
-    st.switch_page("pages/login.py")
-
-st.markdown("""
+<button class="hero-cta" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Start Learning Free</button>
 <div class="stats-section">
     <div class="stat-item">
         <div class="stat-number">50K+</div>
@@ -729,14 +745,13 @@ st.markdown("""
 
 st.markdown('</div></div>', unsafe_allow_html=True)
 
-# Pricing Section - Updated buttons to navigate
+# Pricing Section
 st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
 st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
 st.markdown('<p class="section-subtitle">Start free, upgrade when you\'re ready</p>', unsafe_allow_html=True)
 
-col1, col2, col3 = st.columns(3)
-with col1:
-    st.markdown("""
+st.markdown("""
+<div class="pricing-grid">
     <div class="pricing-card">
         <h3>Free</h3>
         <div class="price">$0<span class="price-period">/mo</span></div>
@@ -746,13 +761,8 @@ with col1:
             ✓ 5 quizzes/week<br>
             ✓ Community support
         </div>
+        <button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Start Free</button>
     </div>
-    """, unsafe_allow_html=True)
-    if st.button("Start Free", key="free_plan"):
-        st.switch_page("pages/login.py")
-
-with col2:
-    st.markdown("""
     <div class="pricing-card featured">
         <div class="pricing-badge">⭐ MOST POPULAR</div>
         <h3>Pro</h3>
@@ -765,13 +775,8 @@ with col2:
             ✓ Priority support<br>
             ✓ Progress analytics
         </div>
+        <button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Get Pro</button>
     </div>
-    """, unsafe_allow_html=True)
-    if st.button("Get Pro", key="pro_plan"):
-        st.switch_page("pages/login.py")
-
-with col3:
-    st.markdown("""
     <div class="pricing-card">
         <h3>Enterprise</h3>
         <div class="price">$35<span class="price-period">/mo</span></div>
@@ -783,11 +788,10 @@ with col3:
             ✓ Dedicated support<br>
             ✓ Unlimited storage
         </div>
+        <button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Contact Us</button>
     </div>
-    """, unsafe_allow_html=True)
-    if st.button("Contact Us", key="enterprise_plan"):
-        st.switch_page("pages/login.py")
-
+</div>
+""", unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
 # Close content wrapper
