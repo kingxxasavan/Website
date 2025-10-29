@@ -82,14 +82,13 @@ landing_html = """
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.5rem 5rem;
+            padding: 1.2rem 5rem;
             max-width: 1600px;
-            margin: 0 auto;
+            margin: 1rem auto;
             background: rgba(20, 20, 20, 0.6);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(139, 92, 246, 0.2);
             border-radius: 20px;
-            margin-top: 2rem;
         }
         
         .logo {
@@ -166,27 +165,27 @@ landing_html = """
             z-index: 10;
             max-width: 1600px;
             margin: 0 auto;
-            padding: 8rem 5rem 6rem;
+            padding: 3rem 5rem 4rem;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 6rem;
+            gap: 4rem;
             align-items: center;
-            min-height: 85vh;
+            min-height: auto;
         }
         
         .hero-content h1 {
-            font-size: 4.5rem;
+            font-size: 3.5rem;
             line-height: 1.1;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
             font-weight: 300;
             letter-spacing: -2px;
             color: #ffffff;
         }
         
         .hero-content p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #a0a0a0;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
             line-height: 1.7;
             max-width: 500px;
         }
@@ -252,8 +251,8 @@ landing_html = """
         
         .robot-container {
             position: relative;
-            width: 500px;
-            height: 600px;
+            width: 400px;
+            height: 500px;
             animation: floatRobot 6s ease-in-out infinite;
         }
         
@@ -681,28 +680,28 @@ landing_html = """
             color: #a0a0a0;
         }
         
-        /* Features Section */
+        /* Hero Section */
         .section {
             position: relative;
             z-index: 10;
             max-width: 1600px;
-            margin: 8rem auto;
+            margin: 4rem auto;
             padding: 0 5rem;
         }
         
         .section-header {
             text-align: center;
-            margin-bottom: 5rem;
+            margin-bottom: 3rem;
         }
         
         .section-title {
-            font-size: 3.5rem;
+            font-size: 2.8rem;
             font-weight: 300;
             margin-bottom: 1rem;
         }
         
         .section-subtitle {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #a0a0a0;
         }
         
@@ -1544,4 +1543,4 @@ landing_html = """
 </html>
 """
 
-components.html(landing_html, height=5000, scrolling=True)
+components.html(landing_html, height=6500, scrolling=True)
