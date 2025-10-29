@@ -180,6 +180,7 @@ landing_html = """
             margin-bottom: 1.5rem;
             font-weight: 300;
             letter-spacing: -2px;
+            color: #ffffff;
         }
         
         .hero-content p {
@@ -1110,4 +1111,4 @@ landing_html = """
 </html>
 """
 
-components.html(landing_html, height=4500, scrolling=True)
+components.html(landing_html, height=5000, scrolling=True)
