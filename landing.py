@@ -63,7 +63,7 @@ landing_html = """
         .cta-btn:hover {box-shadow: 0 15px 50px rgba(139, 92, 246, 0.5); transform: translateY(-3px);}
         .hero-note {font-size: 0.9rem; color: #666;}
         
-        .section {position: relative; z-index: 10; max-width: 1600px; margin: 4rem auto; padding: 0 5rem 4rem 5rem;}
+        .section {position: relative; z-index: 10; max-width: 1600px; margin: 4rem auto 0 auto; padding: 0 5rem 6rem 5rem;}
         .section-header {text-align: center; margin-bottom: 3rem;}
         .section-title {font-size: 2.8rem; font-weight: 300; margin-bottom: 1rem;}
         .section-subtitle {font-size: 1.1rem; color: #a0a0a0;}
@@ -417,4 +417,4 @@ landing_html = """
 </html>
 """
 
-components.html(landing_html, height=800, scrolling=True)
+components.html(landing_html, height=1200, scrolling=True)
