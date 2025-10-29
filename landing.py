@@ -1059,11 +1059,19 @@ landing_html = """
             z-index: 10;
             border-top: 1px solid rgba(139, 92, 246, 0.2);
             margin-top: 3rem;
+            margin-bottom: 0;
             padding: 2rem 5rem;
             text-align: center;
             color: #666;
             background: rgba(20, 20, 20, 0.6);
             backdrop-filter: blur(20px);
+        }
+        
+        /* Remove any extra space at bottom */
+        html, body {
+            height: auto;
+            margin: 0;
+            padding: 0;
         }
         
         /* Page Transitions */
@@ -1582,4 +1590,4 @@ landing_html = """
 </html>
 """
 
-components.html(landing_html, height=6000, scrolling=True)
+components.html(landing_html, height=5500, scrolling=True)
