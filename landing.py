@@ -324,13 +324,18 @@ st.markdown("""
         max-width: 800px;
         margin: 0 auto;
         text-align: center;
+        background: rgba(139, 92, 246, 0.05);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        border-radius: 24px;
+        padding: 3rem;
+        backdrop-filter: blur(10px);
     }
     
     .about-text {
         color: rgba(255, 255, 255, 0.7);
         font-size: 1.1rem;
         line-height: 1.6;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
     }
     
     /* Feature cards */
@@ -707,10 +712,10 @@ st.markdown('<p class="section-subtitle">Empowering students to reach their full
 st.markdown('<div class="about-content">', unsafe_allow_html=True)
 st.markdown("""
 <p class="about-text">
-CrypticX was founded by students, for students. We understand the challenges of modern education and created an AI-powered platform that makes studying more efficient, engaging, and effective. Our mission is to democratize access to personalized learning tools that help every student succeed.
+Founded by students for students, CrypticX uses AI to make studying efficient and engaging. Our mission: personalized learning for all.
 </p>
 <p class="about-text">
-With cutting-edge artificial intelligence and a deep understanding of learning science, we've built tools that adapt to your unique learning style, making complex concepts easier to understand and helping you achieve your academic goals faster than ever before.
+Adapt to your style with tools based on learning science, simplifying complex concepts and accelerating your success.
 </p>
 """, unsafe_allow_html=True)
 st.markdown('</div></div>', unsafe_allow_html=True)
