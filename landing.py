@@ -1543,4 +1543,4 @@ landing_html = """
 </html>
 """
 
-components.html(landing_html, height=6000, scrolling=True)
+components.html(landing_html, height=5800, scrolling=True)
