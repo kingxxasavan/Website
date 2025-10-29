@@ -329,8 +329,8 @@ st.markdown("""
     .about-text {
         color: rgba(255, 255, 255, 0.7);
         font-size: 1.1rem;
-        line-height: 1.9;
-        margin-bottom: 2rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
     }
     
     /* Feature cards */
@@ -349,6 +349,11 @@ st.markdown("""
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         backdrop-filter: blur(10px);
         cursor: pointer;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
     }
     
     .feature-card:hover {
@@ -380,6 +385,7 @@ st.markdown("""
         color: rgba(255, 255, 255, 0.6);
         line-height: 1.7;
         font-size: 0.95rem;
+        flex-grow: 1;
     }
     
     /* Pricing cards */
@@ -677,21 +683,20 @@ st.markdown("""
 <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
 <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
 <button class="hero-cta" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Start Learning Free</button>
-
-    <div class="stats-section">
-        <div class="stat-item">
-            <div class="stat-number">50K+</div>
-            <div class="stat-label">Active Students</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-number">95%</div>
-            <div class="stat-label">Satisfaction Rate</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-number">1M+</div>
-            <div class="stat-label">Questions Answered</div>
-        </div>
+<div class="stats-section">
+    <div class="stat-item">
+        <div class="stat-number">50K+</div>
+        <div class="stat-label">Active Students</div>
     </div>
+    <div class="stat-item">
+        <div class="stat-number">95%</div>
+        <div class="stat-label">Satisfaction Rate</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number">1M+</div>
+        <div class="stat-label">Questions Answered</div>
+    </div>
+</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -705,7 +710,7 @@ st.markdown("""
 CrypticX was founded by students, for students. We understand the challenges of modern education and created an AI-powered platform that makes studying more efficient, engaging, and effective. Our mission is to democratize access to personalized learning tools that help every student succeed.
 </p>
 <p class="about-text">
-With cutting-edge artificial intelligence and a deep understanding of learning science, we’ve built tools that adapt to your unique learning style, making complex concepts easier to understand and helping you achieve your academic goals faster than ever before.
+With cutting-edge artificial intelligence and a deep understanding of learning science, we've built tools that adapt to your unique learning style, making complex concepts easier to understand and helping you achieve your academic goals faster than ever before.
 </p>
 """, unsafe_allow_html=True)
 st.markdown('</div></div>', unsafe_allow_html=True)
@@ -758,22 +763,21 @@ st.markdown('<p class="section-subtitle">Start free, upgrade when you\'re ready<
 
 st.markdown("""
 <div class="pricing-grid">
-<div class="pricing-card">
-<h3>Free</h3>
-<div class="price">$0<span class="price-period">/mo</span></div>
-<div class="feature-list">
-✓ 10 AI questions/day<br>
-✓ Basic summaries<br>
-✓ 5 quizzes/week<br>
-✓ Community support
-</div>
-<button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Start Free</button>
-</div>
-
+    <div class="pricing-card">
+        <h3>Free</h3>
+        <div class="price">$0<span class="price-period">/mo</span></div>
+        <div class="feature-list">
+            ✓ 10 AI questions/day<br>
+            ✓ Basic summaries<br>
+            ✓ 5 quizzes/week<br>
+            ✓ Community support
+        </div>
+        <button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Start Free</button>
+    </div>
     <div class="pricing-card featured">
         <div class="pricing-badge">⭐ MOST POPULAR</div>
         <h3>Pro</h3>
-        <div class="price">$12<span class="price-period">/mo</span></div>
+        <div class="price">$15<span class="price-period">/mo</span></div>
         <div class="feature-list">
             ✓ Unlimited AI questions<br>
             ✓ Advanced summaries<br>
@@ -782,4 +786,36 @@ st.markdown("""
             ✓ Priority support<br>
             ✓ Progress analytics
         </div>
+        <button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Get Pro</button>
+    </div>
+    <div class="pricing-card">
+        <h3>Enterprise</h3>
+        <div class="price">$35<span class="price-period">/mo</span></div>
+        <div class="feature-list">
+            ✓ Everything in Pro<br>
+            ✓ Team accounts<br>
+            ✓ Advanced analytics<br>
+            ✓ Custom integrations<br>
+            ✓ Dedicated support<br>
+            ✓ Unlimited storage
+        </div>
+        <button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Contact Us</button>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
+
+# Close content wrapper
+st.markdown('</div>', unsafe_allow_html=True)
+
+# Footer
+st.markdown("""
+<div class="custom-footer">
+    <p>&copy; 2025 CrypticX. All rights reserved.</p>
+    <div class="footer-links">
+        <a href="#" class="footer-link">Privacy</a>
+        <a href="#" class="footer-link">Terms</a>
+        <a href="#" class="footer-link">Contact</a>
+    </div>
+</div>
 """, unsafe_allow_html=True)
