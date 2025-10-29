@@ -334,6 +334,7 @@ st.markdown("""
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        min-height: 200px;
     }
     
     .about-inner {
@@ -738,10 +739,7 @@ st.markdown('<div class="about-content">', unsafe_allow_html=True)
 st.markdown("""
 <div class="about-inner">
 <p class="about-text">
-Founded by students for students, CrypticX uses AI to make studying efficient and engaging. Our mission: personalized learning for all.
-</p>
-<p class="about-text">
-Adapt to your style with tools based on learning science, simplifying complex concepts and accelerating your success.
+Founded by students for students, CrypticX uses AI to make studying efficient and engaging. Our mission is personalized learning for all, adapting to your style with tools based on learning science to simplify complex concepts and accelerate your success.
 </p>
 </div>
 """, unsafe_allow_html=True)
