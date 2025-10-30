@@ -875,7 +875,6 @@ if st.session_state.current_page == 'auth':
         st.session_state.current_page = 'home'
         st.session_state.selected_plan = None
         st.query_params.clear()
-        st.rerun()
     
     st.markdown("""
     <div class="nav-container">
@@ -922,7 +921,6 @@ if st.session_state.current_page == 'auth':
                 st.session_state.logged_in = True
                 st.session_state.current_page = 'home'  # Redirect to home after successful login
                 st.query_params.clear()
-                st.rerun()
             else:
                 st.markdown('<div class="message-box message-error">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
         
@@ -954,7 +952,6 @@ if st.session_state.current_page == 'auth':
                 st.session_state.user_name = name  # Store user name
                 st.session_state.current_page = 'home'  # Redirect to home after successful signup
                 st.query_params.clear()
-                st.rerun()
             else:
                 st.markdown('<div class="message-box message-error">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
         
@@ -971,11 +968,9 @@ if st.session_state.current_page == 'auth':
         if query_params['action'] == 'toggle_signup':
             st.session_state.auth_mode = 'signup'
             st.query_params.clear()
-            st.rerun()
         elif query_params['action'] == 'toggle_login':
             st.session_state.auth_mode = 'login'
             st.query_params.clear()
-            st.rerun()
     
     st.markdown('</div>', unsafe_allow_html=True)  # Close auth-box
     st.markdown('</div>', unsafe_allow_html=True)  # Close auth-container
@@ -988,11 +983,16 @@ else:
     query_params = st.query_params
     if 'action' in query_params:
         action = query_params['action']
-        if action == 'auth':
+        if action == 'auth_login':
             st.session_state.current_page = 'auth'
             st.session_state.auth_mode = 'login'
+            st.session_state.selected_plan = None
             st.query_params.clear()
-            st.rerun()
+        elif action == 'auth_signup':
+            st.session_state.current_page = 'auth'
+            st.session_state.auth_mode = 'signup'
+            st.session_state.selected_plan = None
+            st.query_params.clear()
         elif action == 'hero':
             if not st.session_state.logged_in:
                 st.session_state.current_page = 'auth'
@@ -1001,39 +1001,33 @@ else:
             else:
                 st.session_state.current_page = 'home'
             st.query_params.clear()
-            st.rerun()
         elif action == 'free':
             if not st.session_state.logged_in:
                 st.session_state.current_page = 'auth'
                 st.session_state.selected_plan = 'Free'
                 st.session_state.auth_mode = 'signup'
             st.query_params.clear()
-            st.rerun()
         elif action == 'pro':
             if not st.session_state.logged_in:
                 st.session_state.current_page = 'auth'
                 st.session_state.selected_plan = 'Pro'
                 st.session_state.auth_mode = 'signup'
             st.query_params.clear()
-            st.rerun()
         elif action == 'enterprise':
             if not st.session_state.logged_in:
                 st.session_state.current_page = 'auth'
                 st.session_state.selected_plan = 'Enterprise'
                 st.session_state.auth_mode = 'signup'
             st.query_params.clear()
-            st.rerun()
         elif action == 'dashboard':
             st.session_state.current_page = 'dashboard'
             st.query_params.clear()
-            st.rerun()
         elif action == 'logout':
             st.session_state.logged_in = False
             st.session_state.user_name = None
             st.session_state.selected_plan = None
             st.session_state.current_page = 'home'
             st.query_params.clear()
-            st.rerun()
     
     # Conditional navigation based on login status - use .format to avoid f-string indentation issues
     if st.session_state.logged_in:
@@ -1052,8 +1046,8 @@ else:
         <span class="nav-link">Home</span>
         <span class="nav-link">Pricing</span>
         <span class="nav-link">Dashboard</span>
-        <span class="nav-link" onclick="window.location.href='?action=auth'">Login</span>
-        <button class="nav-cta" onclick="window.location.href='?action=auth'">Sign Up</button>
+        <span class="nav-link" onclick="window.location.href='?action=auth_login'">Login</span>
+        <button class="nav-cta" onclick="window.location.href='?action=auth_signup'">Sign Up</button>
         </div>
         """
     
