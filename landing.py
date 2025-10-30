@@ -1,4 +1,3 @@
-
 import streamlit as st
 import streamlit.components.v1 as components
 
@@ -494,9 +493,16 @@ st.markdown("""
         text-align: left;
         margin: 2rem 0;
         color: rgba(255, 255, 255, 0.7);
-        line-height: 2.2;
+        line-height: 1.6;
         font-size: 0.95rem;
         flex-grow: 1;
+        list-style: none;
+        padding: 0;
+    }
+    
+    .feature-list li {
+        margin-bottom: 0.75rem;
+        padding-left: 0;
     }
     
     .pricing-button {
@@ -862,27 +868,41 @@ st.markdown("""
         border-color: #8b5cf6 !important;
     }
     
-    /* Pricing button overrides */
+    /* Pricing button overrides to match image */
+    .pricing-card .primary-container .stButton > button {
+        margin-top: 0 !important;
+        border-radius: 12px !important;
+        padding: 1rem 1.5rem !important;
+        font-size: 1rem !important;
+        font-weight: 600 !important;
+        height: auto !important;
+        min-height: 0 !important;
+    }
+    
     .pricing-card:not(.featured) .primary-container .stButton > button {
-        background: rgba(139, 92, 246, 0.2) !important;
-        border: 1px solid rgba(139, 92, 246, 0.3) !important;
-        box-shadow: 0 4px 20px rgba(139, 92, 246, 0.2) !important;
+        background: transparent !important;
+        border: 1px solid #8b5cf6 !important;
+        color: #8b5cf6 !important;
+        box-shadow: none !important;
     }
     
     .pricing-card:not(.featured) .primary-container .stButton > button:hover {
-        background: rgba(139, 92, 246, 0.3) !important;
-        border-color: #8b5cf6 !important;
-        box-shadow: 0 6px 25px rgba(139, 92, 246, 0.4) !important;
+        background: rgba(139, 92, 246, 0.1) !important;
+        color: #fff !important;
+        box-shadow: 0 4px 20px rgba(139, 92, 246, 0.2) !important;
+        transform: translateY(-2px) !important;
     }
     
     .pricing-card.featured .primary-container .stButton > button {
         background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%) !important;
         border: none !important;
-        box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4) !important;
+        color: #fff !important;
+        box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4) !important;
     }
     
     .pricing-card.featured .primary-container .stButton > button:hover {
-        box-shadow: 0 12px 40px rgba(139, 92, 246, 0.6) !important;
+        box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6) !important;
+        transform: translateY(-2px) !important;
     }
     
     /* Success/Error messages */
