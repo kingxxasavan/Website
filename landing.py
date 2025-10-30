@@ -1,3 +1,4 @@
+```python
 import streamlit as st
 import streamlit.components.v1 as components
 
@@ -861,6 +862,29 @@ st.markdown("""
         border-color: #8b5cf6 !important;
     }
     
+    /* Pricing button overrides */
+    .pricing-card:not(.featured) .primary-container .stButton > button {
+        background: rgba(139, 92, 246, 0.2) !important;
+        border: 1px solid rgba(139, 92, 246, 0.3) !important;
+        box-shadow: 0 4px 20px rgba(139, 92, 246, 0.2) !important;
+    }
+    
+    .pricing-card:not(.featured) .primary-container .stButton > button:hover {
+        background: rgba(139, 92, 246, 0.3) !important;
+        border-color: #8b5cf6 !important;
+        box-shadow: 0 6px 25px rgba(139, 92, 246, 0.4) !important;
+    }
+    
+    .pricing-card.featured .primary-container .stButton > button {
+        background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%) !important;
+        border: none !important;
+        box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4) !important;
+    }
+    
+    .pricing-card.featured .primary-container .stButton > button:hover {
+        box-shadow: 0 12px 40px rgba(139, 92, 246, 0.6) !important;
+    }
+    
     /* Success/Error messages */
     .message-box {
         padding: 1rem;
@@ -1074,10 +1098,12 @@ if not st.session_state.logged_in:
         # Centered hero button
         col_left, col_mid, col_right = st.columns([4, 1, 4])
         with col_mid:
+            st.markdown('<div class="primary-container">', unsafe_allow_html=True)
             if st.button("Start Learning Free", key="hero_free"):
                 st.session_state.selected_plan = 'Free'
                 st.session_state.current_page = 'auth'
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
         
         st.markdown("""
         <div class="stats-section">
@@ -1155,8 +1181,8 @@ if not st.session_state.logged_in:
                     <li>✓ 5 quizzes/week</li>
                     <li>✓ Community support</li>
                 </ul>
-                <div class="primary-container">
             """, unsafe_allow_html=True)
+            st.markdown('<div class="primary-container">', unsafe_allow_html=True)
             if st.button("Start Free", key="price_free", use_container_width=True):
                 st.session_state.selected_plan = 'Free'
                 st.session_state.current_page = 'auth'
@@ -1180,8 +1206,8 @@ if not st.session_state.logged_in:
                     <li>✓ Priority support</li>
                     <li>✓ Progress analytics</li>
                 </ul>
-                <div class="primary-container">
             """, unsafe_allow_html=True)
+            st.markdown('<div class="primary-container">', unsafe_allow_html=True)
             if st.button("Get Pro", key="price_pro", use_container_width=True):
                 st.session_state.selected_plan = 'Pro'
                 st.session_state.current_page = 'auth'
@@ -1204,8 +1230,8 @@ if not st.session_state.logged_in:
                     <li>✓ Dedicated support</li>
                     <li>✓ Unlimited storage</li>
                 </ul>
-                <div class="primary-container">
             """, unsafe_allow_html=True)
+            st.markdown('<div class="primary-container">', unsafe_allow_html=True)
             if st.button("Contact Us", key="price_enterprise", use_container_width=True):
                 st.session_state.selected_plan = 'Enterprise'
                 st.session_state.current_page = 'auth'
@@ -1298,3 +1324,4 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
+```
