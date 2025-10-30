@@ -174,6 +174,11 @@ st.markdown("""
         border-bottom-color: #8b5cf6;
     }
     
+    /* Hide Streamlit buttons default styling */
+    .stButton button {
+        all: unset;
+    }
+    
     .nav-cta {
         padding: 0.7rem 1.8rem !important;
         border-radius: 50px;
@@ -477,96 +482,7 @@ st.markdown("""
         border: none;
     }
     
-    /* Auth form */
-    .auth-form {
-        max-width: 450px;
-        margin: 2rem auto;
-        background: rgba(139, 92, 246, 0.05);
-        border: 1px solid rgba(139, 92, 246, 0.2);
-        border-radius: 24px;
-        padding: 3rem;
-        backdrop-filter: blur(10px);
-    }
-    
-    .auth-tabs {
-        display: flex;
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-    
-    .auth-tab {
-        flex: 1;
-        padding: 0.8rem;
-        border-radius: 12px;
-        background: transparent;
-        border: 1px solid rgba(139, 92, 246, 0.3);
-        color: rgba(255, 255, 255, 0.6);
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-    
-    .auth-tab.active {
-        background: rgba(139, 92, 246, 0.2);
-        border-color: #8b5cf6;
-        color: #fff;
-    }
-    
-    .stTextInput > div > div > input {
-        background: rgba(255, 255, 255, 0.05) !important;
-        border: 1px solid rgba(139, 92, 246, 0.3) !important;
-        border-radius: 12px !important;
-        color: #fff !important;
-        padding: 0.9rem !important;
-        font-size: 0.95rem !important;
-    }
-    
-    .stTextInput > div > div > input:focus {
-        border-color: #8b5cf6 !important;
-        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2) !important;
-    }
-    
-    .stButton > button {
-        width: 100%;
-        padding: 0.9rem !important;
-        border-radius: 12px !important;
-        background: linear-gradient(135deg, #8b5cf6, #ec4899) !important;
-        color: #fff !important;
-        font-weight: 600 !important;
-        border: none !important;
-        margin-top: 1rem !important;
-        transition: all 0.3s !important;
-    }
-    
-    .stButton > button:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4) !important;
-    }
-    
-    /* Success message */
-    .success-message {
-        background: rgba(34, 197, 94, 0.1);
-        border: 1px solid rgba(34, 197, 94, 0.3);
-        border-radius: 12px;
-        padding: 1rem;
-        color: #4ade80;
-        text-align: center;
-        margin-top: 1rem;
-        animation: fadeInUp 0.5s ease-out;
-    }
-    
-    .error-message {
-        background: rgba(239, 68, 68, 0.1);
-        border: 1px solid rgba(239, 68, 68, 0.3);
-        border-radius: 12px;
-        padding: 1rem;
-        color: #f87171;
-        text-align: center;
-        margin-top: 1rem;
-        animation: fadeInUp 0.5s ease-out;
-    }
-    
-    /* Footer */
+    /* Custom footer */
     .custom-footer {
         position: relative;
         z-index: 10;
@@ -625,68 +541,51 @@ st.markdown("""
 <div class="glow-orb pink"></div>
 """, unsafe_allow_html=True)
 
-# JavaScript for smooth scrolling and nav hide on scroll
+# Navigation with working buttons
+st.markdown('<div class="nav-container">', unsafe_allow_html=True)
+st.markdown('<nav>', unsafe_allow_html=True)
+
+# Logo
 st.markdown("""
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const links = document.querySelectorAll('a[href^="#"]');
-        links.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-
-        // Nav hide on scroll down
-        let lastScrollTop = 0;
-        window.addEventListener("scroll", function(){
-            let st = window.pageYOffset || document.documentElement.scrollTop;
-            const nav = document.querySelector('.nav-container');
-            if (st > lastScrollTop && st > 100) {
-                nav.style.transform = 'translateY(-100%)';
-            } else {
-                nav.style.transform = 'translateY(0)';
-            }
-            lastScrollTop = st <= 0 ? 0 : st;
-        }, false);
-    });
-</script>
-
-""", unsafe_allow_html=True)
-
-# Navigation
-st.markdown(f"""
-<div class="nav-container">
-<nav>
 <div class="logo">
 <span class="logo-icon">⚡</span>
 <span>CrypticX</span>
 </div>
-<div class="nav-links">
-<a href="#home" class="nav-link {'active' if st.session_state.current_section == 'home' else ''}">Home</a>
-<a href="#pricing" class="nav-link {'active' if st.session_state.current_section == 'pricing' else ''}">Pricing</a>
-<a href="#dashboard" class="nav-link {'active' if st.session_state.current_section == 'dashboard' else ''}">Dashboard</a>
-<a href="#login" class="nav-link {'active' if st.session_state.current_section == 'login' else ''}">Login</a>
-<button class="nav-cta" onclick="document.getElementById('login').scrollIntoView({{behavior: 'smooth'}})">Sign Up</button>
-</div>
-</nav>
-</div>
 """, unsafe_allow_html=True)
+
+# Navigation links with buttons
+st.markdown('<div class="nav-links">', unsafe_allow_html=True)
+st.markdown('<a href="#home" class="nav-link">Home</a>', unsafe_allow_html=True)
+st.markdown('<a href="#pricing" class="nav-link">Pricing</a>', unsafe_allow_html=True)
+st.markdown('<a href="#dashboard" class="nav-link">Dashboard</a>', unsafe_allow_html=True)
+
+# Create columns for the login link and signup button
+col1, col2 = st.columns([1, 1])
+with col1:
+    if st.button("Login", key="nav_login"):
+        st.switch_page("pages/login.py")
+with col2:
+    if st.button("Sign Up", key="nav_signup"):
+        st.switch_page("pages/signup.py")
+
+st.markdown('</div>', unsafe_allow_html=True)
+st.markdown('</nav>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Content wrapper
 st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 
 # Hero Section
+st.markdown('<div id="home" class="hero-section">', unsafe_allow_html=True)
+st.markdown('<div class="welcome-badge">✨ Welcome to CrypticX - The Ultimate Study Tool</div>', unsafe_allow_html=True)
+st.markdown('<h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>', unsafe_allow_html=True)
+st.markdown('<p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>', unsafe_allow_html=True)
+
+# Hero CTA button
+if st.button("Start Learning Free", key="hero_cta"):
+    st.switch_page("pages/signup.py")
+
 st.markdown("""
-<div id="home" class="hero-section">
-<div class="welcome-badge">✨ Welcome to CrypticX - The Ultimate Study Tool</div>
-<h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
-<p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
-<button class="hero-cta" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Start Learning Free</button>
 <div class="stats-section">
     <div class="stat-item">
         <div class="stat-number">50K+</div>
@@ -750,8 +649,11 @@ st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
 st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
 st.markdown('<p class="section-subtitle">Start free, upgrade when you\'re ready</p>', unsafe_allow_html=True)
 
-st.markdown("""
-<div class="pricing-grid">
+# Pricing cards with buttons
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown("""
     <div class="pricing-card">
         <h3>Free</h3>
         <div class="price">$0<span class="price-period">/mo</span></div>
@@ -761,8 +663,13 @@ st.markdown("""
             ✓ 5 quizzes/week<br>
             ✓ Community support
         </div>
-        <button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Start Free</button>
     </div>
+    """, unsafe_allow_html=True)
+    if st.button("Start Free", key="free_plan"):
+        st.switch_page("pages/signup.py")
+
+with col2:
+    st.markdown("""
     <div class="pricing-card featured">
         <div class="pricing-badge">⭐ MOST POPULAR</div>
         <h3>Pro</h3>
@@ -775,8 +682,13 @@ st.markdown("""
             ✓ Priority support<br>
             ✓ Progress analytics
         </div>
-        <button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Get Pro</button>
     </div>
+    """, unsafe_allow_html=True)
+    if st.button("Get Pro", key="pro_plan"):
+        st.switch_page("pages/signup.py")
+
+with col3:
+    st.markdown("""
     <div class="pricing-card">
         <h3>Enterprise</h3>
         <div class="price">$35<span class="price-period">/mo</span></div>
@@ -788,10 +700,11 @@ st.markdown("""
             ✓ Dedicated support<br>
             ✓ Unlimited storage
         </div>
-        <button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Contact Us</button>
     </div>
-</div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
+    if st.button("Contact Us", key="enterprise_plan"):
+        st.switch_page("pages/signup.py")
+
 st.markdown('</div>', unsafe_allow_html=True)
 
 # Close content wrapper
