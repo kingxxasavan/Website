@@ -1,4 +1,4 @@
-import streamlit as st
+I need you add a authentication into my code the sign and login page from every button import streamlit as st
 import streamlit.components.v1 as components
 
 st.set_page_config(
@@ -15,15 +15,8 @@ if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
 if 'selected_plan' not in st.session_state:
     st.session_state.selected_plan = None
-if 'auth_mode' not in st.session_state:
-    st.session_state.auth_mode = 'login'
 
-# Protect pages: force auth if not logged in
-if st.session_state.current_page != 'auth' and not st.session_state.logged_in:
-    st.session_state.current_page = 'auth'
-    st.rerun()
-
-# Enhanced CSS (unchanged)
+# Enhanced CSS
 st.markdown("""
 <style>
     /* Hide Streamlit elements */
@@ -815,6 +808,10 @@ if st.session_state.current_page == 'auth':
     if st.session_state.selected_plan:
         st.markdown(f'<div class="welcome-badge" style="margin-bottom: 1.5rem;">Selected Plan: {st.session_state.selected_plan}</div>', unsafe_allow_html=True)
     
+    # Initialize form mode
+    if 'auth_mode' not in st.session_state:
+        st.session_state.auth_mode = 'login'
+    
     # Auth header
     if st.session_state.auth_mode == 'login':
         st.markdown("""
@@ -831,9 +828,8 @@ if st.session_state.current_page == 'auth':
         
         if st.button("Sign In", key="login_btn", use_container_width=True):
             if email and password:
+                st.markdown('<div class="message-box message-success">✓ Welcome back! Redirecting...</div>', unsafe_allow_html=True)
                 st.session_state.logged_in = True
-                st.session_state.current_page = 'home'
-                st.rerun()
             else:
                 st.markdown('<div class="message-box message-error">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
         
@@ -861,9 +857,8 @@ if st.session_state.current_page == 'auth':
         
         if st.button("Create Account", key="signup_btn", use_container_width=True):
             if name and email and password:
+                st.markdown('<div class="message-box message-success">✓ Account created successfully! Welcome to CrypticX!</div>', unsafe_allow_html=True)
                 st.session_state.logged_in = True
-                st.session_state.current_page = 'home'
-                st.rerun()
             else:
                 st.markdown('<div class="message-box message-error">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
         
@@ -891,9 +886,9 @@ if st.session_state.current_page == 'auth':
     st.markdown('</div>', unsafe_allow_html=True)  # Close content-wrapper
 
 else:
-    # HOME PAGE (only if logged in)
+    # HOME PAGE
     
-    # Check for navigation clicks via query params (now safe since logged in)
+    # Check for navigation clicks via query params
     query_params = st.query_params
     if 'action' in query_params:
         action = query_params['action']
@@ -902,10 +897,32 @@ else:
             st.session_state.auth_mode = 'login'
             st.query_params.clear()
             st.rerun()
-        # Other actions now could go to dashboard, but for now ignore or handle as home
+        elif action == 'hero':
+            st.session_state.current_page = 'auth'
+            st.session_state.selected_plan = 'Free'
+            st.session_state.auth_mode = 'signup'
+            st.query_params.clear()
+            st.rerun()
+        elif action == 'free':
+            st.session_state.current_page = 'auth'
+            st.session_state.selected_plan = 'Free'
+            st.session_state.auth_mode = 'signup'
+            st.query_params.clear()
+            st.rerun()
+        elif action == 'pro':
+            st.session_state.current_page = 'auth'
+            st.session_state.selected_plan = 'Pro'
+            st.session_state.auth_mode = 'signup'
+            st.query_params.clear()
+            st.rerun()
+        elif action == 'enterprise':
+            st.session_state.current_page = 'auth'
+            st.session_state.selected_plan = 'Enterprise'
+            st.session_state.auth_mode = 'signup'
+            st.query_params.clear()
+            st.rerun()
     
-    # Conditional nav for logged in user
-    st.markdown(f"""
+    st.markdown("""
     <div class="nav-container">
     <nav>
     <div class="logo">
@@ -913,10 +930,11 @@ else:
     <span>CrypticX</span>
     </div>
     <div class="nav-links">
-    <span class="nav-link active">Home</span>
+    <span class="nav-link">Home</span>
     <span class="nav-link">Pricing</span>
     <span class="nav-link">Dashboard</span>
-    <span class="nav-link" onclick="window.location.href='?action=auth'">Logout</span>
+    <span class="nav-link" onclick="window.location.href='?action=auth'">Login</span>
+    <button class="nav-cta" onclick="window.location.href='?action=auth'">Sign Up</button>
     </div>
     </nav>
     </div>
@@ -924,13 +942,13 @@ else:
 
     st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 
-    # Hero Section (buttons now for logged in, e.g., to dashboard)
+    # Hero Section
     st.markdown("""
     <div id="home" class="hero-section">
-    <div class="welcome-badge">✨ Welcome back to CrypticX</div>
+    <div class="welcome-badge">✨ Welcome to CrypticX - The Ultimate Study Tool</div>
     <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
     <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
-    <button class="hero-cta">Start Learning</button>
+    <button class="hero-cta" onclick="window.location.href='?action=hero'">Start Learning Free</button>
     <div class="stats-section">
         <div class="stat-item">
             <div class="stat-number">50K+</div>
@@ -989,7 +1007,7 @@ else:
 
     st.markdown('</div></div>', unsafe_allow_html=True)
 
-    # Pricing Section (buttons for upgrade if logged in)
+    # Pricing Section
     st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
     st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
     st.markdown('<p class="section-subtitle">Start free, upgrade when you are ready</p>', unsafe_allow_html=True)
@@ -1005,7 +1023,7 @@ else:
                 ✓ 5 quizzes/week<br>
                 ✓ Community support
             </div>
-            <button class="pricing-button">Current Plan</button>
+            <button class="pricing-button" onclick="window.location.href='?action=free'">Start Free</button>
         </div>
         <div class="pricing-card featured">
             <div class="pricing-badge">⭐ MOST POPULAR</div>
@@ -1019,7 +1037,7 @@ else:
                 ✓ Priority support<br>
                 ✓ Progress analytics
             </div>
-            <button class="pricing-button">Upgrade to Pro</button>
+            <button class="pricing-button" onclick="window.location.href='?action=pro'">Get Pro</button>
         </div>
         <div class="pricing-card">
             <h3>Enterprise</h3>
@@ -1032,7 +1050,7 @@ else:
                 ✓ Dedicated support<br>
                 ✓ Unlimited storage
             </div>
-            <button class="pricing-button">Get Enterprise</button>
+            <button class="pricing-button" onclick="window.location.href='?action=enterprise'">Get Enterprise</button>
         </div>
     </div>
     """, unsafe_allow_html=True)
