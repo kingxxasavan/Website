@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 
 st.set_page_config(
     page_title="CrypticX - AI Study Tool",
@@ -14,14 +15,6 @@ if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
 if 'show_signup' not in st.session_state:
     st.session_state.show_signup = False
-
-# Check for navigation triggers
-if 'navigate_to' in st.session_state:
-    if st.session_state.navigate_to == 'login':
-        st.switch_page("pages/login.py")
-    elif st.session_state.navigate_to == 'signup':
-        st.switch_page("pages/signup.py")
-    st.session_state.navigate_to = None
 
 # Enhanced CSS with smooth scrolling and animations
 st.markdown("""
@@ -544,22 +537,8 @@ st.markdown("""
 <div class="glow-orb pink"></div>
 """, unsafe_allow_html=True)
 
-# JavaScript for navigation
-st.markdown("""
-<script>
-    // Navigation click handlers
-    function navigateToLogin() {
-        window.parent.postMessage({type: 'streamlit:setComponentValue', value: 'login'}, '*');
-    }
-    
-    function navigateToSignup() {
-        window.parent.postMessage({type: 'streamlit:setComponentValue', value: 'signup'}, '*');
-    }
-</script>
-""", unsafe_allow_html=True)
-
-# Navigation - BACK TO ORIGINAL DESIGN
-st.markdown(f"""
+# Navigation with working JavaScript
+components.html("""
 <div class="nav-container">
 <nav>
 <div class="logo">
@@ -567,35 +546,51 @@ st.markdown(f"""
 <span>CrypticX</span>
 </div>
 <div class="nav-links">
-<a href="#home" class="nav-link {'active' if st.session_state.current_section == 'home' else ''}">Home</a>
-<a href="#pricing" class="nav-link {'active' if st.session_state.current_section == 'pricing' else ''}">Pricing</a>
-<a href="#dashboard" class="nav-link {'active' if st.session_state.current_section == 'dashboard' else ''}">Dashboard</a>
-<a href="#login" class="nav-link {'active' if st.session_state.current_section == 'login' else ''}">Login</a>
-<button class="nav-cta" onclick="window.location.href='?page=signup'">Sign Up</button>
+<a href="#home" class="nav-link active">Home</a>
+<a href="#pricing" class="nav-link">Pricing</a>
+<a href="#dashboard" class="nav-link">Dashboard</a>
+<a href="#" class="nav-link" onclick="navigateToLogin(); return false;">Login</a>
+<button class="nav-cta" onclick="navigateToSignup(); return false;">Sign Up</button>
 </div>
 </nav>
 </div>
-""", unsafe_allow_html=True)
 
-# Check URL params for navigation
-query_params = st.query_params
-if "page" in query_params:
-    page = query_params["page"]
-    if page == "login":
-        st.switch_page("pages/login.py")
-    elif page == "signup":
-        st.switch_page("pages/signup.py")
+<script>
+function navigateToLogin() {
+    window.parent.postMessage({type: 'streamlit:setComponentValue', value: {action: 'login'}}, '*');
+}
+
+function navigateToSignup() {
+    window.parent.postMessage({type: 'streamlit:setComponentValue', value: {action: 'signup'}}, '*');
+}
+</script>
+""", height=80)
+
+# Listen for navigation events
+nav_action = st.query_params.get("nav")
+if nav_action == "login":
+    st.switch_page("pages/login.py")
+elif nav_action == "signup":
+    st.switch_page("pages/signup.py")
 
 # Content wrapper
 st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 
-# Hero Section - BACK TO ORIGINAL
+# Hero Section with working button
 st.markdown("""
 <div id="home" class="hero-section">
 <div class="welcome-badge">✨ Welcome to CrypticX - The Ultimate Study Tool</div>
 <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
 <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
-<button class="hero-cta" onclick="window.location.href='?page=signup'">Start Learning Free</button>
+""", unsafe_allow_html=True)
+
+# Hero CTA button - Using Streamlit button in a centered container
+col1, col2, col3 = st.columns([1, 1, 1])
+with col2:
+    if st.button("Start Learning Free", key="hero_cta", use_container_width=True):
+        st.switch_page("pages/signup.py")
+
+st.markdown("""
 <div class="stats-section">
     <div class="stat-item">
         <div class="stat-number">50K+</div>
@@ -654,53 +649,67 @@ st.markdown("""
 
 st.markdown('</div></div>', unsafe_allow_html=True)
 
-# Pricing Section - BACK TO ORIGINAL
+# Pricing Section with working buttons
 st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
 st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
 st.markdown('<p class="section-subtitle">Start free, upgrade when you\'re ready</p>', unsafe_allow_html=True)
 
+st.markdown('<div class="pricing-grid">', unsafe_allow_html=True)
+
+# Column 1 - Free Plan
 st.markdown("""
-<div class="pricing-grid">
-    <div class="pricing-card">
-        <h3>Free</h3>
-        <div class="price">$0<span class="price-period">/mo</span></div>
-        <div class="feature-list">
-            ✓ 10 AI questions/day<br>
-            ✓ Basic summaries<br>
-            ✓ 5 quizzes/week<br>
-            ✓ Community support
-        </div>
-        <button class="pricing-button" onclick="window.location.href='?page=signup'">Start Free</button>
+<div class="pricing-card">
+    <h3>Free</h3>
+    <div class="price">$0<span class="price-period">/mo</span></div>
+    <div class="feature-list">
+        ✓ 10 AI questions/day<br>
+        ✓ Basic summaries<br>
+        ✓ 5 quizzes/week<br>
+        ✓ Community support
     </div>
-    <div class="pricing-card featured">
-        <div class="pricing-badge">⭐ MOST POPULAR</div>
-        <h3>Pro</h3>
-        <div class="price">$15<span class="price-period">/mo</span></div>
-        <div class="feature-list">
-            ✓ Unlimited AI questions<br>
-            ✓ Advanced summaries<br>
-            ✓ Unlimited quizzes<br>
-            ✓ PDF upload (100MB)<br>
-            ✓ Priority support<br>
-            ✓ Progress analytics
-        </div>
-        <button class="pricing-button" onclick="window.location.href='?page=signup'">Get Pro</button>
-    </div>
-    <div class="pricing-card">
-        <h3>Enterprise</h3>
-        <div class="price">$35<span class="price-period">/mo</span></div>
-        <div class="feature-list">
-            ✓ Everything in Pro<br>
-            ✓ Team accounts<br>
-            ✓ Advanced analytics<br>
-            ✓ Custom integrations<br>
-            ✓ Dedicated support<br>
-            ✓ Unlimited storage
-        </div>
-        <button class="pricing-button" onclick="window.location.href='?page=signup'">Contact Us</button>
-    </div>
-</div>
 """, unsafe_allow_html=True)
+if st.button("Start Free", key="free_plan", use_container_width=True):
+    st.switch_page("pages/signup.py")
+st.markdown('</div>', unsafe_allow_html=True)
+
+# Column 2 - Pro Plan
+st.markdown("""
+<div class="pricing-card featured">
+    <div class="pricing-badge">⭐ MOST POPULAR</div>
+    <h3>Pro</h3>
+    <div class="price">$15<span class="price-period">/mo</span></div>
+    <div class="feature-list">
+        ✓ Unlimited AI questions<br>
+        ✓ Advanced summaries<br>
+        ✓ Unlimited quizzes<br>
+        ✓ PDF upload (100MB)<br>
+        ✓ Priority support<br>
+        ✓ Progress analytics
+    </div>
+""", unsafe_allow_html=True)
+if st.button("Get Pro", key="pro_plan", use_container_width=True):
+    st.switch_page("pages/signup.py")
+st.markdown('</div>', unsafe_allow_html=True)
+
+# Column 3 - Enterprise Plan
+st.markdown("""
+<div class="pricing-card">
+    <h3>Enterprise</h3>
+    <div class="price">$35<span class="price-period">/mo</span></div>
+    <div class="feature-list">
+        ✓ Everything in Pro<br>
+        ✓ Team accounts<br>
+        ✓ Advanced analytics<br>
+        ✓ Custom integrations<br>
+        ✓ Dedicated support<br>
+        ✓ Unlimited storage
+    </div>
+""", unsafe_allow_html=True)
+if st.button("Contact Us", key="enterprise_plan", use_container_width=True):
+    st.switch_page("pages/signup.py")
+st.markdown('</div>', unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
 # Close content wrapper
