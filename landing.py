@@ -1,17 +1,9 @@
 import streamlit as st
-
 import streamlit.components.v1 as components
-
-
-
 st.set_page_config(
-
-    page_title="CrypticX - AI Study Tool",
-
+page_title="CrypticX - AI Study Tool",
     page_icon="⚡",
-
     layout="wide",
-
     initial_sidebar_state="collapsed"
 
 )
@@ -21,15 +13,10 @@ st.set_page_config(
 # Initialize session state
 
 if 'current_section' not in st.session_state:
-
     st.session_state.current_section = 'home'
-
 if 'logged_in' not in st.session_state:
-
     st.session_state.logged_in = False
-
 if 'show_signup' not in st.session_state:
-
     st.session_state.show_signup = False
 
 
@@ -37,9 +24,7 @@ if 'show_signup' not in st.session_state:
 # Enhanced CSS with smooth scrolling and animations
 
 st.markdown("""
-
 <style>
-
     /* Hide Streamlit elements */
 
     #MainMenu {visibility: hidden !important;}
@@ -51,8 +36,6 @@ st.markdown("""
     .stDeployButton {display: none !important;}
 
     .stDecoration {display: none !important;}
-
-    
 
     /* Reset padding */
 
