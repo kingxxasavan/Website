@@ -272,4 +272,4 @@ else:
         st.session_state.current_page = 'dashboard'
         st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
-st.markdown('<div class="custom-footer"><p>&copy; 2025 CrypticX. All rights reserved.</p><div class="footer-links"><a href="#" class="footer-link">Privacy</a><a href="#" class="footer-link">Terms</a><a href="#" class="footer-link">Contact</a></div></div>', unsafe_allow_html=True) all my button are there other than starting for free button which is hidden
+st.markdown('<div class="custom-footer"><p>&copy; 2025 CrypticX. All rights reserved.</p><div class="footer-links"><a href="#" class="footer-link">Privacy</a><a href="#" class="footer-link">Terms</a><a href="#" class="footer-link">Contact</a></div></div>', unsafe_allow_html=True)
