@@ -32,7 +32,7 @@ if 'action' in query_params:
             st.session_state.current_page = 'dashboard'
             handled = True
         else:
-            st.session_state.current_page = 'home'  # Redirect to home if not logged in
+            st.session_state.current_page = 'home'
             handled = True
     elif action == 'auth':
         st.session_state.current_page = 'auth'
@@ -41,7 +41,7 @@ if 'action' in query_params:
         del st.query_params['action']
         st.rerun()
 
-# Full CSS (original + auth)
+# Full CSS (original + auth, removed .stButton hiding)
 st.markdown("""
 <style>
     /* Hide Streamlit elements */
@@ -62,9 +62,6 @@ st.markdown("""
     .stApp {margin: 0 !important; padding: 0 !important;}
     section.main > div {padding: 0 !important;}
     div[data-testid="stAppViewContainer"] {padding: 0 !important; margin: 0 !important;}
-    
-    /* Hide all Streamlit buttons completely */
-    .stButton {display: none !important; visibility: hidden !important; position: absolute !important; width: 0 !important; height: 0 !important; opacity: 0 !important;}
     
     /* Base styles */
     * {margin: 0; padding: 0; box-sizing: border-box;}
@@ -144,6 +141,11 @@ st.markdown("""
     .pricing-button:hover {background: rgba(139, 92, 246, 0.3); border-color: #8b5cf6; transform: translateY(-2px);}
     .pricing-card.featured .pricing-button {background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none;}
     
+    /* Style Streamlit buttons to match */
+    .stButton > button {width: 100%; padding: 1rem 2rem; border-radius: 50px; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); color: #fff; font-weight: 600; border: none; font-size: 1.1rem; box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4); transition: all 0.3s; margin: 1rem 0;}
+    .stButton > button:hover {transform: translateY(-3px); box-shadow: 0 12px 40px rgba(139, 92, 246, 0.6);}
+    div.stButton > button:first-child {margin-top: 0;}
+    
     /* Dashboard styles */
     .dashboard-section {min-height: calc(100vh - 80px); display: flex; flex-direction: column; justify-content: flex-start; align-items: center; text-align: center; padding: 4rem 2rem; position: relative;}
     .dashboard-welcome {font-size: 3rem; font-weight: 700; margin-bottom: 1rem; color: #fff;}
@@ -184,10 +186,12 @@ if not st.session_state.logged_in:
     if st.session_state.current_page == 'auth':
         st.markdown('<div class="nav-container"><nav><div class="logo" onclick="history.back()"><span class="logo-icon">⚡</span><span>CrypticX</span></div></nav></div>', unsafe_allow_html=True)
         st.markdown('<div class="content-wrapper"><div class="auth-container"><div class="auth-box">', unsafe_allow_html=True)
-        if st.button("← Back to Home", key="back_home"):
-            st.session_state.current_page = 'home'
-            st.session_state.selected_plan = None
-            st.rerun()
+        col_back, _ = st.columns([1, 3])
+        with col_back:
+            if st.button("← Back to Home", key="back_home"):
+                st.session_state.current_page = 'home'
+                st.session_state.selected_plan = None
+                st.rerun()
         if st.session_state.selected_plan:
             st.markdown(f'<div class="welcome-badge" style="margin-bottom: 1.5rem;">Selected Plan: {st.session_state.selected_plan}</div>', unsafe_allow_html=True)
         if st.session_state.auth_mode == 'login':
@@ -237,23 +241,23 @@ if not st.session_state.logged_in:
         st.markdown('<div id="pricing" class="section"><h2 class="section-title">Choose Your Plan</h2><p class="section-subtitle">Start free, upgrade when you are ready</p><div class="pricing-grid">', unsafe_allow_html=True)
         col1, col2, col3 = st.columns(3)
         with col1:
+            st.markdown('<div class="pricing-card"><h3>Free</h3><div class="price">$0<span class="price-period">/mo</span></div><div class="feature-list">✓ 10 AI questions/day<br>✓ Basic summaries<br>✓ 5 quizzes/week<br>✓ Community support</div></div>', unsafe_allow_html=True)
             if st.button("Start Free", key="plan_free"):
                 st.session_state.selected_plan = 'Free'
                 st.session_state.current_page = 'auth'
                 st.rerun()
-            st.markdown('<div class="pricing-card"><h3>Free</h3><div class="price">$0<span class="price-period">/mo</span></div><div class="feature-list">✓ 10 AI questions/day<br>✓ Basic summaries<br>✓ 5 quizzes/week<br>✓ Community support</div><button class="pricing-button">Start Free</button></div>', unsafe_allow_html=True)
         with col2:
+            st.markdown('<div class="pricing-card featured"><div class="pricing-badge">⭐ MOST POPULAR</div><h3>Pro</h3><div class="price">$15<span class="price-period">/mo</span></div><div class="feature-list">✓ Unlimited AI questions<br>✓ Advanced summaries<br>✓ Unlimited quizzes<br>✓ PDF upload (100MB)<br>✓ Priority support<br>✓ Progress analytics</div></div>', unsafe_allow_html=True)
             if st.button("Get Pro", key="plan_pro"):
                 st.session_state.selected_plan = 'Pro'
                 st.session_state.current_page = 'auth'
                 st.rerun()
-            st.markdown('<div class="pricing-card featured"><div class="pricing-badge">⭐ MOST POPULAR</div><h3>Pro</h3><div class="price">$15<span class="price-period">/mo</span></div><div class="feature-list">✓ Unlimited AI questions<br>✓ Advanced summaries<br>✓ Unlimited quizzes<br>✓ PDF upload (100MB)<br>✓ Priority support<br>✓ Progress analytics</div><button class="pricing-button">Get Pro</button></div>', unsafe_allow_html=True)
         with col3:
+            st.markdown('<div class="pricing-card"><h3>Enterprise</h3><div class="price">$35<span class="price-period">/mo</span></div><div class="feature-list">✓ Everything in Pro<br>✓ Team accounts<br>✓ Advanced analytics<br>✓ Custom integrations<br>✓ Dedicated support<br>✓ Unlimited storage</div></div>', unsafe_allow_html=True)
             if st.button("Get Enterprise", key="plan_enterprise"):
                 st.session_state.selected_plan = 'Enterprise'
                 st.session_state.current_page = 'auth'
                 st.rerun()
-            st.markdown('<div class="pricing-card"><h3>Enterprise</h3><div class="price">$35<span class="price-period">/mo</span></div><div class="feature-list">✓ Everything in Pro<br>✓ Team accounts<br>✓ Advanced analytics<br>✓ Custom integrations<br>✓ Dedicated support<br>✓ Unlimited storage</div><button class="pricing-button">Get Enterprise</button></div>', unsafe_allow_html=True)
         st.markdown('</div></div></div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 else:
@@ -272,7 +276,6 @@ else:
         plan_badge = f" | Plan: {st.session_state.selected_plan}" if st.session_state.selected_plan else ""
         st.markdown(f'<div class="dashboard-section"><h1 class="dashboard-welcome">Welcome back, {st.session_state.user_name}!</h1><p class="dashboard-subtitle">Your AI study dashboard{plan_badge}</p><div class="dashboard-stats"><div class="dashboard-stat"><div class="dashboard-stat-number">42</div><div class="dashboard-stat-label">Questions Answered This Week</div></div><div class="dashboard-stat"><div class="dashboard-stat-number">87%</div><div class="dashboard-stat-label">Quiz Average</div></div><div class="dashboard-stat"><div class="dashboard-stat-number">5</div><div class="dashboard-stat-label">Active Courses</div></div><div class="dashboard-stat"><div class="dashboard-stat-number">2h 30m</div><div class="dashboard-stat-label">Study Time Today</div></div></div><div style="text-align: center; margin-top: 2rem;"><h3>Ask your AI study buddy:</h3>{st.chat_input("e.g., Explain quantum physics simply")}</div><button class="hero-cta" onclick="window.location.reload()">Refresh Progress</button></div>', unsafe_allow_html=True)
     else:
-        # Redirect logged-in users to dashboard for home/pricing
         st.session_state.current_page = 'dashboard'
         st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
