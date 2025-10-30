@@ -1,4 +1,4 @@
-import streamlit as st
+
 import streamlit.components.v1 as components
 
 st.set_page_config(
@@ -830,8 +830,6 @@ if st.session_state.current_page == 'auth':
             if email and password:
                 st.markdown('<div class="message-box message-success">✓ Welcome back! Redirecting...</div>', unsafe_allow_html=True)
                 st.session_state.logged_in = True
-                st.session_state.current_page = 'home'
-                st.rerun()
             else:
                 st.markdown('<div class="message-box message-error">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
         
@@ -861,8 +859,6 @@ if st.session_state.current_page == 'auth':
             if name and email and password:
                 st.markdown('<div class="message-box message-success">✓ Account created successfully! Welcome to CrypticX!</div>', unsafe_allow_html=True)
                 st.session_state.logged_in = True
-                st.session_state.current_page = 'home'
-                st.rerun()
             else:
                 st.markdown('<div class="message-box message-error">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
         
@@ -890,10 +886,7 @@ if st.session_state.current_page == 'auth':
     st.markdown('</div>', unsafe_allow_html=True)  # Close content-wrapper
 
 else:
-    # HOME PAGE - Protected if not logged in
-    if not st.session_state.logged_in:
-        st.session_state.current_page = 'auth'
-        st.rerun()
+    # HOME PAGE
     
     # Check for navigation clicks via query params
     query_params = st.query_params
@@ -940,8 +933,8 @@ else:
     <span class="nav-link">Home</span>
     <span class="nav-link">Pricing</span>
     <span class="nav-link">Dashboard</span>
-    <span class="nav-link" onclick="window.location.href='?action=auth'">Logout</span>
-    <button class="nav-cta" onclick="window.location.href='?action=auth'">Account</button>
+    <span class="nav-link" onclick="window.location.href='?action=auth'">Login</span>
+    <button class="nav-cta" onclick="window.location.href='?action=auth'">Sign Up</button>
     </div>
     </nav>
     </div>
@@ -949,13 +942,13 @@ else:
 
     st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 
-    # Hero Section - Logged in version
+    # Hero Section
     st.markdown("""
     <div id="home" class="hero-section">
-    <div class="welcome-badge">✨ Welcome back to CrypticX</div>
-    <h1 class="hero-title">Your AI Study Journey Awaits</h1>
-    <p class="hero-subtitle">Continue mastering your studies with personalized AI tools. Dive into your dashboard and unlock your potential.</p>
-    <button class="hero-cta" onclick="window.location.href='#dashboard'">Go to Dashboard</button>
+    <div class="welcome-badge">✨ Welcome to CrypticX - The Ultimate Study Tool</div>
+    <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
+    <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
+    <button class="hero-cta" onclick="window.location.href='?action=hero'">Start Learning Free</button>
     <div class="stats-section">
         <div class="stat-item">
             <div class="stat-number">50K+</div>
@@ -1014,10 +1007,10 @@ else:
 
     st.markdown('</div></div>', unsafe_allow_html=True)
 
-    # Pricing Section - Buttons now go to dashboard or account
+    # Pricing Section
     st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
-    st.markdown('<h2 class="section-title">Your Current Plan</h2>', unsafe_allow_html=True)
-    st.markdown('<p class="section-subtitle">Manage your subscription here</p>', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
+    st.markdown('<p class="section-subtitle">Start free, upgrade when you are ready</p>', unsafe_allow_html=True)
 
     st.markdown("""
     <div class="pricing-grid">
@@ -1030,7 +1023,7 @@ else:
                 ✓ 5 quizzes/week<br>
                 ✓ Community support
             </div>
-            <button class="pricing-button" onclick="window.location.href='#dashboard'">Use Free</button>
+            <button class="pricing-button" onclick="window.location.href='?action=free'">Start Free</button>
         </div>
         <div class="pricing-card featured">
             <div class="pricing-badge">⭐ MOST POPULAR</div>
@@ -1044,7 +1037,7 @@ else:
                 ✓ Priority support<br>
                 ✓ Progress analytics
             </div>
-            <button class="pricing-button" onclick="window.location.href='?action=auth'">Upgrade to Pro</button>
+            <button class="pricing-button" onclick="window.location.href='?action=pro'">Get Pro</button>
         </div>
         <div class="pricing-card">
             <h3>Enterprise</h3>
@@ -1057,7 +1050,7 @@ else:
                 ✓ Dedicated support<br>
                 ✓ Unlimited storage
             </div>
-            <button class="pricing-button" onclick="window.location.href='?action=auth'">Contact Sales</button>
+            <button class="pricing-button" onclick="window.location.href='?action=enterprise'">Get Enterprise</button>
         </div>
     </div>
     """, unsafe_allow_html=True)
