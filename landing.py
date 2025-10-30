@@ -1035,7 +1035,7 @@ else:
             st.query_params.clear()
             st.rerun()
     
-    # Render navigation using components.html to ensure proper HTML rendering
+    # Render navigation using components.html with appropriate height
     if st.session_state.logged_in:
         nav_html = f"""
         <div class="nav-links">
@@ -1067,7 +1067,7 @@ else:
             {nav_html}
         </nav>
     </div>
-    """, height=0)
+    """, height=80)
 
     st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 
