@@ -124,7 +124,6 @@ st.markdown("""
         color: #8b5cf6;
         cursor: pointer;
         letter-spacing: 0.5px;
-        text-decoration: none;
     }
     
     .logo-icon {
@@ -136,19 +135,6 @@ st.markdown("""
     @keyframes pulse {
         0%, 100% { filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.8)); }
         50% { filter: drop-shadow(0 0 20px rgba(139, 92, 246, 1)); }
-    }
-    
-    .back-link {
-        color: rgba(255, 255, 255, 0.7);
-        text-decoration: none;
-        font-size: 0.95rem;
-        font-weight: 500;
-        transition: all 0.3s;
-        padding: 0.5rem 1rem;
-    }
-    
-    .back-link:hover {
-        color: #fff;
     }
     
     /* Auth container */
@@ -286,50 +272,11 @@ st.markdown("""
         margin-left: 1rem;
     }
     
-    .social-login {
-        display: flex;
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-    
-    .social-button {
-        flex: 1;
-        padding: 0.9rem;
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(139, 92, 246, 0.3);
-        color: #fff;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-    }
-    
-    .social-button:hover {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: #8b5cf6;
-        transform: translateY(-2px);
-    }
-    
     .auth-footer {
         text-align: center;
         margin-top: 2rem;
         color: rgba(255, 255, 255, 0.6);
         font-size: 0.95rem;
-    }
-    
-    .auth-footer a {
-        color: #8b5cf6;
-        text-decoration: none;
-        font-weight: 600;
-        transition: color 0.3s;
-    }
-    
-    .auth-footer a:hover {
-        color: #ec4899;
     }
     
     .success-message {
@@ -354,40 +301,6 @@ st.markdown("""
         animation: fadeInUp 0.5s ease-out;
     }
     
-    .password-strength {
-        margin-top: 0.5rem;
-        font-size: 0.85rem;
-    }
-    
-    .strength-bar {
-        height: 4px;
-        border-radius: 2px;
-        background: rgba(255, 255, 255, 0.1);
-        margin-top: 0.5rem;
-        overflow: hidden;
-    }
-    
-    .strength-fill {
-        height: 100%;
-        transition: all 0.3s;
-        border-radius: 2px;
-    }
-    
-    .strength-weak .strength-fill {
-        width: 33%;
-        background: #ef4444;
-    }
-    
-    .strength-medium .strength-fill {
-        width: 66%;
-        background: #f59e0b;
-    }
-    
-    .strength-strong .strength-fill {
-        width: 100%;
-        background: #22c55e;
-    }
-    
     /* Responsive */
     @media (max-width: 768px) {
         nav {padding: 1rem 1.5rem;}
@@ -404,18 +317,24 @@ st.markdown("""
 <div class="glow-orb pink"></div>
 """, unsafe_allow_html=True)
 
-# Navigation
-st.markdown("""
-<div class="nav-container">
-    <nav>
-        <a href="landing.py" class="logo">
-            <span class="logo-icon">⚡</span>
-            <span>CrypticX</span>
-        </a>
-        <a href="landing.py" class="back-link">← Back to Home</a>
-    </nav>
-</div>
-""", unsafe_allow_html=True)
+# Navigation with back button
+st.markdown('<div class="nav-container">', unsafe_allow_html=True)
+st.markdown('<nav>', unsafe_allow_html=True)
+
+col_nav1, col_nav2 = st.columns([3, 1])
+with col_nav1:
+    st.markdown("""
+    <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <span>CrypticX</span>
+    </div>
+    """, unsafe_allow_html=True)
+with col_nav2:
+    if st.button("← Back to Home", key="back_home"):
+        st.switch_page("landing.py")
+
+st.markdown('</nav>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Auth Container
 st.markdown('<div class="auth-container">', unsafe_allow_html=True)
@@ -479,18 +398,18 @@ st.markdown('<div class="divider">or sign up with</div>', unsafe_allow_html=True
 # Social Signup
 col1, col2 = st.columns(2)
 with col1:
-    if st.button("🔍 Google", use_container_width=True):
+    if st.button("🔍 Google", key="google_signup", use_container_width=True):
         st.info("Google signup coming soon!")
 with col2:
-    if st.button("📘 Facebook", use_container_width=True):
+    if st.button("📘 Facebook", key="fb_signup", use_container_width=True):
         st.info("Facebook signup coming soon!")
 
-# Footer
-st.markdown("""
-<div class="auth-footer">
-    Already have an account? <a href="login.py">Sign in</a>
-</div>
-""", unsafe_allow_html=True)
+# Footer with link to login
+st.markdown('<div class="auth-footer">', unsafe_allow_html=True)
+st.markdown('Already have an account? ', unsafe_allow_html=True)
+if st.button("Sign in", key="goto_login", type="secondary"):
+    st.switch_page("pages/login.py")
+st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
