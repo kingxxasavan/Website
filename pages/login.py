@@ -1,7 +1,7 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="CrypticX - Sign In",
+    page_title="Login - CrypticX",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -10,14 +10,8 @@ st.set_page_config(
 # Initialize session state
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
-if 'show_signup' not in st.session_state:
-    st.session_state.show_signup = False
-if 'auth_error' not in st.session_state:
-    st.session_state.auth_error = ""
-if 'auth_success' not in st.session_state:
-    st.session_state.auth_success = ""
 
-# Enhanced CSS matching landing page style
+# CSS matching landing.py style
 st.markdown("""
 <style>
     /* Hide Streamlit elements */
@@ -36,7 +30,7 @@ st.markdown("""
     
     /* Base styles */
     * {margin: 0; padding: 0; box-sizing: border-box;}
-    html, body {margin: 0 !important; padding: 0 !important; overflow-x: hidden; scroll-behavior: smooth;}
+    html, body {margin: 0 !important; padding: 0 !important; overflow-x: hidden;}
     
     .stApp {
         background: #0a0a0f;
@@ -98,11 +92,7 @@ st.markdown("""
         }
     }
     
-    .fade-in-up {
-        animation: fadeInUp 0.6s ease-out forwards;
-    }
-    
-    /* Navigation (simplified for auth page) */
+    /* Navigation */
     .nav-container {
         position: fixed;
         top: 0;
@@ -112,10 +102,11 @@ st.markdown("""
         background: transparent;
         backdrop-filter: blur(20px);
         border-bottom: 1px solid rgba(139, 92, 246, 0.1);
-        transition: all 0.3s ease;
     }
     
     nav {
+        position: relative;
+        z-index: 100;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -147,111 +138,91 @@ st.markdown("""
         50% { filter: drop-shadow(0 0 20px rgba(139, 92, 246, 1)); }
     }
     
-    .nav-back {
+    .back-link {
         color: rgba(255, 255, 255, 0.7);
         text-decoration: none;
         font-size: 0.95rem;
         font-weight: 500;
         transition: all 0.3s;
-        cursor: pointer;
+        padding: 0.5rem 1rem;
     }
     
-    .nav-back:hover {
+    .back-link:hover {
         color: #fff;
     }
     
-    /* Main content */
-    .content-wrapper {
+    /* Auth container */
+    .auth-container {
         position: relative;
         z-index: 10;
-        padding-top: 80px;
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: 6rem 2rem 2rem;
     }
     
-    /* Auth section */
-    .auth-section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding: 4rem 2rem;
-        max-width: 500px;
-        width: 100%;
-    }
-    
-    .auth-title {
-        font-size: 3rem;
-        font-weight: 800;
-        line-height: 1.1;
-        margin-bottom: 1rem;
-        background: linear-gradient(135deg, #ffffff 0%, #8b5cf6 50%, #ec4899 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        animation: fadeInUp 0.8s ease-out backwards;
-    }
-    
-    .auth-subtitle {
-        font-size: 1.15rem;
-        color: rgba(255, 255, 255, 0.6);
-        margin-bottom: 3rem;
-        line-height: 1.7;
-        animation: fadeInUp 1s ease-out 0.2s backwards;
-    }
-    
-    /* Auth form */
-    .auth-form {
+    .auth-box {
+        max-width: 480px;
         width: 100%;
         background: rgba(139, 92, 246, 0.05);
         border: 1px solid rgba(139, 92, 246, 0.2);
         border-radius: 24px;
         padding: 3rem;
         backdrop-filter: blur(10px);
-        animation: fadeInUp 1.2s ease-out 0.4s backwards;
+        animation: fadeInUp 0.6s ease-out;
     }
     
-    .auth-tabs {
-        display: flex;
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-    
-    .auth-tab {
-        flex: 1;
-        padding: 1rem;
-        border-radius: 12px;
-        background: transparent;
-        border: 1px solid rgba(139, 92, 246, 0.3);
-        color: rgba(255, 255, 255, 0.6);
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
+    .auth-header {
         text-align: center;
+        margin-bottom: 2.5rem;
     }
     
-    .auth-tab.active {
-        background: rgba(139, 92, 246, 0.2);
-        border-color: #8b5cf6;
-        color: #fff;
+    .auth-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #ffffff 0%, #8b5cf6 50%, #ec4899 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+    }
+    
+    .auth-subtitle {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 1rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+        display: block;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
     }
     
     .stTextInput > div > div > input {
-        width: 100%;
         background: rgba(255, 255, 255, 0.05) !important;
         border: 1px solid rgba(139, 92, 246, 0.3) !important;
         border-radius: 12px !important;
         color: #fff !important;
-        padding: 1rem !important;
-        font-size: 1rem !important;
-        margin-bottom: 1rem !important;
+        padding: 0.9rem 1rem !important;
+        font-size: 0.95rem !important;
+        width: 100%;
     }
     
     .stTextInput > div > div > input:focus {
         border-color: #8b5cf6 !important;
-        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2) !important;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2) !important;
+        outline: none !important;
+    }
+    
+    .stTextInput > div > div > input::placeholder {
+        color: rgba(255, 255, 255, 0.3) !important;
     }
     
     .stButton > button {
@@ -265,32 +236,100 @@ st.markdown("""
         margin-top: 1rem !important;
         transition: all 0.3s !important;
         font-size: 1rem !important;
+        box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4) !important;
     }
     
     .stButton > button:hover {
         transform: translateY(-2px) !important;
-        box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4) !important;
+        box-shadow: 0 8px 25px rgba(139, 92, 246, 0.6) !important;
     }
     
-    .switch-link {
-        color: rgba(255, 255, 255, 0.7);
+    .forgot-password {
+        text-align: right;
+        margin-top: 0.5rem;
+    }
+    
+    .forgot-password a {
+        color: #8b5cf6;
         text-decoration: none;
-        font-size: 0.95rem;
-        cursor: pointer;
+        font-size: 0.9rem;
         transition: color 0.3s;
-        display: inline-block;
-        margin-top: 1.5rem;
     }
     
-    .switch-link:hover {
+    .forgot-password a:hover {
+        color: #ec4899;
+    }
+    
+    .divider {
+        display: flex;
+        align-items: center;
+        margin: 2rem 0;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 0.9rem;
+    }
+    
+    .divider::before,
+    .divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: rgba(139, 92, 246, 0.2);
+    }
+    
+    .divider::before {
+        margin-right: 1rem;
+    }
+    
+    .divider::after {
+        margin-left: 1rem;
+    }
+    
+    .social-login {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .social-button {
+        flex: 1;
+        padding: 0.9rem;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(139, 92, 246, 0.3);
+        color: #fff;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    .social-button:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: #8b5cf6;
+        transform: translateY(-2px);
+    }
+    
+    .auth-footer {
+        text-align: center;
+        margin-top: 2rem;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.95rem;
+    }
+    
+    .auth-footer a {
         color: #8b5cf6;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s;
     }
     
-    .switch-link strong {
-        color: #8b5cf6;
+    .auth-footer a:hover {
+        color: #ec4899;
     }
     
-    /* Success and Error Messages */
     .success-message {
         background: rgba(34, 197, 94, 0.1);
         border: 1px solid rgba(34, 197, 94, 0.3);
@@ -298,7 +337,7 @@ st.markdown("""
         padding: 1rem;
         color: #4ade80;
         text-align: center;
-        margin-top: 1rem;
+        margin-bottom: 1.5rem;
         animation: fadeInUp 0.5s ease-out;
     }
     
@@ -309,34 +348,17 @@ st.markdown("""
         padding: 1rem;
         color: #f87171;
         text-align: center;
-        margin-top: 1rem;
+        margin-bottom: 1.5rem;
         animation: fadeInUp 0.5s ease-out;
-    }
-    
-    /* Dashboard Teaser (on success) */
-    .dashboard-teaser {
-        text-align: center;
-        padding: 2rem;
-        background: rgba(139, 92, 246, 0.05);
-        border-radius: 24px;
-        margin-top: 2rem;
-    }
-    
-    .dashboard-title {
-        font-size: 2rem;
-        color: #8b5cf6;
-        margin-bottom: 1rem;
     }
     
     /* Responsive */
     @media (max-width: 768px) {
         nav {padding: 1rem 1.5rem;}
+        .auth-box {padding: 2rem 1.5rem;}
         .auth-title {font-size: 2rem;}
-        .auth-subtitle {font-size: 1rem;}
-        .auth-form {padding: 2rem;}
     }
 </style>
-
 """, unsafe_allow_html=True)
 
 # Background elements
@@ -346,117 +368,75 @@ st.markdown("""
 <div class="glow-orb pink"></div>
 """, unsafe_allow_html=True)
 
-# JavaScript for nav hide on scroll (kept for consistency)
-st.markdown("""
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let lastScrollTop = 0;
-        window.addEventListener("scroll", function(){
-            let st = window.pageYOffset || document.documentElement.scrollTop;
-            const nav = document.querySelector('.nav-container');
-            if (st > lastScrollTop && st > 100) {
-                nav.style.transform = 'translateY(-100%)';
-            } else {
-                nav.style.transform = 'translateY(0)';
-            }
-            lastScrollTop = st <= 0 ? 0 : st;
-        }, false);
-    });
-</script>
-""", unsafe_allow_html=True)
-
-# Navigation (simple back to home)
+# Navigation
 st.markdown("""
 <div class="nav-container">
-<nav>
-<a href="http://localhost:8501" class="logo">  <!-- Adjust URL for your landing page -->
-<span class="logo-icon">⚡</span>
-<span>CrypticX</span>
-</a>
-<a href="#" class="nav-back">← Back to Home</a>  <!-- Or use st.switch_page if multi-page -->
-</nav>
+    <nav>
+        <a href="landing.py" class="logo">
+            <span class="logo-icon">⚡</span>
+            <span>CrypticX</span>
+        </a>
+        <a href="landing.py" class="back-link">← Back to Home</a>
+    </nav>
 </div>
 """, unsafe_allow_html=True)
 
-# Content wrapper
-st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
+# Auth Container
+st.markdown('<div class="auth-container">', unsafe_allow_html=True)
+st.markdown('<div class="auth-box">', unsafe_allow_html=True)
 
-# Main Auth Section
-st.markdown('<div class="auth-section">', unsafe_allow_html=True)
+# Header
+st.markdown("""
+<div class="auth-header">
+    <h1 class="auth-title">Welcome Back</h1>
+    <p class="auth-subtitle">Sign in to continue your learning journey</p>
+</div>
+""", unsafe_allow_html=True)
 
-if st.session_state.logged_in:
-    # Success: Show dashboard teaser
-    st.markdown('<div class="dashboard-teaser">', unsafe_allow_html=True)
-    st.markdown('<h2 class="dashboard-title">Welcome Back!</h2>', unsafe_allow_html=True)
-    st.markdown('<p style="color: rgba(255, 255, 255, 0.7);">You\'re now logged in. Redirecting to your dashboard...</p>', unsafe_allow_html=True)
-    if st.button("Go to Dashboard"):
-        st.session_state.current_section = 'dashboard'  # Or switch_page('dashboard.py')
-        st.rerun()
+# Login Form
+with st.form("login_form", clear_on_submit=False):
+    st.markdown('<div class="form-group">', unsafe_allow_html=True)
+    st.markdown('<label class="form-label">Email Address</label>', unsafe_allow_html=True)
+    email = st.text_input("Email", label_visibility="collapsed", placeholder="you@example.com")
     st.markdown('</div>', unsafe_allow_html=True)
-else:
-    # Auth Form
-    st.markdown('<h1 class="auth-title">Welcome Back</h1>', unsafe_allow_html=True)
-    st.markdown('<p class="auth-subtitle">Sign in to your account to continue your learning journey</p>', unsafe_allow_html=True)
     
-    st.markdown('<div class="auth-form">', unsafe_allow_html=True)
+    st.markdown('<div class="form-group">', unsafe_allow_html=True)
+    st.markdown('<label class="form-label">Password</label>', unsafe_allow_html=True)
+    password = st.text_input("Password", type="password", label_visibility="collapsed", placeholder="••••••••")
+    st.markdown('</div>', unsafe_allow_html=True)
     
-    # Tabs for Login/Signup (using buttons for simplicity)
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("Login", key="login_tab", help="Switch to Login"):
-            st.session_state.show_signup = False
-            st.rerun()
-    with col2:
-        if st.button("Sign Up", key="signup_tab", help="Switch to Sign Up"):
-            st.session_state.show_signup = True
-            st.rerun()
+    st.markdown('<div class="forgot-password"><a href="#">Forgot password?</a></div>', unsafe_allow_html=True)
     
-    # Clear errors on rerun
-    if st.session_state.auth_error:
-        st.markdown(f'<div class="error-message">{st.session_state.auth_error}</div>', unsafe_allow_html=True)
-        st.session_state.auth_error = ""
-    if st.session_state.auth_success:
-        st.markdown(f'<div class="success-message">{st.session_state.auth_success}</div>', unsafe_allow_html=True)
-        st.session_state.auth_success = ""
+    submitted = st.form_submit_button("Sign In")
     
-    if not st.session_state.show_signup:
-        # Login Form
-        with st.form("login_form"):
-            email = st.text_input("Email", placeholder="Enter your email", key="login_email")
-            password = st.text_input("Password", type="password", placeholder="Enter your password", key="login_password")
-            submitted = st.form_submit_button("Sign In")
-            if submitted:
-                if email == "demo@crypticx.com" and password == "demo":  # Mock auth
-                    st.session_state.logged_in = True
-                    st.session_state.auth_success = "Login successful! 🎉"
-                    st.rerun()
-                else:
-                    st.session_state.auth_error = "Invalid email or password. Try demo@crypticx.com / demo."
-                    st.rerun()
-        
-        st.markdown('<a href="#" class="switch-link" onclick="document.querySelector(\'[data-testid=\\\'signup_tab\\\']").click(); return false;">Don\'t have an account? <strong>Sign up</strong></a>', unsafe_allow_html=True)
-    
-    else:
-        # Signup Form
-        with st.form("signup_form"):
-            email = st.text_input("Email", placeholder="Enter your email", key="signup_email")
-            password = st.text_input("Password", type="password", placeholder="Create a password", key="signup_password")
-            confirm_password = st.text_input("Confirm Password", type="password", placeholder="Confirm your password", key="signup_confirm")
-            submitted = st.form_submit_button("Create Account")
-            if submitted:
-                if not email or not password or not confirm_password:
-                    st.session_state.auth_error = "Please fill in all fields."
-                elif password != confirm_password:
-                    st.session_state.auth_error = "Passwords do not match."
-                else:
-                    # Mock signup
-                    st.session_state.logged_in = True
-                    st.session_state.auth_success = "Account created successfully! Welcome aboard! 🚀"
-                    st.rerun()
-                st.rerun()
-        
-        st.markdown('<a href="#" class="switch-link" onclick="document.querySelector(\'[data-testid=\\\'login_tab\\\']").click(); return false;">Already have an account? <strong>Sign in</strong></a>', unsafe_allow_html=True)
-    
-    st.markdown('</div>', unsafe_allow_html=True)  # Close auth-form
+    if submitted:
+        if email and password:
+            # Here you would add your authentication logic
+            # For demo purposes, we'll just show a success message
+            st.session_state.logged_in = True
+            st.markdown('<div class="success-message">✓ Login successful! Redirecting...</div>', unsafe_allow_html=True)
+            # You would redirect to dashboard here
+        else:
+            st.markdown('<div class="error-message">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
 
-st.markdown('</div></div>', unsafe_allow_html=True)  # Close auth-section and content-wrapper
+# Divider
+st.markdown('<div class="divider">or continue with</div>', unsafe_allow_html=True)
+
+# Social Login
+col1, col2 = st.columns(2)
+with col1:
+    if st.button("🔍 Google", use_container_width=True):
+        st.info("Google login coming soon!")
+with col2:
+    if st.button("📘 Facebook", use_container_width=True):
+        st.info("Facebook login coming soon!")
+
+# Footer
+st.markdown("""
+<div class="auth-footer">
+    Don't have an account? <a href="signup.py">Sign up for free</a>
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
