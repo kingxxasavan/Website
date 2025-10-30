@@ -1001,7 +1001,7 @@ else:
             else:
                 st.session_state.current_page = 'home'
             st.query_params.clear()
-            st.run()
+            st.rerun()
         elif action == 'free':
             if not st.session_state.logged_in:
                 st.session_state.current_page = 'auth'
@@ -1035,39 +1035,39 @@ else:
             st.query_params.clear()
             st.rerun()
     
-    # Conditional navigation based on login status
+    # Render navigation using components.html to ensure proper HTML rendering
     if st.session_state.logged_in:
-        nav_links = f"""
+        nav_html = f"""
         <div class="nav-links">
-        <span class="nav-link" onclick="window.location.href='#home'">Home</span>
-        <span class="nav-link" onclick="window.location.href='#pricing'">Pricing</span>
-        <span class="nav-link active" onclick="window.location.href='?action=dashboard'">Dashboard</span>
-        <span class="user-greeting">Hi, {st.session_state.user_name or 'User'}!</span>
-        <button class="logout-btn" onclick="window.location.href='?action=logout'">Logout</button>
+            <span class="nav-link" onclick="window.location.href='#home'">Home</span>
+            <span class="nav-link" onclick="window.location.href='#pricing'">Pricing</span>
+            <span class="nav-link active" onclick="window.location.href='?action=dashboard'">Dashboard</span>
+            <span class="user-greeting">Hi, {st.session_state.user_name or 'User'}!</span>
+            <button class="logout-btn" onclick="window.location.href='?action=logout'">Logout</button>
         </div>
         """
     else:
-        nav_links = """
+        nav_html = """
         <div class="nav-links">
-        <span class="nav-link">Home</span>
-        <span class="nav-link">Pricing</span>
-        <span class="nav-link">Dashboard</span>
-        <span class="nav-link" onclick="window.location.href='?action=auth'">Login</span>
-        <button class="nav-cta" onclick="window.location.href='?action=auth'">Sign Up</button>
+            <span class="nav-link">Home</span>
+            <span class="nav-link">Pricing</span>
+            <span class="nav-link">Dashboard</span>
+            <span class="nav-link" onclick="window.location.href='?action=auth'">Login</span>
+            <button class="nav-cta" onclick="window.location.href='?action=auth'">Sign Up</button>
         </div>
         """
     
-    st.markdown(f"""
+    components.html(f"""
     <div class="nav-container">
-    <nav>
-    <div class="logo" onclick="window.location.href='#home'">
-    <span class="logo-icon">⚡</span>
-    <span>CrypticX</span>
+        <nav>
+            <div class="logo" onclick="window.location.href='#home'">
+                <span class="logo-icon">⚡</span>
+                <span>CrypticX</span>
+            </div>
+            {nav_html}
+        </nav>
     </div>
-    {nav_links}
-    </nav>
-    </div>
-    """, unsafe_allow_html=True)
+    """, height=0)
 
     st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 
