@@ -15,12 +15,8 @@ if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
 if 'selected_plan' not in st.session_state:
     st.session_state.selected_plan = None
-if 'auth_mode' not in st.session_state:
-    st.session_state.auth_mode = 'signup'  # Default to signup for easier onboarding
-if 'user_name' not in st.session_state:
-    st.session_state.user_name = None
 
-# Enhanced CSS with sidebar hiding to prevent flash
+# Enhanced CSS
 st.markdown("""
 <style>
     /* Hide Streamlit elements */
@@ -30,23 +26,22 @@ st.markdown("""
     .stDeployButton {display: none !important;}
     .stDecoration {display: none !important;}
     
-    /* Force hide sidebar completely to prevent flash on refresh */
-    section[data-testid="stSidebar"] {
-        display: none !important;
-    }
-    .stSidebar {
-        display: none !important;
-    }
-    [data-testid="collapsedControl"] {
-        display: none !important;
-    }
-    
     /* Reset padding */
     .block-container {padding: 0 !important; margin: 0 !important;}
     .main .block-container {max-width: 100% !important; padding: 0 !important;}
     .stApp {margin: 0 !important; padding: 0 !important;}
     section.main > div {padding: 0 !important;}
     div[data-testid="stAppViewContainer"] {padding: 0 !important; margin: 0 !important;}
+    
+    /* Hide all Streamlit buttons completely */
+    .stButton {
+        display: none !important;
+        visibility: hidden !important;
+        position: absolute !important;
+        width: 0 !important;
+        height: 0 !important;
+        opacity: 0 !important;
+    }
     
     /* Base styles */
     * {margin: 0; padding: 0; box-sizing: border-box;}
@@ -208,28 +203,6 @@ st.markdown("""
         box-shadow: 0 6px 25px rgba(139, 92, 246, 0.6);
     }
     
-    .user-greeting {
-        color: #8b5cf6;
-        font-weight: 600;
-    }
-    
-    .logout-btn {
-        padding: 0.7rem 1.8rem;
-        border-radius: 50px;
-        background: rgba(139, 92, 246, 0.2);
-        color: #fff;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
-        border: 1px solid rgba(139, 92, 246, 0.3);
-        font-size: 0.9rem;
-    }
-    
-    .logout-btn:hover {
-        background: rgba(139, 92, 246, 0.3);
-        border-color: #8b5cf6;
-    }
-    
     /* Main content */
     .content-wrapper {
         position: relative;
@@ -304,22 +277,6 @@ st.markdown("""
     .hero-cta:hover {
         transform: translateY(-3px);
         box-shadow: 0 12px 40px rgba(139, 92, 246, 0.6);
-    }
-
-    .hero-cta-wrapper {
-        display: block;
-        max-width: 280px;  /* Slightly tighter for better balance */
-        margin: 0 auto;    /* True horizontal center */
-        text-align: center;
-    }
-    .hero-cta-wrapper .stButton {
-        display: block !important;
-        margin: 0 auto !important;
-    }
-    .hero-cta-wrapper .stButton > button {
-        display: block !important;  /* Force block for centering */
-        margin: 0 auto !important;  /* Center the button itself */
-        width: fit-content !important;  /* Shrink to content width */
     }
     
     /* Stats section */
@@ -451,10 +408,6 @@ st.markdown("""
         text-align: center;
         transition: all 0.4s;
         position: relative;
-        min-height: 500px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
     }
     
     .pricing-card.featured {
@@ -509,88 +462,32 @@ st.markdown("""
         text-align: left;
         margin: 2rem 0;
         color: rgba(255, 255, 255, 0.7);
-        line-height: 1.6;
+        line-height: 2.2;
         font-size: 0.95rem;
-        flex-grow: 1;
-        list-style: none;
-        padding: 0;
     }
     
-    .feature-list li {
-        margin-bottom: 0.75rem;
-        padding-left: 1.5rem;
-        position: relative;
-    }
-    
-    .feature-list li::before {
-        content: "✓";
-        position: absolute;
-        left: 0;
-        color: #8b5cf6;
-        font-weight: bold;
-    }
-
-    .pricing-button-wrapper {
-        max-width: 250px;  /* Keeps button compact, not full-column */
-        margin: 0 auto 1rem auto;  /* Centers horizontally, adds bottom space */
-        width: 100%;  /* Full-width within wrapper */
-    }
-    .pricing-card .primary-container {
-        padding: 0 !important;  /* Remove extra padding for tighter fit */
-    }
-    
-    /* Dashboard styles */
-    .dashboard-section {
-        min-height: calc(100vh - 80px);
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        text-align: center;
-        padding: 4rem 2rem;
-        position: relative;
-    }
-    
-    .dashboard-welcome {
-        font-size: 3rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
+    .pricing-button {
+        width: 100%;
+        padding: 0.9rem;
+        border-radius: 12px;
+        background: rgba(139, 92, 246, 0.2);
+        border: 1px solid rgba(139, 92, 246, 0.3);
         color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 1rem;
     }
     
-    .dashboard-subtitle {
-        font-size: 1.25rem;
-        color: rgba(255, 255, 255, 0.6);
-        margin-bottom: 3rem;
-        max-width: 700px;
-        line-height: 1.7;
+    .pricing-button:hover {
+        background: rgba(139, 92, 246, 0.3);
+        border-color: #8b5cf6;
+        transform: translateY(-2px);
     }
     
-    .dashboard-stats {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 2rem;
-        max-width: 600px;
-        margin: 2rem 0;
-    }
-    
-    .dashboard-stat {
-        background: rgba(139, 92, 246, 0.05);
-        border: 1px solid rgba(139, 92, 246, 0.2);
-        border-radius: 16px;
-        padding: 2rem;
-        text-align: center;
-    }
-    
-    .dashboard-stat-number {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #8b5cf6;
-    }
-    
-    .dashboard-stat-label {
-        color: rgba(255, 255, 255, 0.6);
-        font-size: 1rem;
+    .pricing-card.featured .pricing-button {
+        background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        border: none;
     }
     
     /* Auth Page Specific Styles */
@@ -762,158 +659,33 @@ st.markdown("""
         box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1) !important;
     }
     
-    /* Global Streamlit button styles - ensure visible and themed */
-    .stButton {
+    /* Show buttons only in auth form */
+    .auth-box .stButton {
         display: block !important;
         visibility: visible !important;
         position: relative !important;
-        width: auto !important;
+        width: 100% !important;
         height: auto !important;
         opacity: 1 !important;
     }
     
-    .stButton > button {
-        padding: 1rem 2.5rem !important;
-        border-radius: 50px !important;
-        background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%) !important;
-        color: #fff !important;
-        font-weight: 600 !important;
-        font-size: 1.1rem !important;
-        border: none !important;
-        transition: all 0.3s !important;
-        box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4) !important;
-        cursor: pointer !important;
-        display: inline-block !important;
-        white-space: nowrap !important;
-    }
-    
-    .stButton > button:hover {
-        transform: translateY(-3px) !important;
-        box-shadow: 0 12px 40px rgba(139, 92, 246, 0.6) !important;
-    }
-    
-    /* Container positioning fixes */
-    .primary-container {
-        width: 100% !important;
-        text-align: center !important;
-        margin-top: 1rem !important;
-    }
-    
-    .toggle-container {
-        text-align: center !important;
-        margin-top: 1.5rem !important;
-        width: 100% !important;
-    }
-    
-    .back-container {
-        text-align: left !important;
-        margin-bottom: 2rem !important;
-        width: 100% !important;
-    }
-    
-    .logout-container {
-        text-align: center !important;
-        margin-top: 3rem !important;
-        width: 100% !important;
-    }
-    
-    /* Primary full-width buttons (e.g., auth main buttons, pricing) */
-    .primary-container .stButton > button {
-        width: 100% !important;
-        border-radius: 12px !important;
-        font-size: 1rem !important;
+    .auth-box .stButton > button {
+        width: 100%;
         padding: 1rem !important;
-        margin-top: 0.5rem !important;
-    }
-    
-    /* Secondary toggle buttons (styled as links) */
-    .toggle-container .stButton > button {
-        background: transparent !important;
-        border: none !important;
-        color: #8b5cf6 !important;
-        padding: 0.5rem 0 !important;
-        font-size: 0.95rem !important;
-        box-shadow: none !important;
-        width: auto !important;
-        display: inline-block !important;
-        text-align: center !important;
-        margin-top: 1rem !important;
-    }
-    
-    .toggle-container .stButton > button:hover {
-        color: #ec4899 !important;
-        transform: none !important;
-    }
-    
-    /* Logout button styles */
-    .logout-container .stButton > button {
-        padding: 0.7rem 1.8rem !important;
-        border-radius: 50px !important;
-        background: rgba(139, 92, 246, 0.2) !important;
-        color: #fff !important;
-        font-weight: 600 !important;
-        font-size: 0.9rem !important;
-        border: 1px solid rgba(139, 92, 246, 0.3) !important;
-        width: auto !important;
-        margin-top: 2rem !important;
-    }
-    
-    .logout-container .stButton > button:hover {
-        background: rgba(139, 92, 246, 0.3) !important;
-        border-color: #8b5cf6 !important;
-        transform: translateY(-2px) !important;
-    }
-    
-    /* Back button (small) */
-    .back-container .stButton > button {
-        padding: 0.5rem 1rem !important;
-        font-size: 0.9rem !important;
-        border-radius: 8px !important;
-        background: rgba(139, 92, 246, 0.2) !important;
-        width: auto !important;
-        border: 1px solid rgba(139, 92, 246, 0.3) !important;
-    }
-    
-    .back-container .stButton > button:hover {
-        background: rgba(139, 92, 246, 0.3) !important;
-        border-color: #8b5cf6 !important;
-    }
-    
-    /* Pricing button overrides to match image */
-    .pricing-card .primary-container .stButton > button {
-        margin-top: 0 !important;
         border-radius: 12px !important;
-        padding: 1rem 1.5rem !important;
-        font-size: 1rem !important;
+        background: linear-gradient(135deg, #8b5cf6, #ec4899) !important;
+        color: #fff !important;
         font-weight: 600 !important;
-        height: auto !important;
-        min-height: 0 !important;
-    }
-    
-    .pricing-card:not(.featured) .primary-container .stButton > button {
-        background: transparent !important;
-        border: 1px solid #8b5cf6 !important;
-        color: #8b5cf6 !important;
-        box-shadow: none !important;
-    }
-    
-    .pricing-card:not(.featured) .primary-container .stButton > button:hover {
-        background: rgba(139, 92, 246, 0.1) !important;
-        color: #fff !important;
-        box-shadow: 0 4px 20px rgba(139, 92, 246, 0.2) !important;
-        transform: translateY(-2px) !important;
-    }
-    
-    .pricing-card.featured .primary-container .stButton > button {
-        background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%) !important;
+        font-size: 1rem !important;
         border: none !important;
-        color: #fff !important;
+        margin-top: 0.5rem !important;
+        transition: all 0.3s !important;
         box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4) !important;
     }
     
-    .pricing-card.featured .primary-container .stButton > button:hover {
-        box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6) !important;
+    .auth-box .stButton > button:hover {
         transform: translateY(-2px) !important;
+        box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6) !important;
     }
     
     /* Success/Error messages */
@@ -973,9 +745,6 @@ st.markdown("""
         .features-grid, .pricing-grid {
             grid-template-columns: repeat(2, 1fr);
         }
-        .dashboard-stats {
-            grid-template-columns: 1fr;
-        }
     }
     
     @media (max-width: 768px) {
@@ -990,7 +759,6 @@ st.markdown("""
         .pricing-card.featured {transform: scale(1);}
         .auth-box {padding: 2rem;}
         .auth-title {font-size: 2rem;}
-        .dashboard-welcome {font-size: 2rem;}
     }
 </style>
 """, unsafe_allow_html=True)
@@ -1002,335 +770,293 @@ st.markdown("""
 <div class="glow-orb pink"></div>
 """, unsafe_allow_html=True)
 
-# Main logic
-if not st.session_state.logged_in:
-    if st.session_state.current_page == 'auth':
-        # AUTH PAGE (integrated from auth.py logic, using st.button for toggles)
-        st.markdown("""
-        <div class="nav-container">
-        <nav>
-        <div class="logo" style="cursor: pointer;" onclick="history.back()">
-        <span class="logo-icon">⚡</span>
-        <span>CrypticX</span>
-        </div>
-        </nav>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown('<div class="content-wrapper"><div class="auth-container"><div class="auth-box">', unsafe_allow_html=True)
-        
-        # Back button
-        col_back = st.columns([1, 4])
-        with col_back[0]:
-            st.markdown('<div class="back-container">', unsafe_allow_html=True)
-            if st.button("← Back", key="back_auth"):
-                st.session_state.current_page = 'home'
-                st.session_state.selected_plan = None
-                st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
-        
-        # Show selected plan badge
-        if st.session_state.selected_plan:
-            st.markdown(f'<div class="welcome-badge" style="margin-bottom: 1.5rem;">Selected Plan: {st.session_state.selected_plan}</div>', unsafe_allow_html=True)
-        
-        if st.session_state.auth_mode == 'login':
-            st.markdown("""
-            <div class="auth-header">
-                <h1 class="auth-title">Welcome Back</h1>
-                <p class="auth-subtitle">Sign in to access your dashboard</p>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            email = st.text_input("Email", key="login_email", placeholder="your@email.com", label_visibility="collapsed")
-            st.markdown('<div style="height: 1rem;"></div>', unsafe_allow_html=True)
-            password = st.text_input("Password", type="password", key="login_password", placeholder="Enter your password", label_visibility="collapsed")
-            
-            st.markdown('<div class="primary-container">', unsafe_allow_html=True)
-            if st.button("Sign In", key="login_btn", use_container_width=True):
-                if email and password:
-                    st.session_state.logged_in = True
-                    st.session_state.user_name = email.split('@')[0].title()  # Dummy name from email
-                    st.session_state.current_page = 'dashboard'  # Redirect to dashboard
-                    st.rerun()
-                else:
-                    st.markdown('<div class="message-box message-error">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
-            st.markdown('</div>', unsafe_allow_html=True)
-            
-            st.markdown('<div class="toggle-container">', unsafe_allow_html=True)
-            if st.button("Don't have an account? Create one", key="toggle_to_signup", use_container_width=False):
-                st.session_state.auth_mode = 'signup'
-                st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
-                
-        else:  # signup mode
-            st.markdown("""
-            <div class="auth-header">
-                <h1 class="auth-title">Create Account</h1>
-                <p class="auth-subtitle">Join thousands of students learning smarter</p>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            name = st.text_input("Full Name", key="signup_name", placeholder="Enter your name", label_visibility="collapsed")
-            st.markdown('<div style="height: 1rem;"></div>', unsafe_allow_html=True)
-            email = st.text_input("Email", key="signup_email", placeholder="your@email.com", label_visibility="collapsed")
-            st.markdown('<div style="height: 1rem;"></div>', unsafe_allow_html=True)
-            password = st.text_input("Password", type="password", key="signup_password", placeholder="Create a password", label_visibility="collapsed")
-            
-            st.markdown('<div class="primary-container">', unsafe_allow_html=True)
-            if st.button("Create Account", key="signup_btn", use_container_width=True):
-                if name and email and password:
-                    st.session_state.logged_in = True
-                    st.session_state.user_name = name
-                    st.session_state.current_page = 'dashboard'  # Redirect to dashboard
-                    st.rerun()
-                else:
-                    st.markdown('<div class="message-box message-error">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
-            st.markdown('</div>', unsafe_allow_html=True)
-            
-            st.markdown('<div class="toggle-container">', unsafe_allow_html=True)
-            if st.button("Already have an account? Sign In", key="toggle_to_login", use_container_width=False):
-                st.session_state.auth_mode = 'login'
-                st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
-        
-        st.markdown('</div></div></div>', unsafe_allow_html=True)  # Close auth wrappers
-    else:
-        # LANDING PAGE (home with st.button for navigation)
-        # Nav (static for not logged in)
-        st.markdown("""
-        <div class="nav-container">
-        <nav>
-        <div class="logo" style="cursor: pointer;">
-        <span class="logo-icon">⚡</span>
-        <span>CrypticX</span>
-        </div>
-        <div class="nav-links">
-        <span class="nav-link">Home</span>
-        <span class="nav-link">Pricing</span>
-        <span class="nav-link">Dashboard</span>
-        <span class="nav-link">Login</span>
-        <button class="nav-cta">Sign Up</button>
-        </div>
-        </nav>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
-        
-        # Hero Section
-        hero_badge_text = "✨ Welcome to CrypticX - The Ultimate Study Tool"
-        st.markdown(f"""
-        <div id="home" class="hero-section">
-        <div class="welcome-badge">{hero_badge_text}</div>
-        <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
-        <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
-        """, unsafe_allow_html=True)
-        
-        # Centered hero button (refined for perfect center)
-        st.markdown('<div class="hero-cta-wrapper">', unsafe_allow_html=True)
-        if st.button("Start Learning Free", key="hero_free"):
-            st.session_state.selected_plan = 'Free'
-            st.session_state.current_page = 'auth'
-            st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="stats-section">
-            <div class="stat-item">
-                <div class="stat-number">50K+</div>
-                <div class="stat-label">Active Students</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">95%</div>
-                <div class="stat-label">Satisfaction Rate</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">1M+</div>
-                <div class="stat-label">Questions Answered</div>
-            </div>
-        </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        # Why Choose Us Section (unchanged)
-        st.markdown('<div id="why-choose" class="section">', unsafe_allow_html=True)
-        st.markdown('<h2 class="section-title">Why Choose CrypticX</h2>', unsafe_allow_html=True)
-        st.markdown('<p class="section-subtitle">The smartest way to study in 2025</p>', unsafe_allow_html=True)
-        st.markdown('<div class="features-grid">', unsafe_allow_html=True)
-
-        st.markdown("""
-        <div class="feature-card">
-        <span class="feature-icon">⚡</span>
-        <h3>Lightning Fast</h3>
-        <p>Get instant answers to your questions. No more waiting hours for tutors or searching through endless resources.</p>
-        </div>
-        <div class="feature-card">
-        <span class="feature-icon">🎯</span>
-        <h3>Personalized Learning</h3>
-        <p>AI adapts to your learning style and pace, providing customized explanations that make sense to you.</p>
-        </div>
-        <div class="feature-card">
-        <span class="feature-icon">💰</span>
-        <h3>Affordable Excellence</h3>
-        <p>Get premium tutoring quality at a fraction of the cost. Start free and upgrade only when you're ready.</p>
-        </div>
-        <div class="feature-card">
-        <span class="feature-icon">📱</span>
-        <h3>Study Anywhere</h3>
-        <p>Access your learning tools from any device, anytime. Study on your schedule, not someone else's.</p>
-        </div>
-        <div class="feature-card">
-        <span class="feature-icon">🔬</span>
-        <h3>Proven Methods</h3>
-        <p>Built on learning science and cognitive psychology principles that are proven to improve retention and understanding.</p>
-        </div>
-        <div class="feature-card">
-        <span class="feature-icon">🌟</span>
-        <h3>Student Success</h3>
-        <p>Join thousands of students who've improved their grades and confidence with CrypticX's intelligent tools.</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-        st.markdown('</div></div>', unsafe_allow_html=True)
-
-        # Pricing Section (unchanged from previous fix)
-        st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
-        st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
-        st.markdown('<p class="section-subtitle">Start free, upgrade when you are ready</p>', unsafe_allow_html=True)
-        
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.markdown("""
-            <div class="pricing-card">
-                <h3>Free</h3>
-                <div class="price">$0<span class="price-period">/mo</span></div>
-                <ul class="feature-list">
-                    <li>10 AI questions/day</li>
-                    <li>Basic summaries</li>
-                    <li>5 quizzes/week</li>
-                    <li>Community support</li>
-                </ul>
-            """, unsafe_allow_html=True)
-            st.markdown('<div class="pricing-button-wrapper">', unsafe_allow_html=True)
-            if st.button("Start Free", key="price_free"):
-                st.session_state.selected_plan = 'Free'
-                st.session_state.current_page = 'auth'
-                st.rerun()
-            st.markdown('</div></div>', unsafe_allow_html=True)
-        
-        with col2:
-            st.markdown("""
-            <div class="pricing-card featured">
-                <div class="pricing-badge">⭐ MOST POPULAR</div>
-                <h3>Pro</h3>
-                <div class="price">$15<span class="price-period">/mo</span></div>
-                <ul class="feature-list">
-                    <li>Unlimited AI questions</li>
-                    <li>Advanced summaries</li>
-                    <li>Unlimited quizzes</li>
-                    <li>PDF upload (100MB)</li>
-                    <li>Priority support</li>
-                    <li>Progress analytics</li>
-                </ul>
-            """, unsafe_allow_html=True)
-            st.markdown('<div class="pricing-button-wrapper">', unsafe_allow_html=True)
-            if st.button("Get Pro", key="price_pro"):
-                st.session_state.selected_plan = 'Pro'
-                st.session_state.current_page = 'auth'
-                st.rerun()
-            st.markdown('</div></div>', unsafe_allow_html=True)
-        
-        with col3:
-            st.markdown("""
-            <div class="pricing-card">
-                <h3>Enterprise</h3>
-                <div class="price">$35<span class="price-period">/mo</span></div>
-                <ul class="feature-list">
-                    <li>Everything in Pro</li>
-                    <li>Team accounts</li>
-                    <li>Advanced analytics</li>
-                    <li>Custom integrations</li>
-                    <li>Dedicated support</li>
-                    <li>Unlimited storage</li>
-                </ul>
-            """, unsafe_allow_html=True)
-            st.markdown('<div class="pricing-button-wrapper">', unsafe_allow_html=True)
-            if st.button("Get Enterprise", key="price_enterprise"):
-                st.session_state.selected_plan = 'Enterprise'
-                st.session_state.current_page = 'auth'
-                st.rerun()
-            st.markdown('</div></div>', unsafe_allow_html=True)
-        
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        st.markdown('</div>', unsafe_allow_html=True)  # Close content-wrapper
-
-else:
-    # LOGGED IN - DASHBOARD (main product page)
-    # Nav
-    st.markdown(f"""
+# Check which page to show
+if st.session_state.current_page == 'auth':
+    # AUTHENTICATION PAGE
+    
+    # Check for back navigation
+    query_params = st.query_params
+    if 'action' in query_params and query_params['action'] == 'home':
+        st.session_state.current_page = 'home'
+        st.session_state.selected_plan = None
+        st.query_params.clear()
+        st.rerun()
+    
+    st.markdown("""
     <div class="nav-container">
     <nav>
-    <div class="logo" style="cursor: pointer;">
+    <div class="logo" onclick="window.location.href='?action=home'">
     <span class="logo-icon">⚡</span>
     <span>CrypticX</span>
-    </div>
-    <div class="nav-links">
-    <span class="nav-link" onclick="window.location.href='#home'">Home</span>
-    <span class="nav-link" onclick="window.location.href='#pricing'">Pricing</span>
-    <span class="nav-link active">Dashboard</span>
-    <span class="user-greeting">Hi, {st.session_state.user_name}!</span>
-    <button class="logout-btn">Logout</button>
     </div>
     </nav>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
+    st.markdown('<div class="auth-container">', unsafe_allow_html=True)
+    st.markdown('<div class="auth-box">', unsafe_allow_html=True)
     
-    # Dashboard content
-    plan_text = f" (Plan: {st.session_state.selected_plan})" if st.session_state.selected_plan else ""
-    st.markdown(f"""
-    <div class="dashboard-section">
-        <h1 class="dashboard-welcome">Welcome back, {st.session_state.user_name}!</h1>
-        <p class="dashboard-subtitle">Here's a quick overview of your learning progress{plan_text}.</p>
-        <div class="dashboard-stats">
-            <div class="dashboard-stat">
-                <div class="dashboard-stat-number">42</div>
-                <div class="dashboard-stat-label">Questions Answered This Week</div>
-            </div>
-            <div class="dashboard-stat">
-                <div class="dashboard-stat-number">87%</div>
-                <div class="dashboard-stat-label">Quiz Average</div>
-            </div>
-            <div class="dashboard-stat">
-                <div class="dashboard-stat-number">5</div>
-                <div class="dashboard-stat-label">Active Courses</div>
-            </div>
-            <div class="dashboard-stat">
-                <div class="dashboard-stat-number">2h 30m</div>
-                <div class="dashboard-stat-label">Study Time Today</div>
-            </div>
-        </div>
-        <button class="hero-cta">Explore More</button>
-        <!-- Add main product AI features here, e.g., st.chat_input("Ask AI...") -->
-        <div style="margin-top: 2rem; text-align: center;">
-            <h3>Ask your AI study buddy:</h3>
-        </div>
+    # Back link
+    st.markdown("""
+    <div class="back-link" onclick="window.location.href='?action=home'">
+        ← Back to Home
     </div>
     """, unsafe_allow_html=True)
     
-    st.chat_input("e.g., Explain calculus simply")
+    # Show selected plan if any
+    if st.session_state.selected_plan:
+        st.markdown(f'<div class="welcome-badge" style="margin-bottom: 1.5rem;">Selected Plan: {st.session_state.selected_plan}</div>', unsafe_allow_html=True)
     
-    st.markdown('<div class="logout-container">', unsafe_allow_html=True)
-    if st.button("Logout", key="logout_btn", use_container_width=False):
-        st.session_state.logged_in = False
-        st.session_state.user_name = None
-        st.session_state.selected_plan = None
-        st.session_state.current_page = 'home'
-        st.rerun()
+    # Initialize form mode
+    if 'auth_mode' not in st.session_state:
+        st.session_state.auth_mode = 'login'
+    
+    # Auth header
+    if st.session_state.auth_mode == 'login':
+        st.markdown("""
+        <div class="auth-header">
+            <h1 class="auth-title">Welcome Back</h1>
+            <p class="auth-subtitle">Sign in to continue your learning journey</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Login form
+        email = st.text_input("Email", key="login_email", placeholder="your@email.com", label_visibility="collapsed")
+        st.markdown('<div style="height: 1rem;"></div>', unsafe_allow_html=True)
+        password = st.text_input("Password", type="password", key="login_password", placeholder="Enter your password", label_visibility="collapsed")
+        
+        if st.button("Sign In", key="login_btn", use_container_width=True):
+            if email and password:
+                st.markdown('<div class="message-box message-success">✓ Welcome back! Redirecting...</div>', unsafe_allow_html=True)
+                st.session_state.logged_in = True
+            else:
+                st.markdown('<div class="message-box message-error">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
+        
+        # Toggle to signup
+        st.markdown("""
+        <div class="auth-toggle">
+            Don't have an account? <span class="auth-toggle-link" onclick="window.location.href='?action=toggle_signup'">Create one</span>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    else:  # signup mode
+        st.markdown("""
+        <div class="auth-header">
+            <h1 class="auth-title">Create Account</h1>
+            <p class="auth-subtitle">Join thousands of students learning smarter</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Signup form
+        name = st.text_input("Full Name", key="signup_name", placeholder="Enter your name", label_visibility="collapsed")
+        st.markdown('<div style="height: 1rem;"></div>', unsafe_allow_html=True)
+        email = st.text_input("Email", key="signup_email", placeholder="your@email.com", label_visibility="collapsed")
+        st.markdown('<div style="height: 1rem;"></div>', unsafe_allow_html=True)
+        password = st.text_input("Password", type="password", key="signup_password", placeholder="Create a password", label_visibility="collapsed")
+        
+        if st.button("Create Account", key="signup_btn", use_container_width=True):
+            if name and email and password:
+                st.markdown('<div class="message-box message-success">✓ Account created successfully! Welcome to CrypticX!</div>', unsafe_allow_html=True)
+                st.session_state.logged_in = True
+            else:
+                st.markdown('<div class="message-box message-error">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
+        
+        # Toggle to login
+        st.markdown("""
+        <div class="auth-toggle">
+            Already have an account? <span class="auth-toggle-link" onclick="window.location.href='?action=toggle_login'">Sign in</span>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Handle toggle actions
+    query_params = st.query_params
+    if 'action' in query_params:
+        if query_params['action'] == 'toggle_signup':
+            st.session_state.auth_mode = 'signup'
+            st.query_params.clear()
+            st.rerun()
+        elif query_params['action'] == 'toggle_login':
+            st.session_state.auth_mode = 'login'
+            st.query_params.clear()
+            st.rerun()
+    
+    st.markdown('</div>', unsafe_allow_html=True)  # Close auth-box
+    st.markdown('</div>', unsafe_allow_html=True)  # Close auth-container
+    st.markdown('</div>', unsafe_allow_html=True)  # Close content-wrapper
+
+else:
+    # HOME PAGE
+    
+    # Check for navigation clicks via query params
+    query_params = st.query_params
+    if 'action' in query_params:
+        action = query_params['action']
+        if action == 'auth':
+            st.session_state.current_page = 'auth'
+            st.session_state.auth_mode = 'login'
+            st.query_params.clear()
+            st.rerun()
+        elif action == 'hero':
+            st.session_state.current_page = 'auth'
+            st.session_state.selected_plan = 'Free'
+            st.session_state.auth_mode = 'signup'
+            st.query_params.clear()
+            st.rerun()
+        elif action == 'free':
+            st.session_state.current_page = 'auth'
+            st.session_state.selected_plan = 'Free'
+            st.session_state.auth_mode = 'signup'
+            st.query_params.clear()
+            st.rerun()
+        elif action == 'pro':
+            st.session_state.current_page = 'auth'
+            st.session_state.selected_plan = 'Pro'
+            st.session_state.auth_mode = 'signup'
+            st.query_params.clear()
+            st.rerun()
+        elif action == 'enterprise':
+            st.session_state.current_page = 'auth'
+            st.session_state.selected_plan = 'Enterprise'
+            st.session_state.auth_mode = 'signup'
+            st.query_params.clear()
+            st.rerun()
+    
+    st.markdown("""
+    <div class="nav-container">
+    <nav>
+    <div class="logo">
+    <span class="logo-icon">⚡</span>
+    <span>CrypticX</span>
+    </div>
+    <div class="nav-links">
+    <span class="nav-link">Home</span>
+    <span class="nav-link">Pricing</span>
+    <span class="nav-link">Dashboard</span>
+    <span class="nav-link" onclick="window.location.href='?action=auth'">Login</span>
+    <button class="nav-cta" onclick="window.location.href='?action=auth'">Sign Up</button>
+    </div>
+    </nav>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
+
+    # Hero Section
+    st.markdown("""
+    <div id="home" class="hero-section">
+    <div class="welcome-badge">✨ Welcome to CrypticX - The Ultimate Study Tool</div>
+    <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
+    <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
+    <button class="hero-cta" onclick="window.location.href='?action=hero'">Start Learning Free</button>
+    <div class="stats-section">
+        <div class="stat-item">
+            <div class="stat-number">50K+</div>
+            <div class="stat-label">Active Students</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">95%</div>
+            <div class="stat-label">Satisfaction Rate</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">1M+</div>
+            <div class="stat-label">Questions Answered</div>
+        </div>
+    </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Why Choose Us Section
+    st.markdown('<div id="why-choose" class="section">', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title">Why Choose CrypticX</h2>', unsafe_allow_html=True)
+    st.markdown('<p class="section-subtitle">The smartest way to study in 2025</p>', unsafe_allow_html=True)
+    st.markdown('<div class="features-grid">', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="feature-card">
+    <span class="feature-icon">⚡</span>
+    <h3>Lightning Fast</h3>
+    <p>Get instant answers to your questions. No more waiting hours for tutors or searching through endless resources.</p>
+    </div>
+    <div class="feature-card">
+    <span class="feature-icon">🎯</span>
+    <h3>Personalized Learning</h3>
+    <p>AI adapts to your learning style and pace, providing customized explanations that make sense to you.</p>
+    </div>
+    <div class="feature-card">
+    <span class="feature-icon">💰</span>
+    <h3>Affordable Excellence</h3>
+    <p>Get premium tutoring quality at a fraction of the cost. Start free and upgrade only when you're ready.</p>
+    </div>
+    <div class="feature-card">
+    <span class="feature-icon">📱</span>
+    <h3>Study Anywhere</h3>
+    <p>Access your learning tools from any device, anytime. Study on your schedule, not someone else's.</p>
+    </div>
+    <div class="feature-card">
+    <span class="feature-icon">🔬</span>
+    <h3>Proven Methods</h3>
+    <p>Built on learning science and cognitive psychology principles that are proven to improve retention and understanding.</p>
+    </div>
+    <div class="feature-card">
+    <span class="feature-icon">🌟</span>
+    <h3>Student Success</h3>
+    <p>Join thousands of students who've improved their grades and confidence with CrypticX's intelligent tools.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('</div></div>', unsafe_allow_html=True)
+
+    # Pricing Section
+    st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
+    st.markdown('<p class="section-subtitle">Start free, upgrade when you are ready</p>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="pricing-grid">
+        <div class="pricing-card">
+            <h3>Free</h3>
+            <div class="price">$0<span class="price-period">/mo</span></div>
+            <div class="feature-list">
+                ✓ 10 AI questions/day<br>
+                ✓ Basic summaries<br>
+                ✓ 5 quizzes/week<br>
+                ✓ Community support
+            </div>
+            <button class="pricing-button" onclick="window.location.href='?action=free'">Start Free</button>
+        </div>
+        <div class="pricing-card featured">
+            <div class="pricing-badge">⭐ MOST POPULAR</div>
+            <h3>Pro</h3>
+            <div class="price">$15<span class="price-period">/mo</span></div>
+            <div class="feature-list">
+                ✓ Unlimited AI questions<br>
+                ✓ Advanced summaries<br>
+                ✓ Unlimited quizzes<br>
+                ✓ PDF upload (100MB)<br>
+                ✓ Priority support<br>
+                ✓ Progress analytics
+            </div>
+            <button class="pricing-button" onclick="window.location.href='?action=pro'">Get Pro</button>
+        </div>
+        <div class="pricing-card">
+            <h3>Enterprise</h3>
+            <div class="price">$35<span class="price-period">/mo</span></div>
+            <div class="feature-list">
+                ✓ Everything in Pro<br>
+                ✓ Team accounts<br>
+                ✓ Advanced analytics<br>
+                ✓ Custom integrations<br>
+                ✓ Dedicated support<br>
+                ✓ Unlimited storage
+            </div>
+            <button class="pricing-button" onclick="window.location.href='?action=enterprise'">Get Enterprise</button>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
     st.markdown('</div>', unsafe_allow_html=True)
-    
+
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Footer
