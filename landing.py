@@ -48,16 +48,6 @@ st.markdown("""
     section.main > div {padding: 0 !important;}
     div[data-testid="stAppViewContainer"] {padding: 0 !important; margin: 0 !important;}
     
-    /* Hide all Streamlit buttons completely */
-    .stButton {
-        display: none !important;
-        visibility: hidden !important;
-        position: absolute !important;
-        width: 0 !important;
-        height: 0 !important;
-        opacity: 0 !important;
-    }
-    
     /* Base styles */
     * {margin: 0; padding: 0; box-sizing: border-box;}
     html, body {margin: 0 !important; padding: 0 !important; overflow-x: hidden; scroll-behavior: smooth;}
@@ -750,33 +740,89 @@ st.markdown("""
         box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1) !important;
     }
     
-    /* Show buttons only in auth form */
-    .auth-box .stButton {
+    /* Global Streamlit button styles - ensure visible and themed */
+    .stButton {
         display: block !important;
         visibility: visible !important;
         position: relative !important;
-        width: 100% !important;
+        width: auto !important;
         height: auto !important;
         opacity: 1 !important;
     }
     
-    .auth-box .stButton > button {
-        width: 100%;
-        padding: 1rem !important;
-        border-radius: 12px !important;
-        background: linear-gradient(135deg, #8b5cf6, #ec4899) !important;
+    .stButton > button {
+        padding: 1rem 2.5rem !important;
+        border-radius: 50px !important;
+        background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%) !important;
         color: #fff !important;
         font-weight: 600 !important;
-        font-size: 1rem !important;
+        font-size: 1.1rem !important;
         border: none !important;
-        margin-top: 0.5rem !important;
         transition: all 0.3s !important;
-        box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4) !important;
+        box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4) !important;
+        cursor: pointer !important;
+        display: inline-block !important;
     }
     
-    .auth-box .stButton > button:hover {
+    .stButton > button:hover {
+        transform: translateY(-3px) !important;
+        box-shadow: 0 12px 40px rgba(139, 92, 246, 0.6) !important;
+    }
+    
+    /* Primary full-width buttons (e.g., auth main buttons, pricing) */
+    .primary-container .stButton > button {
+        width: 100% !important;
+        border-radius: 12px !important;
+        font-size: 1rem !important;
+        padding: 1rem !important;
+        margin-top: 0.5rem !important;
+    }
+    
+    /* Secondary toggle buttons (styled as links) */
+    .toggle-container .stButton > button {
+        background: transparent !important;
+        border: none !important;
+        color: #8b5cf6 !important;
+        padding: 0.5rem 0 !important;
+        font-size: 0.95rem !important;
+        box-shadow: none !important;
+        width: auto !important;
+        display: inline-block !important;
+        text-align: center !important;
+        margin-top: 1rem !important;
+    }
+    
+    .toggle-container .stButton > button:hover {
+        color: #ec4899 !important;
+        transform: none !important;
+    }
+    
+    /* Logout button styles */
+    .logout-container .stButton > button {
+        padding: 0.7rem 1.8rem !important;
+        border-radius: 50px !important;
+        background: rgba(139, 92, 246, 0.2) !important;
+        color: #fff !important;
+        font-weight: 600 !important;
+        font-size: 0.9rem !important;
+        border: 1px solid rgba(139, 92, 246, 0.3) !important;
+        width: auto !important;
+        margin-top: 2rem !important;
+    }
+    
+    .logout-container .stButton > button:hover {
+        background: rgba(139, 92, 246, 0.3) !important;
+        border-color: #8b5cf6 !important;
         transform: translateY(-2px) !important;
-        box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6) !important;
+    }
+    
+    /* Back button (small) */
+    .back-container .stButton > button {
+        padding: 0.5rem 1rem !important;
+        font-size: 0.9rem !important;
+        border-radius: 8px !important;
+        background: rgba(139, 92, 246, 0.2) !important;
+        width: auto !important;
     }
     
     /* Success/Error messages */
@@ -885,10 +931,12 @@ if not st.session_state.logged_in:
         # Back button
         col_back = st.columns([1, 4])
         with col_back[0]:
+            st.markdown('<div class="back-container">', unsafe_allow_html=True)
             if st.button("← Back", key="back_auth"):
                 st.session_state.current_page = 'home'
                 st.session_state.selected_plan = None
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
         
         # Show selected plan badge
         if st.session_state.selected_plan:
@@ -906,6 +954,7 @@ if not st.session_state.logged_in:
             st.markdown('<div style="height: 1rem;"></div>', unsafe_allow_html=True)
             password = st.text_input("Password", type="password", key="login_password", placeholder="Enter your password", label_visibility="collapsed")
             
+            st.markdown('<div class="primary-container">', unsafe_allow_html=True)
             if st.button("Sign In", key="login_btn", use_container_width=True):
                 if email and password:
                     st.session_state.logged_in = True
@@ -914,10 +963,13 @@ if not st.session_state.logged_in:
                     st.rerun()
                 else:
                     st.markdown('<div class="message-box message-error">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
             
-            if st.button("Don't have an account? Create one", key="toggle_to_signup"):
+            st.markdown('<div class="toggle-container">', unsafe_allow_html=True)
+            if st.button("Don't have an account? Create one", key="toggle_to_signup", use_container_width=False):
                 st.session_state.auth_mode = 'signup'
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
                 
         else:  # signup mode
             st.markdown("""
@@ -933,6 +985,7 @@ if not st.session_state.logged_in:
             st.markdown('<div style="height: 1rem;"></div>', unsafe_allow_html=True)
             password = st.text_input("Password", type="password", key="signup_password", placeholder="Create a password", label_visibility="collapsed")
             
+            st.markdown('<div class="primary-container">', unsafe_allow_html=True)
             if st.button("Create Account", key="signup_btn", use_container_width=True):
                 if name and email and password:
                     st.session_state.logged_in = True
@@ -941,10 +994,13 @@ if not st.session_state.logged_in:
                     st.rerun()
                 else:
                     st.markdown('<div class="message-box message-error">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
             
-            if st.button("Already have an account? Sign In", key="toggle_to_login"):
+            st.markdown('<div class="toggle-container">', unsafe_allow_html=True)
+            if st.button("Already have an account? Sign In", key="toggle_to_login", use_container_width=False):
                 st.session_state.auth_mode = 'login'
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
         
         st.markdown('</div></div></div>', unsafe_allow_html=True)  # Close auth wrappers
     else:
@@ -1066,10 +1122,12 @@ if not st.session_state.logged_in:
                 </div>
             </div>
             """, unsafe_allow_html=True)
-            if st.button("Start Free", key="price_free"):
+            st.markdown('<div class="primary-container">', unsafe_allow_html=True)
+            if st.button("Start Free", key="price_free", use_container_width=True):
                 st.session_state.selected_plan = 'Free'
                 st.session_state.current_page = 'auth'
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
         
         with col2:
             st.markdown("""
@@ -1087,10 +1145,12 @@ if not st.session_state.logged_in:
                 </div>
             </div>
             """, unsafe_allow_html=True)
-            if st.button("Get Pro", key="price_pro"):
+            st.markdown('<div class="primary-container">', unsafe_allow_html=True)
+            if st.button("Get Pro", key="price_pro", use_container_width=True):
                 st.session_state.selected_plan = 'Pro'
                 st.session_state.current_page = 'auth'
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
         
         with col3:
             st.markdown("""
@@ -1107,10 +1167,12 @@ if not st.session_state.logged_in:
                 </div>
             </div>
             """, unsafe_allow_html=True)
-            if st.button("Get Enterprise", key="price_enterprise"):
+            st.markdown('<div class="primary-container">', unsafe_allow_html=True)
+            if st.button("Get Enterprise", key="price_enterprise", use_container_width=True):
                 st.session_state.selected_plan = 'Enterprise'
                 st.session_state.current_page = 'auth'
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
         
         st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1167,17 +1229,20 @@ else:
         <!-- Add main product AI features here, e.g., st.chat_input("Ask AI...") -->
         <div style="margin-top: 2rem; text-align: center;">
             <h3>Ask your AI study buddy:</h3>
-            {st.chat_input("e.g., Explain calculus simply")}
         </div>
     </div>
     """, unsafe_allow_html=True)
     
-    if st.button("Logout", key="logout_btn"):
+    st.markdown('<div class="logout-container">', unsafe_allow_html=True)
+    if st.button("Logout", key="logout_btn", use_container_width=False):
         st.session_state.logged_in = False
         st.session_state.user_name = None
         st.session_state.selected_plan = None
         st.session_state.current_page = 'home'
         st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    st.markdown(f'{st.chat_input("e.g., Explain calculus simply")}', unsafe_allow_html=False)
     
     st.markdown('</div>', unsafe_allow_html=True)
 
