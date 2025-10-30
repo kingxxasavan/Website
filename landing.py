@@ -305,6 +305,13 @@ st.markdown("""
         transform: translateY(-3px);
         box-shadow: 0 12px 40px rgba(139, 92, 246, 0.6);
     }
+
+    .hero-cta-wrapper {
+        display: block;
+        max-width: 300px;  /* Keeps button compact */
+        margin: 0 auto;    /* True horizontal center */
+        text-align: center;
+    }
     
     /* Stats section */
     .stats-section {
@@ -512,6 +519,15 @@ st.markdown("""
         left: 0;
         color: #8b5cf6;
         font-weight: bold;
+    }
+
+    .pricing-button-wrapper {
+        max-width: 250px;  /* Keeps button compact, not full-column */
+        margin: 0 auto 1rem auto;  /* Centers horizontally, adds bottom space */
+        width: 100%;  /* Full-width within wrapper */
+    }
+    .pricing-card .primary-container {
+        padding: 0 !important;  /* Remove extra padding for tighter fit */
     }
     
     /* Dashboard styles */
@@ -1101,15 +1117,13 @@ if not st.session_state.logged_in:
         <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
         """, unsafe_allow_html=True)
         
-        # Centered hero button - wider middle column to prevent wrapping
-        col_left, col_mid, col_right = st.columns([1, 2, 1])
-        with col_mid:
-            st.markdown('<div class="primary-container">', unsafe_allow_html=True)
-            if st.button("Start Learning Free", key="hero_free"):
-                st.session_state.selected_plan = 'Free'
-                st.session_state.current_page = 'auth'
-                st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
+        # Centered hero button
+        st.markdown('<div class="hero-cta-wrapper">', unsafe_allow_html=True)
+        if st.button("Start Learning Free", key="hero_free"):
+            st.session_state.selected_plan = 'Free'
+            st.session_state.current_page = 'auth'
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
         
         st.markdown("""
         <div class="stats-section">
@@ -1188,15 +1202,12 @@ if not st.session_state.logged_in:
                     <li>Community support</li>
                 </ul>
             """, unsafe_allow_html=True)
-            st.markdown('<div class="primary-container">', unsafe_allow_html=True)
-            if st.button("Start Free", key="price_free", use_container_width=True):
+            st.markdown('<div class="pricing-button-wrapper">', unsafe_allow_html=True)
+            if st.button("Start Free", key="price_free"):
                 st.session_state.selected_plan = 'Free'
                 st.session_state.current_page = 'auth'
                 st.rerun()
-            st.markdown("""
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown('</div></div>', unsafe_allow_html=True)
         
         with col2:
             st.markdown("""
@@ -1213,15 +1224,12 @@ if not st.session_state.logged_in:
                     <li>Progress analytics</li>
                 </ul>
             """, unsafe_allow_html=True)
-            st.markdown('<div class="primary-container">', unsafe_allow_html=True)
-            if st.button("Get Pro", key="price_pro", use_container_width=True):
+            st.markdown('<div class="pricing-button-wrapper">', unsafe_allow_html=True)
+            if st.button("Get Pro", key="price_pro"):
                 st.session_state.selected_plan = 'Pro'
                 st.session_state.current_page = 'auth'
                 st.rerun()
-            st.markdown("""
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown('</div></div>', unsafe_allow_html=True)
         
         with col3:
             st.markdown("""
@@ -1237,15 +1245,12 @@ if not st.session_state.logged_in:
                     <li>Unlimited storage</li>
                 </ul>
             """, unsafe_allow_html=True)
-            st.markdown('<div class="primary-container">', unsafe_allow_html=True)
-            if st.button("Contact Us", key="price_enterprise", use_container_width=True):
+            st.markdown('<div class="pricing-button-wrapper">', unsafe_allow_html=True)
+            if st.button("Get Enterprise", key="price_enterprise"):
                 st.session_state.selected_plan = 'Enterprise'
                 st.session_state.current_page = 'auth'
                 st.rerun()
-            st.markdown("""
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown('</div></div>', unsafe_allow_html=True)
         
         st.markdown('</div>', unsafe_allow_html=True)
 
