@@ -502,31 +502,16 @@ st.markdown("""
     
     .feature-list li {
         margin-bottom: 0.75rem;
-        padding-left: 0;
+        padding-left: 1.5rem;
+        position: relative;
     }
     
-    .pricing-button {
-        width: 100%;
-        padding: 0.9rem;
-        border-radius: 12px;
-        background: rgba(139, 92, 246, 0.2);
-        border: 1px solid rgba(139, 92, 246, 0.3);
-        color: #fff;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
-        margin-top: 1rem;
-    }
-    
-    .pricing-button:hover {
-        background: rgba(139, 92, 246, 0.3);
-        border-color: #8b5cf6;
-        transform: translateY(-2px);
-    }
-    
-    .pricing-card.featured .pricing-button {
-        background: linear-gradient(135deg, #8b5cf6, #ec4899);
-        border: none;
+    .feature-list li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #8b5cf6;
+        font-weight: bold;
     }
     
     /* Dashboard styles */
@@ -774,6 +759,7 @@ st.markdown("""
         box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4) !important;
         cursor: pointer !important;
         display: inline-block !important;
+        white-space: nowrap !important;
     }
     
     .stButton > button:hover {
@@ -1115,8 +1101,8 @@ if not st.session_state.logged_in:
         <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
         """, unsafe_allow_html=True)
         
-        # Centered hero button
-        col_left, col_mid, col_right = st.columns([4, 1, 4])
+        # Centered hero button - wider middle column to prevent wrapping
+        col_left, col_mid, col_right = st.columns([1, 2, 1])
         with col_mid:
             st.markdown('<div class="primary-container">', unsafe_allow_html=True)
             if st.button("Start Learning Free", key="hero_free"):
@@ -1196,10 +1182,10 @@ if not st.session_state.logged_in:
                 <h3>Free</h3>
                 <div class="price">$0<span class="price-period">/mo</span></div>
                 <ul class="feature-list">
-                    <li>✓ 10 AI questions/day</li>
-                    <li>✓ Basic summaries</li>
-                    <li>✓ 5 quizzes/week</li>
-                    <li>✓ Community support</li>
+                    <li>10 AI questions/day</li>
+                    <li>Basic summaries</li>
+                    <li>5 quizzes/week</li>
+                    <li>Community support</li>
                 </ul>
             """, unsafe_allow_html=True)
             st.markdown('<div class="primary-container">', unsafe_allow_html=True)
@@ -1219,12 +1205,12 @@ if not st.session_state.logged_in:
                 <h3>Pro</h3>
                 <div class="price">$15<span class="price-period">/mo</span></div>
                 <ul class="feature-list">
-                    <li>✓ Unlimited AI questions</li>
-                    <li>✓ Advanced summaries</li>
-                    <li>✓ Unlimited quizzes</li>
-                    <li>✓ PDF upload (100MB)</li>
-                    <li>✓ Priority support</li>
-                    <li>✓ Progress analytics</li>
+                    <li>Unlimited AI questions</li>
+                    <li>Advanced summaries</li>
+                    <li>Unlimited quizzes</li>
+                    <li>PDF upload (100MB)</li>
+                    <li>Priority support</li>
+                    <li>Progress analytics</li>
                 </ul>
             """, unsafe_allow_html=True)
             st.markdown('<div class="primary-container">', unsafe_allow_html=True)
@@ -1243,12 +1229,12 @@ if not st.session_state.logged_in:
                 <h3>Enterprise</h3>
                 <div class="price">$35<span class="price-period">/mo</span></div>
                 <ul class="feature-list">
-                    <li>✓ Everything in Pro</li>
-                    <li>✓ Team accounts</li>
-                    <li>✓ Advanced analytics</li>
-                    <li>✓ Custom integrations</li>
-                    <li>✓ Dedicated support</li>
-                    <li>✓ Unlimited storage</li>
+                    <li>Everything in Pro</li>
+                    <li>Team accounts</li>
+                    <li>Advanced analytics</li>
+                    <li>Custom integrations</li>
+                    <li>Dedicated support</li>
+                    <li>Unlimited storage</li>
                 </ul>
             """, unsafe_allow_html=True)
             st.markdown('<div class="primary-container">', unsafe_allow_html=True)
