@@ -489,34 +489,177 @@ st.markdown("""
         border: none;
     }
     
-    /* Auth form */
-    .auth-form {
-        max-width: 400px;
-        margin: 2rem auto;
-        background: rgba(139, 92, 246, 0.08);
-        border: 1px solid rgba(139, 92, 246, 0.3);
-        border-radius: 20px;
+    /* Auth Page Specific Styles */
+    .auth-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         padding: 2rem;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    
+    .auth-box {
+        max-width: 480px;
+        width: 100%;
+        background: rgba(139, 92, 246, 0.05);
+        border: 1px solid rgba(139, 92, 246, 0.3);
+        border-radius: 24px;
+        padding: 3rem;
+        backdrop-filter: blur(20px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        animation: fadeInUp 0.6s ease-out;
+    }
+    
+    .auth-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+    
+    .auth-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #ffffff 0%, #8b5cf6 50%, #ec4899 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.5rem;
+    }
+    
+    .auth-subtitle {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 1rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+        display: block;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-input {
+        width: 100%;
+        padding: 0.9rem 1.2rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(139, 92, 246, 0.3);
+        border-radius: 12px;
+        color: #fff;
+        font-size: 0.95rem;
+        transition: all 0.3s;
+        font-family: 'Inter', 'Segoe UI', sans-serif;
+    }
+    
+    .form-input:focus {
+        outline: none;
+        border-color: #8b5cf6;
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    }
+    
+    .form-input::placeholder {
+        color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .auth-button {
+        width: 100%;
+        padding: 1rem;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+        color: #fff;
+        font-weight: 600;
+        font-size: 1rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 1rem;
+        box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+    }
+    
+    .auth-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6);
+    }
+    
+    .auth-divider {
+        text-align: center;
+        margin: 2rem 0;
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 0.9rem;
+        position: relative;
+    }
+    
+    .auth-divider::before,
+    .auth-divider::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 40%;
+        height: 1px;
+        background: rgba(139, 92, 246, 0.2);
+    }
+    
+    .auth-divider::before {
+        left: 0;
+    }
+    
+    .auth-divider::after {
+        right: 0;
+    }
+    
+    .auth-toggle {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.95rem;
+    }
+    
+    .auth-toggle-link {
+        color: #8b5cf6;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+    
+    .auth-toggle-link:hover {
+        color: #ec4899;
+    }
+    
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.9rem;
+        margin-bottom: 2rem;
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+    
+    .back-link:hover {
+        color: #8b5cf6;
     }
     
     .stTextInput > div > div > input {
         background: rgba(255, 255, 255, 0.05) !important;
         border: 1px solid rgba(139, 92, 246, 0.3) !important;
-        border-radius: 10px !important;
+        border-radius: 12px !important;
         color: #fff !important;
-        padding: 0.7rem !important;
-        font-size: 0.9rem !important;
+        padding: 0.9rem 1.2rem !important;
+        font-size: 0.95rem !important;
     }
     
     .stTextInput > div > div > input:focus {
         border-color: #8b5cf6 !important;
-        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2) !important;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1) !important;
     }
     
     /* Show buttons only in auth form */
-    .auth-form .stButton {
+    .auth-box .stButton {
         display: block !important;
         visibility: visible !important;
         position: relative !important;
@@ -525,71 +668,45 @@ st.markdown("""
         opacity: 1 !important;
     }
     
-    .auth-form .stButton > button {
+    .auth-box .stButton > button {
         width: 100%;
-        padding: 0.7rem !important;
-        border-radius: 10px !important;
+        padding: 1rem !important;
+        border-radius: 12px !important;
         background: linear-gradient(135deg, #8b5cf6, #ec4899) !important;
         color: #fff !important;
         font-weight: 600 !important;
-        font-size: 0.95rem !important;
+        font-size: 1rem !important;
         border: none !important;
-        margin-top: 0.8rem !important;
+        margin-top: 0.5rem !important;
         transition: all 0.3s !important;
+        box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4) !important;
     }
     
-    .auth-form .stButton > button:hover {
+    .auth-box .stButton > button:hover {
         transform: translateY(-2px) !important;
-        box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4) !important;
+        box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6) !important;
     }
     
-    /* Back button styling */
-    .back-button-container .stButton {
-        display: block !important;
-        visibility: visible !important;
-        position: relative !important;
-        width: auto !important;
-        height: auto !important;
-        opacity: 1 !important;
-        margin-bottom: 2rem !important;
+    /* Success/Error messages */
+    .message-box {
+        padding: 1rem;
+        border-radius: 12px;
+        margin-top: 1rem;
+        text-align: center;
+        font-size: 0.95rem;
+        animation: fadeInUp 0.4s ease-out;
     }
     
-    .back-button-container .stButton > button {
-        background: rgba(139, 92, 246, 0.2) !important;
-        border: 1px solid rgba(139, 92, 246, 0.3) !important;
-        color: #fff !important;
-        padding: 0.6rem 1.2rem !important;
-        border-radius: 10px !important;
-        font-weight: 500 !important;
-        transition: all 0.3s !important;
-    }
-    
-    .back-button-container .stButton > button:hover {
-        background: rgba(139, 92, 246, 0.3) !important;
-        border-color: #8b5cf6 !important;
-    }
-    
-    /* Success message */
-    .success-message {
+    .message-success {
         background: rgba(34, 197, 94, 0.1);
         border: 1px solid rgba(34, 197, 94, 0.3);
-        border-radius: 12px;
-        padding: 1rem;
         color: #4ade80;
-        text-align: center;
-        margin-top: 1rem;
-        animation: fadeInUp 0.5s ease-out;
     }
     
-    .error-message {
+    .message-error {
         background: rgba(239, 68, 68, 0.1);
         border: 1px solid rgba(239, 68, 68, 0.3);
-        border-radius: 12px;
-        padding: 1rem;
         color: #f87171;
-        text-align: center;
-        margin-top: 1rem;
-        animation: fadeInUp 0.5s ease-out;
     }
     
     /* Footer */
@@ -639,6 +756,8 @@ st.markdown("""
         }
         .section-title {font-size: 2rem;}
         .pricing-card.featured {transform: scale(1);}
+        .auth-box {padding: 2rem;}
+        .auth-title {font-size: 2rem;}
     }
 </style>
 """, unsafe_allow_html=True)
@@ -651,67 +770,151 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Check which page to show
-if st.session_state.current_page == 'signup':
-    # SIGNUP PAGE
+if st.session_state.current_page == 'auth':
+    # AUTHENTICATION PAGE
     st.markdown("""
     <div class="nav-container">
     <nav>
-    <div class="logo">
+    <div class="logo" id="logo-home">
     <span class="logo-icon">⚡</span>
     <span>CrypticX</span>
     </div>
     </nav>
     </div>
+    
+    <script>
+    document.getElementById('logo-home').addEventListener('click', function() {
+        const buttons = window.parent.document.querySelectorAll('button');
+        buttons.forEach(btn => {
+            if (btn.textContent.includes('back_home')) {
+                btn.click();
+            }
+        });
+    });
+    </script>
     """, unsafe_allow_html=True)
     
-    # Add back button with special container
-    st.markdown('<div class="back-button-container">', unsafe_allow_html=True)
-    if st.button("← Back to Home", key="back_home"):
-        st.session_state.current_page = 'home'
-        st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
-    
     st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
-    st.markdown('<div id="login" class="section" style="padding: 4rem 2rem;">', unsafe_allow_html=True)
+    st.markdown('<div class="auth-container">', unsafe_allow_html=True)
+    st.markdown('<div class="auth-box">', unsafe_allow_html=True)
     
+    # Back link
+    st.markdown("""
+    <div class="back-link" id="back-link">
+        ← Back to Home
+    </div>
+    <script>
+    document.getElementById('back-link').addEventListener('click', function() {
+        const buttons = window.parent.document.querySelectorAll('button');
+        buttons.forEach(btn => {
+            if (btn.textContent.includes('back_home')) {
+                btn.click();
+            }
+        });
+    });
+    </script>
+    """, unsafe_allow_html=True)
+    
+    # Show selected plan if any
     if st.session_state.selected_plan:
-        st.markdown(f'<div class="welcome-badge">Selected Plan: {st.session_state.selected_plan}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="welcome-badge" style="margin-bottom: 1.5rem;">Selected Plan: {st.session_state.selected_plan}</div>', unsafe_allow_html=True)
     
-    st.markdown('<h2 class="section-title" style="font-size: 2.5rem;">Get Started Today</h2>', unsafe_allow_html=True)
-    st.markdown('<p class="section-subtitle">Create your account or sign in to continue</p>', unsafe_allow_html=True)
-
-    col1, col2, col3 = st.columns([1, 1.5, 1])
-    with col2:
-        st.markdown('<div class="auth-form">', unsafe_allow_html=True)
-        
-        tab1, tab2 = st.tabs(["Sign Up", "Login"])
-        
-        with tab1:
-            st.text_input("Full Name", key="signup_name", placeholder="Enter your name")
-            st.text_input("Email", key="signup_email", placeholder="your@email.com")
-            st.text_input("Password", type="password", key="signup_password", placeholder="Create a password")
-            
-            if st.button("Create Account", key="signup_btn", use_container_width=True):
-                if st.session_state.signup_name and st.session_state.signup_email and st.session_state.signup_password:
-                    st.markdown('<div class="success-message">✓ Account created successfully! Welcome to CrypticX!</div>', unsafe_allow_html=True)
-                    st.session_state.logged_in = True
-                else:
-                    st.markdown('<div class="error-message">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
-        
-        with tab2:
-            st.text_input("Email", key="login_email", placeholder="your@email.com")
-            st.text_input("Password", type="password", key="login_password", placeholder="Enter your password")
-            
-            if st.button("Sign In", key="login_btn", use_container_width=True):
-                if st.session_state.login_email and st.session_state.login_password:
-                    st.markdown('<div class="success-message">✓ Welcome back!</div>', unsafe_allow_html=True)
-                    st.session_state.logged_in = True
-                else:
-                    st.markdown('<div class="error-message">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
-        
-        st.markdown('</div>', unsafe_allow_html=True)
+    # Initialize form mode
+    if 'auth_mode' not in st.session_state:
+        st.session_state.auth_mode = 'login'
     
-    st.markdown('</div></div>', unsafe_allow_html=True)
+    # Auth header
+    if st.session_state.auth_mode == 'login':
+        st.markdown("""
+        <div class="auth-header">
+            <h1 class="auth-title">Welcome Back</h1>
+            <p class="auth-subtitle">Sign in to continue your learning journey</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Login form
+        email = st.text_input("Email", key="login_email", placeholder="your@email.com", label_visibility="collapsed")
+        st.markdown('<div style="height: 1rem;"></div>', unsafe_allow_html=True)
+        password = st.text_input("Password", type="password", key="login_password", placeholder="Enter your password", label_visibility="collapsed")
+        
+        if st.button("Sign In", key="login_btn", use_container_width=True):
+            if email and password:
+                st.markdown('<div class="message-box message-success">✓ Welcome back! Redirecting...</div>', unsafe_allow_html=True)
+                st.session_state.logged_in = True
+            else:
+                st.markdown('<div class="message-box message-error">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
+        
+        # Toggle to signup
+        st.markdown("""
+        <div class="auth-toggle">
+            Don't have an account? <span class="auth-toggle-link" id="toggle-signup">Create one</span>
+        </div>
+        <script>
+        document.getElementById('toggle-signup').addEventListener('click', function() {
+            const buttons = window.parent.document.querySelectorAll('button');
+            buttons.forEach(btn => {
+                if (btn.textContent.includes('toggle_signup')) {
+                    btn.click();
+                }
+            });
+        });
+        </script>
+        """, unsafe_allow_html=True)
+        
+    else:  # signup mode
+        st.markdown("""
+        <div class="auth-header">
+            <h1 class="auth-title">Create Account</h1>
+            <p class="auth-subtitle">Join thousands of students learning smarter</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Signup form
+        name = st.text_input("Full Name", key="signup_name", placeholder="Enter your name", label_visibility="collapsed")
+        st.markdown('<div style="height: 1rem;"></div>', unsafe_allow_html=True)
+        email = st.text_input("Email", key="signup_email", placeholder="your@email.com", label_visibility="collapsed")
+        st.markdown('<div style="height: 1rem;"></div>', unsafe_allow_html=True)
+        password = st.text_input("Password", type="password", key="signup_password", placeholder="Create a password", label_visibility="collapsed")
+        
+        if st.button("Create Account", key="signup_btn", use_container_width=True):
+            if name and email and password:
+                st.markdown('<div class="message-box message-success">✓ Account created successfully! Welcome to CrypticX!</div>', unsafe_allow_html=True)
+                st.session_state.logged_in = True
+            else:
+                st.markdown('<div class="message-box message-error">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
+        
+        # Toggle to login
+        st.markdown("""
+        <div class="auth-toggle">
+            Already have an account? <span class="auth-toggle-link" id="toggle-login">Sign in</span>
+        </div>
+        <script>
+        document.getElementById('toggle-login').addEventListener('click', function() {
+            const buttons = window.parent.document.querySelectorAll('button');
+            buttons.forEach(btn => {
+                if (btn.textContent.includes('toggle_login')) {
+                    btn.click();
+                }
+            });
+        });
+        </script>
+        """, unsafe_allow_html=True)
+    
+    st.markdown('</div>', unsafe_allow_html=True)  # Close auth-box
+    st.markdown('</div>', unsafe_allow_html=True)  # Close auth-container
+    st.markdown('</div>', unsafe_allow_html=True)  # Close content-wrapper
+    
+    # Hidden toggle buttons
+    if st.button("toggle_signup", key="toggle_signup_btn"):
+        st.session_state.auth_mode = 'signup'
+        st.rerun()
+    if st.button("toggle_login", key="toggle_login_btn"):
+        st.session_state.auth_mode = 'login'
+        st.rerun()
+    if st.button("back_home", key="back_home_btn"):
+        st.session_state.current_page = 'home'
+        st.session_state.selected_plan = None
+        st.rerun()
 
 else:
     # HOME PAGE
@@ -737,7 +940,7 @@ else:
         e.preventDefault();
         const buttons = window.parent.document.querySelectorAll('button');
         buttons.forEach(btn => {
-            if (btn.textContent.includes('nav_login')) {
+            if (btn.textContent.includes('nav_auth')) {
                 btn.click();
             }
         });
@@ -747,7 +950,7 @@ else:
         e.preventDefault();
         const buttons = window.parent.document.querySelectorAll('button');
         buttons.forEach(btn => {
-            if (btn.textContent.includes('nav_signup')) {
+            if (btn.textContent.includes('nav_auth')) {
                 btn.click();
             }
         });
@@ -755,12 +958,10 @@ else:
     </script>
     """, unsafe_allow_html=True)
     
-    # Hidden navigation buttons
-    if st.button("nav_login", key="nav_login_btn"):
-        st.session_state.current_page = 'signup'
-        st.rerun()
-    if st.button("nav_signup", key="nav_signup_btn"):
-        st.session_state.current_page = 'signup'
+    # Hidden navigation button
+    if st.button("nav_auth", key="nav_auth_btn"):
+        st.session_state.current_page = 'auth'
+        st.session_state.auth_mode = 'login'
         st.rerun()
 
     st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
@@ -802,8 +1003,9 @@ else:
     
     # Hidden button for hero CTA
     if st.button("hero_cta", key="hero_cta_btn"):
-        st.session_state.current_page = 'signup'
+        st.session_state.current_page = 'auth'
         st.session_state.selected_plan = 'Free'
+        st.session_state.auth_mode = 'signup'
         st.rerun()
 
     # Why Choose Us Section
@@ -928,16 +1130,19 @@ else:
     
     # Hidden buttons for pricing clicks
     if st.button("free_plan", key="free_plan_btn"):
-        st.session_state.current_page = 'signup'
+        st.session_state.current_page = 'auth'
         st.session_state.selected_plan = 'Free'
+        st.session_state.auth_mode = 'signup'
         st.rerun()
     if st.button("pro_plan", key="pro_plan_btn"):
-        st.session_state.current_page = 'signup'
+        st.session_state.current_page = 'auth'
         st.session_state.selected_plan = 'Pro'
+        st.session_state.auth_mode = 'signup'
         st.rerun()
     if st.button("enterprise_plan", key="enterprise_plan_btn"):
-        st.session_state.current_page = 'signup'
+        st.session_state.current_page = 'auth'
         st.session_state.selected_plan = 'Enterprise'
+        st.session_state.auth_mode = 'signup'
         st.rerun()
 
     st.markdown('</div>', unsafe_allow_html=True)
