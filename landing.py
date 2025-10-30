@@ -767,6 +767,17 @@ with col2:
             else:
                 st.markdown('<div class="error-message">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
     
+    with tab2:
+        st.text_input("Email", key="login_email", placeholder="your@email.com")
+        st.text_input("Password", type="password", key="login_password", placeholder="Enter your password")
+        
+        if st.button("Sign In", key="login_btn", use_container_width=True):
+            if st.session_state.login_email and st.session_state.login_password:
+                st.markdown('<div class="success-message">✓ Welcome back!</div>', unsafe_allow_html=True)
+                st.session_state.logged_in = True
+            else:
+                st.markdown('<div class="error-message">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
+    
     st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
@@ -784,15 +795,4 @@ st.markdown("""
         <a href="#" class="footer-link">Contact</a>
     </div>
 </div>
-""", unsafe_allow_html=True)</div>', unsafe_allow_html=True)
-    
-    with tab2:
-        st.text_input("Email", key="login_email", placeholder="your@email.com")
-        st.text_input("Password", type="password", key="login_password", placeholder="Enter your password")
-        
-        if st.button("Sign In", key="login_btn", use_container_width=True):
-            if st.session_state.login_email and st.session_state.login_password:
-                st.markdown('<div class="success-message">✓ Welcome back!</div>', unsafe_allow_html=True)
-                st.session_state.logged_in = True
-            else:
-                st.markdown('<div class="error-message">⚠ Please fill in all fields
+""", unsafe_allow_html=True)
