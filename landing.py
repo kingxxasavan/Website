@@ -15,7 +15,7 @@ if 'logged_in' not in st.session_state:
 if 'selected_plan' not in st.session_state:
     st.session_state.selected_plan = None
 
-# Enhanced CSS (same as before)
+# Enhanced CSS
 st.markdown("""
 <style>
     /* Hide Streamlit elements */
@@ -31,6 +31,16 @@ st.markdown("""
     .stApp {margin: 0 !important; padding: 0 !important;}
     section.main > div {padding: 0 !important;}
     div[data-testid="stAppViewContainer"] {padding: 0 !important; margin: 0 !important;}
+    
+    /* Hide all Streamlit buttons completely */
+    .stButton {
+        display: none !important;
+        visibility: hidden !important;
+        position: absolute !important;
+        width: 0 !important;
+        height: 0 !important;
+        opacity: 0 !important;
+    }
     
     /* Base styles */
     * {margin: 0; padding: 0; box-sizing: border-box;}
@@ -505,7 +515,17 @@ st.markdown("""
         box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2) !important;
     }
     
-    .stButton > button {
+    /* Show buttons only in auth form */
+    .auth-form .stButton {
+        display: block !important;
+        visibility: visible !important;
+        position: relative !important;
+        width: 100% !important;
+        height: auto !important;
+        opacity: 1 !important;
+    }
+    
+    .auth-form .stButton > button {
         width: 100%;
         padding: 0.7rem !important;
         border-radius: 10px !important;
@@ -518,9 +538,35 @@ st.markdown("""
         transition: all 0.3s !important;
     }
     
-    .stButton > button:hover {
+    .auth-form .stButton > button:hover {
         transform: translateY(-2px) !important;
         box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4) !important;
+    }
+    
+    /* Back button styling */
+    .back-button-container .stButton {
+        display: block !important;
+        visibility: visible !important;
+        position: relative !important;
+        width: auto !important;
+        height: auto !important;
+        opacity: 1 !important;
+        margin-bottom: 2rem !important;
+    }
+    
+    .back-button-container .stButton > button {
+        background: rgba(139, 92, 246, 0.2) !important;
+        border: 1px solid rgba(139, 92, 246, 0.3) !important;
+        color: #fff !important;
+        padding: 0.6rem 1.2rem !important;
+        border-radius: 10px !important;
+        font-weight: 500 !important;
+        transition: all 0.3s !important;
+    }
+    
+    .back-button-container .stButton > button:hover {
+        background: rgba(139, 92, 246, 0.3) !important;
+        border-color: #8b5cf6 !important;
     }
     
     /* Success message */
@@ -597,15 +643,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# JavaScript for navigation
-st.markdown("""
-<script>
-function navigateToSignup(plan) {
-    window.parent.postMessage({type: 'streamlit:setComponentValue', value: {page: 'signup', plan: plan}}, '*');
-}
-</script>
-""", unsafe_allow_html=True)
-
 # Background elements
 st.markdown("""
 <div class="grid-background"></div>
@@ -627,10 +664,12 @@ if st.session_state.current_page == 'signup':
     </div>
     """, unsafe_allow_html=True)
     
-    # Add back button
+    # Add back button with special container
+    st.markdown('<div class="back-button-container">', unsafe_allow_html=True)
     if st.button("← Back to Home", key="back_home"):
         st.session_state.current_page = 'home'
         st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
     
     st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
     st.markdown('<div id="login" class="section" style="padding: 4rem 2rem;">', unsafe_allow_html=True)
@@ -675,7 +714,7 @@ if st.session_state.current_page == 'signup':
     st.markdown('</div></div>', unsafe_allow_html=True)
 
 else:
-    # HOME PAGE - EXACTLY AS ORIGINAL
+    # HOME PAGE
     st.markdown("""
     <div class="nav-container">
     <nav>
@@ -687,32 +726,52 @@ else:
     <a href="#home" class="nav-link">Home</a>
     <a href="#pricing" class="nav-link">Pricing</a>
     <a href="#dashboard" class="nav-link">Dashboard</a>
-    <a href="#login" class="nav-link">Login</a>
-    <button class="nav-cta">Sign Up</button>
+    <a href="#login" class="nav-link" id="nav-login-link">Login</a>
+    <button class="nav-cta" id="nav-signup-btn">Sign Up</button>
     </div>
     </nav>
     </div>
+    
+    <script>
+    document.getElementById('nav-login-link').addEventListener('click', function(e) {
+        e.preventDefault();
+        const buttons = window.parent.document.querySelectorAll('button');
+        buttons.forEach(btn => {
+            if (btn.textContent.includes('nav_login')) {
+                btn.click();
+            }
+        });
+    });
+    
+    document.getElementById('nav-signup-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        const buttons = window.parent.document.querySelectorAll('button');
+        buttons.forEach(btn => {
+            if (btn.textContent.includes('nav_signup')) {
+                btn.click();
+            }
+        });
+    });
+    </script>
     """, unsafe_allow_html=True)
     
-    # Hidden buttons to capture clicks
-    col1, col2 = st.columns([8, 1])
-    with col2:
-        if st.button("Nav Login", key="nav_login_hidden"):
-            st.session_state.current_page = 'signup'
-            st.rerun()
-        if st.button("Nav Signup", key="nav_signup_hidden"):
-            st.session_state.current_page = 'signup'
-            st.rerun()
+    # Hidden navigation buttons
+    if st.button("nav_login", key="nav_login_btn"):
+        st.session_state.current_page = 'signup'
+        st.rerun()
+    if st.button("nav_signup", key="nav_signup_btn"):
+        st.session_state.current_page = 'signup'
+        st.rerun()
 
     st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 
-    # Hero Section - EXACTLY AS ORIGINAL
+    # Hero Section
     st.markdown("""
     <div id="home" class="hero-section">
     <div class="welcome-badge">✨ Welcome to CrypticX - The Ultimate Study Tool</div>
     <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
     <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
-    <button class="hero-cta">Start Learning Free</button>
+    <button class="hero-cta" id="hero-cta-btn">Start Learning Free</button>
     <div class="stats-section">
         <div class="stat-item">
             <div class="stat-number">50K+</div>
@@ -728,15 +787,26 @@ else:
         </div>
     </div>
     </div>
+    
+    <script>
+    document.getElementById('hero-cta-btn').addEventListener('click', function() {
+        const buttons = window.parent.document.querySelectorAll('button');
+        buttons.forEach(btn => {
+            if (btn.textContent.includes('hero_cta')) {
+                btn.click();
+            }
+        });
+    });
+    </script>
     """, unsafe_allow_html=True)
     
     # Hidden button for hero CTA
-    if st.button("Hero CTA Hidden", key="hero_cta_hidden"):
+    if st.button("hero_cta", key="hero_cta_btn"):
         st.session_state.current_page = 'signup'
         st.session_state.selected_plan = 'Free'
         st.rerun()
 
-    # Why Choose Us Section - EXACTLY AS ORIGINAL
+    # Why Choose Us Section
     st.markdown('<div id="why-choose" class="section">', unsafe_allow_html=True)
     st.markdown('<h2 class="section-title">Why Choose CrypticX</h2>', unsafe_allow_html=True)
     st.markdown('<p class="section-subtitle">The smartest way to study in 2025</p>', unsafe_allow_html=True)
@@ -777,7 +847,7 @@ else:
 
     st.markdown('</div></div>', unsafe_allow_html=True)
 
-    # Pricing Section - EXACTLY AS ORIGINAL
+    # Pricing Section
     st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
     st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
     st.markdown('<p class="section-subtitle">Start free, upgrade when you are ready</p>', unsafe_allow_html=True)
@@ -793,7 +863,7 @@ else:
                 ✓ 5 quizzes/week<br>
                 ✓ Community support
             </div>
-            <button class="pricing-button">Start Free</button>
+            <button class="pricing-button" id="free-plan-btn">Start Free</button>
         </div>
         <div class="pricing-card featured">
             <div class="pricing-badge">⭐ MOST POPULAR</div>
@@ -807,7 +877,7 @@ else:
                 ✓ Priority support<br>
                 ✓ Progress analytics
             </div>
-            <button class="pricing-button">Get Pro</button>
+            <button class="pricing-button" id="pro-plan-btn">Get Pro</button>
         </div>
         <div class="pricing-card">
             <h3>Enterprise</h3>
@@ -820,30 +890,55 @@ else:
                 ✓ Dedicated support<br>
                 ✓ Unlimited storage
             </div>
-            <button class="pricing-button">Get Enterprise</button>
+            <button class="pricing-button" id="enterprise-plan-btn">Get Enterprise</button>
         </div>
     </div>
+    
+    <script>
+    document.getElementById('free-plan-btn').addEventListener('click', function() {
+        const buttons = window.parent.document.querySelectorAll('button');
+        buttons.forEach(btn => {
+            if (btn.textContent.includes('free_plan')) {
+                btn.click();
+            }
+        });
+    });
+    
+    document.getElementById('pro-plan-btn').addEventListener('click', function() {
+        const buttons = window.parent.document.querySelectorAll('button');
+        buttons.forEach(btn => {
+            if (btn.textContent.includes('pro_plan')) {
+                btn.click();
+            }
+        });
+    });
+    
+    document.getElementById('enterprise-plan-btn').addEventListener('click', function() {
+        const buttons = window.parent.document.querySelectorAll('button');
+        buttons.forEach(btn => {
+            if (btn.textContent.includes('enterprise_plan')) {
+                btn.click();
+            }
+        });
+    });
+    </script>
     """, unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
     
     # Hidden buttons for pricing clicks
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        if st.button("Free Plan Hidden", key="free_plan_hidden"):
-            st.session_state.current_page = 'signup'
-            st.session_state.selected_plan = 'Free'
-            st.rerun()
-    with col2:
-        if st.button("Pro Plan Hidden", key="pro_plan_hidden"):
-            st.session_state.current_page = 'signup'
-            st.session_state.selected_plan = 'Pro'
-            st.rerun()
-    with col3:
-        if st.button("Enterprise Plan Hidden", key="enterprise_plan_hidden"):
-            st.session_state.current_page = 'signup'
-            st.session_state.selected_plan = 'Enterprise'
-            st.rerun()
+    if st.button("free_plan", key="free_plan_btn"):
+        st.session_state.current_page = 'signup'
+        st.session_state.selected_plan = 'Free'
+        st.rerun()
+    if st.button("pro_plan", key="pro_plan_btn"):
+        st.session_state.current_page = 'signup'
+        st.session_state.selected_plan = 'Pro'
+        st.rerun()
+    if st.button("enterprise_plan", key="enterprise_plan_btn"):
+        st.session_state.current_page = 'signup'
+        st.session_state.selected_plan = 'Enterprise'
+        st.rerun()
 
     st.markdown('</div>', unsafe_allow_html=True)
 
