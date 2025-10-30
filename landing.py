@@ -15,7 +15,7 @@ if 'logged_in' not in st.session_state:
 if 'show_signup' not in st.session_state:
     st.session_state.show_signup = False
 
-# Enhanced CSS with smooth scrolling and animations
+# Enhanced CSS
 st.markdown("""
 <style>
     /* Hide Streamlit elements */
@@ -330,6 +330,7 @@ st.markdown("""
         grid-template-columns: repeat(3, 1fr);
         gap: 2rem;
         margin-top: 3rem;
+        width: 100%;
     }
     
     .feature-card {
@@ -385,6 +386,7 @@ st.markdown("""
         grid-template-columns: repeat(3, 1fr);
         gap: 2rem;
         margin-top: 3rem;
+        width: 100%;
     }
     
     .pricing-card {
@@ -487,31 +489,6 @@ st.markdown("""
         padding: 2rem;
         backdrop-filter: blur(10px);
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    }
-    
-    .auth-tabs {
-        display: flex;
-        gap: 0.5rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .auth-tab {
-        flex: 1;
-        padding: 0.6rem;
-        border-radius: 10px;
-        background: transparent;
-        border: 1px solid rgba(139, 92, 246, 0.3);
-        color: rgba(255, 255, 255, 0.6);
-        font-weight: 600;
-        font-size: 0.9rem;
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-    
-    .auth-tab.active {
-        background: rgba(139, 92, 246, 0.2);
-        border-color: #8b5cf6;
-        color: #fff;
     }
     
     .stTextInput > div > div > input {
@@ -618,7 +595,6 @@ st.markdown("""
         .pricing-card.featured {transform: scale(1);}
     }
 </style>
-
 """, unsafe_allow_html=True)
 
 # Background elements
@@ -626,39 +602,6 @@ st.markdown("""
 <div class="grid-background"></div>
 <div class="glow-orb purple"></div>
 <div class="glow-orb pink"></div>
-""", unsafe_allow_html=True)
-
-# JavaScript for smooth scrolling and nav hide on scroll
-st.markdown("""
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const links = document.querySelectorAll('a[href^="#"]');
-        links.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-
-        // Nav hide on scroll down
-        let lastScrollTop = 0;
-        window.addEventListener("scroll", function(){
-            let st = window.pageYOffset || document.documentElement.scrollTop;
-            const nav = document.querySelector('.nav-container');
-            if (st > lastScrollTop && st > 100) {
-                nav.style.transform = 'translateY(-100%)';
-            } else {
-                nav.style.transform = 'translateY(0)';
-            }
-            lastScrollTop = st <= 0 ? 0 : st;
-        }, false);
-    });
-</script>
-
 """, unsafe_allow_html=True)
 
 # Navigation
@@ -670,10 +613,10 @@ st.markdown(f"""
 <span>CrypticX</span>
 </div>
 <div class="nav-links">
-<a href="#home" class="nav-link {'active' if st.session_state.current_section == 'home' else ''}">Home</a>
-<a href="#pricing" class="nav-link {'active' if st.session_state.current_section == 'pricing' else ''}">Pricing</a>
-<a href="#dashboard" class="nav-link {'active' if st.session_state.current_section == 'dashboard' else ''}">Dashboard</a>
-<a href="#login" class="nav-link {'active' if st.session_state.current_section == 'login' else ''}">Login</a>
+<a href="#home" class="nav-link">Home</a>
+<a href="#pricing" class="nav-link">Pricing</a>
+<a href="#dashboard" class="nav-link">Dashboard</a>
+<a href="#login" class="nav-link">Login</a>
 <button class="nav-cta" onclick="document.getElementById('login').scrollIntoView({{behavior: 'smooth'}})">Sign Up</button>
 </div>
 </nav>
@@ -751,9 +694,9 @@ st.markdown('</div></div>', unsafe_allow_html=True)
 # Pricing Section
 st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
 st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
-st.markdown('<p class="section-subtitle">Start free, upgrade when you\'re ready</p>', unsafe_allow_html=True)
+st.markdown('<p class="section-subtitle">Start free, upgrade when you are ready</p>', unsafe_allow_html=True)
 
-st.markdown("""
+pricing_html = """
 <div class="pricing-grid">
     <div class="pricing-card">
         <h3>Free</h3>
@@ -764,7 +707,7 @@ st.markdown("""
             ✓ 5 quizzes/week<br>
             ✓ Community support
         </div>
-        <button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Start Free</button>
+        <button class="pricing-button">Start Free</button>
     </div>
     <div class="pricing-card featured">
         <div class="pricing-badge">⭐ MOST POPULAR</div>
@@ -778,7 +721,7 @@ st.markdown("""
             ✓ Priority support<br>
             ✓ Progress analytics
         </div>
-        <button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Get Pro</button>
+        <button class="pricing-button">Get Pro</button>
     </div>
     <div class="pricing-card">
         <h3>Enterprise</h3>
@@ -791,10 +734,12 @@ st.markdown("""
             ✓ Dedicated support<br>
             ✓ Unlimited storage
         </div>
-        <button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Contact Us</button>
+        <button class="pricing-button">Contact Us</button>
     </div>
 </div>
-""", unsafe_allow_html=True)
+"""
+
+st.markdown(pricing_html, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
 # Login/Signup Section
@@ -823,17 +768,6 @@ with col2:
             else:
                 st.markdown('<div class="error-message">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
     
-    with tab2:
-        st.text_input("Email", key="login_email", placeholder="your@email.com")
-        st.text_input("Password", type="password", key="login_password", placeholder="Enter your password")
-        
-        if st.button("Sign In", key="login_btn", use_container_width=True):
-            if st.session_state.login_email and st.session_state.login_password:
-                st.markdown('<div class="success-message">✓ Welcome back!</div>', unsafe_allow_html=True)
-                st.session_state.logged_in = True
-            else:
-                st.markdown('<div class="error-message">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
-    
     st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
@@ -851,31 +785,15 @@ st.markdown("""
         <a href="#" class="footer-link">Contact</a>
     </div>
 </div>
-""", unsafe_allow_html=True)getElementById('login').scrollIntoView({behavior: 'smooth'})">Start Free</button>
-    </div>
-    <div class="pricing-card featured">
-        <div class="pricing-badge">⭐ MOST POPULAR</div>
-        <h3>Pro</h3>
-        <div class="price">$15<span class="price-period">/mo</span></div>
-        <div class="feature-list">
-            ✓ Unlimited AI questions<br>
-            ✓ Advanced summaries<br>
-            ✓ Unlimited quizzes<br>
-            ✓ PDF upload (100MB)<br>
-            ✓ Priority support<br>
-            ✓ Progress analytics
-        </div>
-        <button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Get Pro</button>
-    </div>
-    <div class="pricing-card">
-        <h3>Enterprise</h3>
-        <div class="price">$35<span class="price-period">/mo</span></div>
-        <div class="feature-list">
-            ✓ Everything in Pro<br>
-            ✓ Team accounts<br>
-            ✓ Advanced analytics<br>
-            ✓ Custom integrations<br>
-            ✓ Dedicated support<br>
-            ✓ Unlimited storage
-        </div>
-        <button class="pricing-button" onclick="document.
+""", unsafe_allow_html=True)</div>', unsafe_allow_html=True)
+    
+    with tab2:
+        st.text_input("Email", key="login_email", placeholder="your@email.com")
+        st.text_input("Password", type="password", key="login_password", placeholder="Enter your password")
+        
+        if st.button("Sign In", key="login_btn", use_container_width=True):
+            if st.session_state.login_email and st.session_state.login_password:
+                st.markdown('<div class="success-message">✓ Welcome back!</div>', unsafe_allow_html=True)
+                st.session_state.logged_in = True
+            else:
+                st.markdown('<div class="error-message">⚠ Please fill in all fields
