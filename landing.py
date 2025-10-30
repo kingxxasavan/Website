@@ -308,9 +308,14 @@ st.markdown("""
 
     .hero-cta-wrapper {
         display: block;
-        max-width: 300px;  /* Keeps button compact */
+        max-width: 280px;  /* Slightly tighter for better balance */
         margin: 0 auto;    /* True horizontal center */
         text-align: center;
+    }
+    .hero-cta-wrapper .stButton > button {
+        display: block !important;  /* Force block for centering */
+        margin: 0 auto !important;  /* Center the button itself */
+        width: fit-content !important;  /* Shrink to content width */
     }
     
     /* Stats section */
@@ -1117,7 +1122,7 @@ if not st.session_state.logged_in:
         <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
         """, unsafe_allow_html=True)
         
-        # Centered hero button
+        # Centered hero button (refined for perfect center)
         st.markdown('<div class="hero-cta-wrapper">', unsafe_allow_html=True)
         if st.button("Start Learning Free", key="hero_free"):
             st.session_state.selected_plan = 'Free'
@@ -1184,7 +1189,7 @@ if not st.session_state.logged_in:
 
         st.markdown('</div></div>', unsafe_allow_html=True)
 
-        # Pricing Section (with st.button for each, now wrapped inside cards)
+        # Pricing Section (unchanged from previous fix)
         st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
         st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
         st.markdown('<p class="section-subtitle">Start free, upgrade when you are ready</p>', unsafe_allow_html=True)
