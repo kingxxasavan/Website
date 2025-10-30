@@ -15,6 +15,14 @@ if 'logged_in' not in st.session_state:
 if 'show_signup' not in st.session_state:
     st.session_state.show_signup = False
 
+# Check for navigation triggers
+if 'navigate_to' in st.session_state:
+    if st.session_state.navigate_to == 'login':
+        st.switch_page("pages/login.py")
+    elif st.session_state.navigate_to == 'signup':
+        st.switch_page("pages/signup.py")
+    st.session_state.navigate_to = None
+
 # Enhanced CSS with smooth scrolling and animations
 st.markdown("""
 <style>
@@ -172,11 +180,6 @@ st.markdown("""
     .nav-link.active {
         color: #fff;
         border-bottom-color: #8b5cf6;
-    }
-    
-    /* Hide Streamlit buttons default styling */
-    .stButton button {
-        all: unset;
     }
     
     .nav-cta {
@@ -482,7 +485,7 @@ st.markdown("""
         border: none;
     }
     
-    /* Custom footer */
+    /* Footer */
     .custom-footer {
         position: relative;
         z-index: 10;
@@ -541,51 +544,58 @@ st.markdown("""
 <div class="glow-orb pink"></div>
 """, unsafe_allow_html=True)
 
-# Navigation with working buttons
-st.markdown('<div class="nav-container">', unsafe_allow_html=True)
-st.markdown('<nav>', unsafe_allow_html=True)
-
-# Logo
+# JavaScript for navigation
 st.markdown("""
+<script>
+    // Navigation click handlers
+    function navigateToLogin() {
+        window.parent.postMessage({type: 'streamlit:setComponentValue', value: 'login'}, '*');
+    }
+    
+    function navigateToSignup() {
+        window.parent.postMessage({type: 'streamlit:setComponentValue', value: 'signup'}, '*');
+    }
+</script>
+""", unsafe_allow_html=True)
+
+# Navigation - BACK TO ORIGINAL DESIGN
+st.markdown(f"""
+<div class="nav-container">
+<nav>
 <div class="logo">
 <span class="logo-icon">⚡</span>
 <span>CrypticX</span>
 </div>
+<div class="nav-links">
+<a href="#home" class="nav-link {'active' if st.session_state.current_section == 'home' else ''}">Home</a>
+<a href="#pricing" class="nav-link {'active' if st.session_state.current_section == 'pricing' else ''}">Pricing</a>
+<a href="#dashboard" class="nav-link {'active' if st.session_state.current_section == 'dashboard' else ''}">Dashboard</a>
+<a href="#login" class="nav-link {'active' if st.session_state.current_section == 'login' else ''}">Login</a>
+<button class="nav-cta" onclick="window.location.href='?page=signup'">Sign Up</button>
+</div>
+</nav>
+</div>
 """, unsafe_allow_html=True)
 
-# Navigation links with buttons
-st.markdown('<div class="nav-links">', unsafe_allow_html=True)
-st.markdown('<a href="#home" class="nav-link">Home</a>', unsafe_allow_html=True)
-st.markdown('<a href="#pricing" class="nav-link">Pricing</a>', unsafe_allow_html=True)
-st.markdown('<a href="#dashboard" class="nav-link">Dashboard</a>', unsafe_allow_html=True)
-
-# Create columns for the login link and signup button
-col1, col2 = st.columns([1, 1])
-with col1:
-    if st.button("Login", key="nav_login"):
+# Check URL params for navigation
+query_params = st.query_params
+if "page" in query_params:
+    page = query_params["page"]
+    if page == "login":
         st.switch_page("pages/login.py")
-with col2:
-    if st.button("Sign Up", key="nav_signup"):
+    elif page == "signup":
         st.switch_page("pages/signup.py")
-
-st.markdown('</div>', unsafe_allow_html=True)
-st.markdown('</nav>', unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
 
 # Content wrapper
 st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 
-# Hero Section
-st.markdown('<div id="home" class="hero-section">', unsafe_allow_html=True)
-st.markdown('<div class="welcome-badge">✨ Welcome to CrypticX - The Ultimate Study Tool</div>', unsafe_allow_html=True)
-st.markdown('<h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>', unsafe_allow_html=True)
-st.markdown('<p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>', unsafe_allow_html=True)
-
-# Hero CTA button
-if st.button("Start Learning Free", key="hero_cta"):
-    st.switch_page("pages/signup.py")
-
+# Hero Section - BACK TO ORIGINAL
 st.markdown("""
+<div id="home" class="hero-section">
+<div class="welcome-badge">✨ Welcome to CrypticX - The Ultimate Study Tool</div>
+<h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
+<p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
+<button class="hero-cta" onclick="window.location.href='?page=signup'">Start Learning Free</button>
 <div class="stats-section">
     <div class="stat-item">
         <div class="stat-number">50K+</div>
@@ -644,16 +654,13 @@ st.markdown("""
 
 st.markdown('</div></div>', unsafe_allow_html=True)
 
-# Pricing Section
+# Pricing Section - BACK TO ORIGINAL
 st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
 st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
 st.markdown('<p class="section-subtitle">Start free, upgrade when you\'re ready</p>', unsafe_allow_html=True)
 
-# Pricing cards with buttons
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    st.markdown("""
+st.markdown("""
+<div class="pricing-grid">
     <div class="pricing-card">
         <h3>Free</h3>
         <div class="price">$0<span class="price-period">/mo</span></div>
@@ -663,13 +670,8 @@ with col1:
             ✓ 5 quizzes/week<br>
             ✓ Community support
         </div>
+        <button class="pricing-button" onclick="window.location.href='?page=signup'">Start Free</button>
     </div>
-    """, unsafe_allow_html=True)
-    if st.button("Start Free", key="free_plan"):
-        st.switch_page("pages/signup.py")
-
-with col2:
-    st.markdown("""
     <div class="pricing-card featured">
         <div class="pricing-badge">⭐ MOST POPULAR</div>
         <h3>Pro</h3>
@@ -682,13 +684,8 @@ with col2:
             ✓ Priority support<br>
             ✓ Progress analytics
         </div>
+        <button class="pricing-button" onclick="window.location.href='?page=signup'">Get Pro</button>
     </div>
-    """, unsafe_allow_html=True)
-    if st.button("Get Pro", key="pro_plan"):
-        st.switch_page("pages/signup.py")
-
-with col3:
-    st.markdown("""
     <div class="pricing-card">
         <h3>Enterprise</h3>
         <div class="price">$35<span class="price-period">/mo</span></div>
@@ -700,11 +697,10 @@ with col3:
             ✓ Dedicated support<br>
             ✓ Unlimited storage
         </div>
+        <button class="pricing-button" onclick="window.location.href='?page=signup'">Contact Us</button>
     </div>
-    """, unsafe_allow_html=True)
-    if st.button("Contact Us", key="enterprise_plan"):
-        st.switch_page("pages/signup.py")
-
+</div>
+""", unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
 # Close content wrapper
