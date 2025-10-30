@@ -14,6 +14,13 @@ if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
 if 'show_signup' not in st.session_state:
     st.session_state.show_signup = False
+if 'selected_plan' not in st.session_state:
+    st.session_state.selected_plan = None
+
+def navigate_to_signup(plan=None):
+    st.session_state.current_section = 'signup'
+    st.session_state.selected_plan = plan
+    st.rerun()
 
 # Enhanced CSS
 st.markdown("""
@@ -604,186 +611,244 @@ st.markdown("""
 <div class="glow-orb pink"></div>
 """, unsafe_allow_html=True)
 
-# Navigation
-st.markdown(f"""
-<div class="nav-container">
-<nav>
-<div class="logo">
-<span class="logo-icon">⚡</span>
-<span>CrypticX</span>
-</div>
-<div class="nav-links">
-<a href="#home" class="nav-link">Home</a>
-<a href="#pricing" class="nav-link">Pricing</a>
-<a href="#dashboard" class="nav-link">Dashboard</a>
-<a href="#login" class="nav-link">Login</a>
-<button class="nav-cta" onclick="document.getElementById('login').scrollIntoView({{behavior: 'smooth'}})">Sign Up</button>
-</div>
-</nav>
-</div>
-""", unsafe_allow_html=True)
-
-# Content wrapper
-st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
-
-# Hero Section
-st.markdown("""
-<div id="home" class="hero-section">
-<div class="welcome-badge">✨ Welcome to CrypticX - The Ultimate Study Tool</div>
-<h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
-<p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
-<button class="hero-cta" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Start Learning Free</button>
-<div class="stats-section">
-    <div class="stat-item">
-        <div class="stat-number">50K+</div>
-        <div class="stat-label">Active Students</div>
+# Check if we're on the signup page
+if st.session_state.current_section == 'signup':
+    # Navigation for signup page
+    st.markdown(f"""
+    <div class="nav-container">
+    <nav>
+    <div class="logo" onclick="window.location.reload()">
+    <span class="logo-icon">⚡</span>
+    <span>CrypticX</span>
     </div>
-    <div class="stat-item">
-        <div class="stat-number">95%</div>
-        <div class="stat-label">Satisfaction Rate</div>
+    <div class="nav-links">
+    <a href="?page=home" class="nav-link" onclick="window.location.reload()">← Back to Home</a>
     </div>
-    <div class="stat-item">
-        <div class="stat-number">1M+</div>
-        <div class="stat-label">Questions Answered</div>
+    </nav>
     </div>
-</div>
-</div>
-""", unsafe_allow_html=True)
-
-# Why Choose Us Section
-st.markdown('<div id="why-choose" class="section">', unsafe_allow_html=True)
-st.markdown('<h2 class="section-title">Why Choose CrypticX</h2>', unsafe_allow_html=True)
-st.markdown('<p class="section-subtitle">The smartest way to study in 2025</p>', unsafe_allow_html=True)
-st.markdown('<div class="features-grid">', unsafe_allow_html=True)
-
-st.markdown("""
-<div class="feature-card">
-<span class="feature-icon">⚡</span>
-<h3>Lightning Fast</h3>
-<p>Get instant answers to your questions. No more waiting hours for tutors or searching through endless resources.</p>
-</div>
-<div class="feature-card">
-<span class="feature-icon">🎯</span>
-<h3>Personalized Learning</h3>
-<p>AI adapts to your learning style and pace, providing customized explanations that make sense to you.</p>
-</div>
-<div class="feature-card">
-<span class="feature-icon">💰</span>
-<h3>Affordable Excellence</h3>
-<p>Get premium tutoring quality at a fraction of the cost. Start free and upgrade only when you're ready.</p>
-</div>
-<div class="feature-card">
-<span class="feature-icon">📱</span>
-<h3>Study Anywhere</h3>
-<p>Access your learning tools from any device, anytime. Study on your schedule, not someone else's.</p>
-</div>
-<div class="feature-card">
-<span class="feature-icon">🔬</span>
-<h3>Proven Methods</h3>
-<p>Built on learning science and cognitive psychology principles that are proven to improve retention and understanding.</p>
-</div>
-<div class="feature-card">
-<span class="feature-icon">🌟</span>
-<h3>Student Success</h3>
-<p>Join thousands of students who've improved their grades and confidence with CrypticX's intelligent tools.</p>
-</div>
-""", unsafe_allow_html=True)
-
-st.markdown('</div></div>', unsafe_allow_html=True)
-
-# Pricing Section
-st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
-st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
-st.markdown('<p class="section-subtitle">Start free, upgrade when you are ready</p>', unsafe_allow_html=True)
-
-st.markdown("""
-<div class="pricing-grid">
-    <div class="pricing-card">
-        <h3>Free</h3>
-        <div class="price">$0<span class="price-period">/mo</span></div>
-        <div class="feature-list">
-            ✓ 10 AI questions/day<br>
-            ✓ Basic summaries<br>
-            ✓ 5 quizzes/week<br>
-            ✓ Community support
-        </div>
-        <button class="pricing-button">Start Free</button>
-    </div>
-    <div class="pricing-card featured">
-        <div class="pricing-badge">⭐ MOST POPULAR</div>
-        <h3>Pro</h3>
-        <div class="price">$15<span class="price-period">/mo</span></div>
-        <div class="feature-list">
-            ✓ Unlimited AI questions<br>
-            ✓ Advanced summaries<br>
-            ✓ Unlimited quizzes<br>
-            ✓ PDF upload (100MB)<br>
-            ✓ Priority support<br>
-            ✓ Progress analytics
-        </div>
-        <button class="pricing-button">Get Pro</button>
-    </div>
-    <div class="pricing-card">
-        <h3>Enterprise</h3>
-        <div class="price">$35<span class="price-period">/mo</span></div>
-        <div class="feature-list">
-            ✓ Everything in Pro<br>
-            ✓ Team accounts<br>
-            ✓ Advanced analytics<br>
-            ✓ Custom integrations<br>
-            ✓ Dedicated support<br>
-            ✓ Unlimited storage
-        </div>
-        <button class="pricing-button">Get Enterprise</button>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-st.markdown('</div>', unsafe_allow_html=True)
-
-# Login/Signup Section
-st.markdown('<div id="login" class="section" style="padding: 4rem 2rem;">', unsafe_allow_html=True)
-st.markdown('<h2 class="section-title" style="font-size: 2.5rem;">Get Started Today</h2>', unsafe_allow_html=True)
-st.markdown('<p class="section-subtitle">Create your account or sign in to continue</p>', unsafe_allow_html=True)
-
-# Auth form container
-col1, col2, col3 = st.columns([1, 1.5, 1])
-
-with col2:
-    st.markdown('<div class="auth-form">', unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
     
-    # Tabs
-    tab1, tab2 = st.tabs(["Sign Up", "Login"])
+    # Content wrapper
+    st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
     
-    with tab1:
-        st.text_input("Full Name", key="signup_name", placeholder="Enter your name")
-        st.text_input("Email", key="signup_email", placeholder="your@email.com")
-        st.text_input("Password", type="password", key="signup_password", placeholder="Create a password")
+    # Login/Signup Section
+    st.markdown('<div id="login" class="section" style="padding: 4rem 2rem; min-height: calc(100vh - 80px); display: flex; flex-direction: column; justify-content: center;">', unsafe_allow_html=True)
+    
+    # Show selected plan if any
+    if st.session_state.selected_plan:
+        st.markdown(f'<div class="welcome-badge">Selected Plan: {st.session_state.selected_plan}</div>', unsafe_allow_html=True)
+    
+    st.markdown('<h2 class="section-title" style="font-size: 2.5rem;">Get Started Today</h2>', unsafe_allow_html=True)
+    st.markdown('<p class="section-subtitle">Create your account or sign in to continue</p>', unsafe_allow_html=True)
+
+    # Auth form container
+    col1, col2, col3 = st.columns([1, 1.5, 1])
+
+    with col2:
+        st.markdown('<div class="auth-form">', unsafe_allow_html=True)
         
-        if st.button("Create Account", key="signup_btn", use_container_width=True):
-            if st.session_state.signup_name and st.session_state.signup_email and st.session_state.signup_password:
-                st.markdown('<div class="success-message">✓ Account created successfully! Welcome to CrypticX!</div>', unsafe_allow_html=True)
-                st.session_state.logged_in = True
-            else:
-                st.markdown('<div class="error-message">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
-    
-    with tab2:
-        st.text_input("Email", key="login_email", placeholder="your@email.com")
-        st.text_input("Password", type="password", key="login_password", placeholder="Enter your password")
+        # Tabs
+        tab1, tab2 = st.tabs(["Sign Up", "Login"])
         
-        if st.button("Sign In", key="login_btn", use_container_width=True):
-            if st.session_state.login_email and st.session_state.login_password:
-                st.markdown('<div class="success-message">✓ Welcome back!</div>', unsafe_allow_html=True)
-                st.session_state.logged_in = True
-            else:
-                st.markdown('<div class="error-message">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
-    
+        with tab1:
+            st.text_input("Full Name", key="signup_name", placeholder="Enter your name")
+            st.text_input("Email", key="signup_email", placeholder="your@email.com")
+            st.text_input("Password", type="password", key="signup_password", placeholder="Create a password")
+            
+            if st.button("Create Account", key="signup_btn", use_container_width=True):
+                if st.session_state.signup_name and st.session_state.signup_email and st.session_state.signup_password:
+                    st.markdown('<div class="success-message">✓ Account created successfully! Welcome to CrypticX!</div>', unsafe_allow_html=True)
+                    st.session_state.logged_in = True
+                else:
+                    st.markdown('<div class="error-message">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
+        
+        with tab2:
+            st.text_input("Email", key="login_email", placeholder="your@email.com")
+            st.text_input("Password", type="password", key="login_password", placeholder="Enter your password")
+            
+            if st.button("Sign In", key="login_btn", use_container_width=True):
+                if st.session_state.login_email and st.session_state.login_password:
+                    st.markdown('<div class="success-message">✓ Welcome back!</div>', unsafe_allow_html=True)
+                    st.session_state.logged_in = True
+                else:
+                    st.markdown('<div class="error-message">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
+        
+        st.markdown('</div>', unsafe_allow_html=True)
+
     st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Close content wrapper
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+else:
+    # HOME PAGE
+    # Navigation
+    st.markdown(f"""
+    <div class="nav-container">
+    <nav>
+    <div class="logo">
+    <span class="logo-icon">⚡</span>
+    <span>CrypticX</span>
+    </div>
+    <div class="nav-links">
+    <a href="#home" class="nav-link">Home</a>
+    <a href="#pricing" class="nav-link">Pricing</a>
+    <a href="#dashboard" class="nav-link">Dashboard</a>
+    </div>
+    </nav>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Add signup button to nav
+    col_nav1, col_nav2, col_nav3 = st.columns([6, 1, 1])
+    with col_nav2:
+        if st.button("Login", key="nav_login", use_container_width=True):
+            navigate_to_signup()
+    with col_nav3:
+        if st.button("Sign Up", key="nav_signup", use_container_width=True):
+            navigate_to_signup()
 
-st.markdown('</div>', unsafe_allow_html=True)
+    # Content wrapper
+    st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 
-# Close content wrapper
-st.markdown('</div>', unsafe_allow_html=True)
+    # Hero Section
+    st.markdown("""
+    <div id="home" class="hero-section">
+    <div class="welcome-badge">✨ Welcome to CrypticX - The Ultimate Study Tool</div>
+    <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
+    <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
+    """, unsafe_allow_html=True)
+    
+    # Hero CTA button
+    if st.button("Start Learning Free", key="hero_cta", use_container_width=False):
+        navigate_to_signup("Free")
+    
+    st.markdown("""
+    <div class="stats-section">
+        <div class="stat-item">
+            <div class="stat-number">50K+</div>
+            <div class="stat-label">Active Students</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">95%</div>
+            <div class="stat-label">Satisfaction Rate</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">1M+</div>
+            <div class="stat-label">Questions Answered</div>
+        </div>
+    </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Why Choose Us Section
+    st.markdown('<div id="why-choose" class="section">', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title">Why Choose CrypticX</h2>', unsafe_allow_html=True)
+    st.markdown('<p class="section-subtitle">The smartest way to study in 2025</p>', unsafe_allow_html=True)
+    st.markdown('<div class="features-grid">', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="feature-card">
+    <span class="feature-icon">⚡</span>
+    <h3>Lightning Fast</h3>
+    <p>Get instant answers to your questions. No more waiting hours for tutors or searching through endless resources.</p>
+    </div>
+    <div class="feature-card">
+    <span class="feature-icon">🎯</span>
+    <h3>Personalized Learning</h3>
+    <p>AI adapts to your learning style and pace, providing customized explanations that make sense to you.</p>
+    </div>
+    <div class="feature-card">
+    <span class="feature-icon">💰</span>
+    <h3>Affordable Excellence</h3>
+    <p>Get premium tutoring quality at a fraction of the cost. Start free and upgrade only when you're ready.</p>
+    </div>
+    <div class="feature-card">
+    <span class="feature-icon">📱</span>
+    <h3>Study Anywhere</h3>
+    <p>Access your learning tools from any device, anytime. Study on your schedule, not someone else's.</p>
+    </div>
+    <div class="feature-card">
+    <span class="feature-icon">🔬</span>
+    <h3>Proven Methods</h3>
+    <p>Built on learning science and cognitive psychology principles that are proven to improve retention and understanding.</p>
+    </div>
+    <div class="feature-card">
+    <span class="feature-icon">🌟</span>
+    <h3>Student Success</h3>
+    <p>Join thousands of students who've improved their grades and confidence with CrypticX's intelligent tools.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('</div></div>', unsafe_allow_html=True)
+
+    # Pricing Section
+    st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
+    st.markdown('<p class="section-subtitle">Start free, upgrade when you are ready</p>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="pricing-grid">
+        <div class="pricing-card">
+            <h3>Free</h3>
+            <div class="price">$0<span class="price-period">/mo</span></div>
+            <div class="feature-list">
+                ✓ 10 AI questions/day<br>
+                ✓ Basic summaries<br>
+                ✓ 5 quizzes/week<br>
+                ✓ Community support
+            </div>
+    """, unsafe_allow_html=True)
+    
+    if st.button("Start Free", key="free_plan", use_container_width=True):
+        navigate_to_signup("Free")
+    
+    st.markdown("""
+        </div>
+        <div class="pricing-card featured">
+            <div class="pricing-badge">⭐ MOST POPULAR</div>
+            <h3>Pro</h3>
+            <div class="price">$15<span class="price-period">/mo</span></div>
+            <div class="feature-list">
+                ✓ Unlimited AI questions<br>
+                ✓ Advanced summaries<br>
+                ✓ Unlimited quizzes<br>
+                ✓ PDF upload (100MB)<br>
+                ✓ Priority support<br>
+                ✓ Progress analytics
+            </div>
+    """, unsafe_allow_html=True)
+    
+    if st.button("Get Pro", key="pro_plan", use_container_width=True):
+        navigate_to_signup("Pro")
+    
+    st.markdown("""
+        </div>
+        <div class="pricing-card">
+            <h3>Enterprise</h3>
+            <div class="price">$35<span class="price-period">/mo</span></div>
+            <div class="feature-list">
+                ✓ Everything in Pro<br>
+                ✓ Team accounts<br>
+                ✓ Advanced analytics<br>
+                ✓ Custom integrations<br>
+                ✓ Dedicated support<br>
+                ✓ Unlimited storage
+            </div>
+    """, unsafe_allow_html=True)
+    
+    if st.button("Get Enterprise", key="enterprise_plan", use_container_width=True):
+        navigate_to_signup("Enterprise")
+    
+    st.markdown("""
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Close content wrapper
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # Footer
 st.markdown("""
