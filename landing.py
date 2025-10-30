@@ -734,7 +734,7 @@ st.markdown("""
             ✓ Dedicated support<br>
             ✓ Unlimited storage
         </div>
-        <button class="pricing-button">Contact Us</button>
+        <button class="pricing-button">Get Enterprise</button>
     </div>
 </div>
 """, unsafe_allow_html=True)
