@@ -20,6 +20,53 @@ if 'auth_mode' not in st.session_state:
 if 'user_name' not in st.session_state:
     st.session_state.user_name = None
 
+# Global navigation handling via query params (moved to top for instant state update)
+query_params = st.query_params
+if 'action' in query_params:
+    action = query_params['action'][0] if isinstance(query_params['action'], list) else query_params['action']
+    handled = False
+    if action in ['auth_login', 'auth_signup', 'hero', 'free', 'pro', 'enterprise']:
+        st.session_state.current_page = 'auth'
+        if action == 'auth_login':
+            st.session_state.auth_mode = 'login'
+            st.session_state.selected_plan = None
+        elif action == 'auth_signup':
+            st.session_state.auth_mode = 'signup'
+            st.session_state.selected_plan = None
+        elif action == 'hero' or action == 'free':
+            st.session_state.auth_mode = 'signup'
+            st.session_state.selected_plan = 'Free'
+        elif action == 'pro':
+            st.session_state.auth_mode = 'signup'
+            st.session_state.selected_plan = 'Pro'
+        elif action == 'enterprise':
+            st.session_state.auth_mode = 'signup'
+            st.session_state.selected_plan = 'Enterprise'
+        handled = True
+    elif action == 'home':
+        st.session_state.current_page = 'home'
+        st.session_state.selected_plan = None
+        handled = True
+    elif action == 'dashboard' and st.session_state.logged_in:
+        st.session_state.current_page = 'dashboard'
+        handled = True
+    elif action == 'logout':
+        st.session_state.logged_in = False
+        st.session_state.user_name = None
+        st.session_state.selected_plan = None
+        st.session_state.current_page = 'home'
+        handled = True
+    elif action == 'toggle_signup' and st.session_state.current_page == 'auth':
+        st.session_state.auth_mode = 'signup'
+        handled = True
+    elif action == 'toggle_login' and st.session_state.current_page == 'auth':
+        st.session_state.auth_mode = 'login'
+        handled = True
+    
+    if handled:
+        # Remove the action param to clean URL (schedules update after this run)
+        del st.query_params['action']
+
 # Enhanced CSS with sidebar hiding to prevent flash
 st.markdown("""
 <style>
@@ -869,13 +916,6 @@ st.markdown("""
 if st.session_state.current_page == 'auth':
     # AUTHENTICATION PAGE
     
-    # Check for back navigation
-    query_params = st.query_params
-    if 'action' in query_params and query_params['action'] == 'home':
-        st.session_state.current_page = 'home'
-        st.session_state.selected_plan = None
-        st.query_params.clear()
-    
     st.markdown("""
     <div class="nav-container">
     <nav>
@@ -920,7 +960,6 @@ if st.session_state.current_page == 'auth':
             if email and password:
                 st.session_state.logged_in = True
                 st.session_state.current_page = 'home'  # Redirect to home after successful login
-                st.query_params.clear()
             else:
                 st.markdown('<div class="message-box message-error">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
         
@@ -951,7 +990,6 @@ if st.session_state.current_page == 'auth':
                 st.session_state.logged_in = True
                 st.session_state.user_name = name  # Store user name
                 st.session_state.current_page = 'home'  # Redirect to home after successful signup
-                st.query_params.clear()
             else:
                 st.markdown('<div class="message-box message-error">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
         
@@ -962,72 +1000,12 @@ if st.session_state.current_page == 'auth':
         </div>
         """, unsafe_allow_html=True)
     
-    # Handle toggle actions
-    query_params = st.query_params
-    if 'action' in query_params:
-        if query_params['action'] == 'toggle_signup':
-            st.session_state.auth_mode = 'signup'
-            st.query_params.clear()
-        elif query_params['action'] == 'toggle_login':
-            st.session_state.auth_mode = 'login'
-            st.query_params.clear()
-    
     st.markdown('</div>', unsafe_allow_html=True)  # Close auth-box
     st.markdown('</div>', unsafe_allow_html=True)  # Close auth-container
     st.markdown('</div>', unsafe_allow_html=True)  # Close content-wrapper
 
 else:
     # HOME PAGE OR DASHBOARD
-    
-    # Check for navigation clicks via query params
-    query_params = st.query_params
-    if 'action' in query_params:
-        action = query_params['action']
-        if action == 'auth_login':
-            st.session_state.current_page = 'auth'
-            st.session_state.auth_mode = 'login'
-            st.session_state.selected_plan = None
-            st.query_params.clear()
-        elif action == 'auth_signup':
-            st.session_state.current_page = 'auth'
-            st.session_state.auth_mode = 'signup'
-            st.session_state.selected_plan = None
-            st.query_params.clear()
-        elif action == 'hero':
-            if not st.session_state.logged_in:
-                st.session_state.current_page = 'auth'
-                st.session_state.selected_plan = 'Free'
-                st.session_state.auth_mode = 'signup'
-            else:
-                st.session_state.current_page = 'home'
-            st.query_params.clear()
-        elif action == 'free':
-            if not st.session_state.logged_in:
-                st.session_state.current_page = 'auth'
-                st.session_state.selected_plan = 'Free'
-                st.session_state.auth_mode = 'signup'
-            st.query_params.clear()
-        elif action == 'pro':
-            if not st.session_state.logged_in:
-                st.session_state.current_page = 'auth'
-                st.session_state.selected_plan = 'Pro'
-                st.session_state.auth_mode = 'signup'
-            st.query_params.clear()
-        elif action == 'enterprise':
-            if not st.session_state.logged_in:
-                st.session_state.current_page = 'auth'
-                st.session_state.selected_plan = 'Enterprise'
-                st.session_state.auth_mode = 'signup'
-            st.query_params.clear()
-        elif action == 'dashboard':
-            st.session_state.current_page = 'dashboard'
-            st.query_params.clear()
-        elif action == 'logout':
-            st.session_state.logged_in = False
-            st.session_state.user_name = None
-            st.session_state.selected_plan = None
-            st.session_state.current_page = 'home'
-            st.query_params.clear()
     
     # Conditional navigation based on login status - use .format to avoid f-string indentation issues
     if st.session_state.logged_in:
