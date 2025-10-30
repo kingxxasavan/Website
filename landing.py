@@ -312,6 +312,10 @@ st.markdown("""
         margin: 0 auto;    /* True horizontal center */
         text-align: center;
     }
+    .hero-cta-wrapper .stButton {
+        display: block !important;
+        margin: 0 auto !important;
+    }
     .hero-cta-wrapper .stButton > button {
         display: block !important;  /* Force block for centering */
         margin: 0 auto !important;  /* Center the button itself */
