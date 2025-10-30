@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 
 st.set_page_config(
     page_title="CrypticX - AI Study Tool",
@@ -772,26 +773,24 @@ st.markdown("""
 # Check which page to show
 if st.session_state.current_page == 'auth':
     # AUTHENTICATION PAGE
+    
+    # Check for back navigation
+    query_params = st.query_params
+    if 'action' in query_params and query_params['action'] == 'home':
+        st.session_state.current_page = 'home'
+        st.session_state.selected_plan = None
+        st.query_params.clear()
+        st.rerun()
+    
     st.markdown("""
     <div class="nav-container">
     <nav>
-    <div class="logo" id="logo-home">
+    <div class="logo" onclick="window.location.href='?action=home'">
     <span class="logo-icon">⚡</span>
     <span>CrypticX</span>
     </div>
     </nav>
     </div>
-    
-    <script>
-    document.getElementById('logo-home').addEventListener('click', function() {
-        const buttons = window.parent.document.querySelectorAll('button');
-        buttons.forEach(btn => {
-            if (btn.textContent.includes('back_home')) {
-                btn.click();
-            }
-        });
-    });
-    </script>
     """, unsafe_allow_html=True)
     
     st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
@@ -800,19 +799,9 @@ if st.session_state.current_page == 'auth':
     
     # Back link
     st.markdown("""
-    <div class="back-link" id="back-link">
+    <div class="back-link" onclick="window.location.href='?action=home'">
         ← Back to Home
     </div>
-    <script>
-    document.getElementById('back-link').addEventListener('click', function() {
-        const buttons = window.parent.document.querySelectorAll('button');
-        buttons.forEach(btn => {
-            if (btn.textContent.includes('back_home')) {
-                btn.click();
-            }
-        });
-    });
-    </script>
     """, unsafe_allow_html=True)
     
     # Show selected plan if any
@@ -847,18 +836,8 @@ if st.session_state.current_page == 'auth':
         # Toggle to signup
         st.markdown("""
         <div class="auth-toggle">
-            Don't have an account? <span class="auth-toggle-link" id="toggle-signup">Create one</span>
+            Don't have an account? <span class="auth-toggle-link" onclick="window.location.href='?action=toggle_signup'">Create one</span>
         </div>
-        <script>
-        document.getElementById('toggle-signup').addEventListener('click', function() {
-            const buttons = window.parent.document.querySelectorAll('button');
-            buttons.forEach(btn => {
-                if (btn.textContent.includes('toggle_signup')) {
-                    btn.click();
-                }
-            });
-        });
-        </script>
         """, unsafe_allow_html=True)
         
     else:  # signup mode
@@ -886,38 +865,63 @@ if st.session_state.current_page == 'auth':
         # Toggle to login
         st.markdown("""
         <div class="auth-toggle">
-            Already have an account? <span class="auth-toggle-link" id="toggle-login">Sign in</span>
+            Already have an account? <span class="auth-toggle-link" onclick="window.location.href='?action=toggle_login'">Sign in</span>
         </div>
-        <script>
-        document.getElementById('toggle-login').addEventListener('click', function() {
-            const buttons = window.parent.document.querySelectorAll('button');
-            buttons.forEach(btn => {
-                if (btn.textContent.includes('toggle_login')) {
-                    btn.click();
-                }
-            });
-        });
-        </script>
         """, unsafe_allow_html=True)
+    
+    # Handle toggle actions
+    query_params = st.query_params
+    if 'action' in query_params:
+        if query_params['action'] == 'toggle_signup':
+            st.session_state.auth_mode = 'signup'
+            st.query_params.clear()
+            st.rerun()
+        elif query_params['action'] == 'toggle_login':
+            st.session_state.auth_mode = 'login'
+            st.query_params.clear()
+            st.rerun()
     
     st.markdown('</div>', unsafe_allow_html=True)  # Close auth-box
     st.markdown('</div>', unsafe_allow_html=True)  # Close auth-container
     st.markdown('</div>', unsafe_allow_html=True)  # Close content-wrapper
-    
-    # Hidden toggle buttons
-    if st.button("toggle_signup", key="toggle_signup_btn"):
-        st.session_state.auth_mode = 'signup'
-        st.rerun()
-    if st.button("toggle_login", key="toggle_login_btn"):
-        st.session_state.auth_mode = 'login'
-        st.rerun()
-    if st.button("back_home", key="back_home_btn"):
-        st.session_state.current_page = 'home'
-        st.session_state.selected_plan = None
-        st.rerun()
 
 else:
     # HOME PAGE
+    
+    # Check for navigation clicks via query params
+    query_params = st.query_params
+    if 'action' in query_params:
+        action = query_params['action']
+        if action == 'auth':
+            st.session_state.current_page = 'auth'
+            st.session_state.auth_mode = 'login'
+            st.query_params.clear()
+            st.rerun()
+        elif action == 'hero':
+            st.session_state.current_page = 'auth'
+            st.session_state.selected_plan = 'Free'
+            st.session_state.auth_mode = 'signup'
+            st.query_params.clear()
+            st.rerun()
+        elif action == 'free':
+            st.session_state.current_page = 'auth'
+            st.session_state.selected_plan = 'Free'
+            st.session_state.auth_mode = 'signup'
+            st.query_params.clear()
+            st.rerun()
+        elif action == 'pro':
+            st.session_state.current_page = 'auth'
+            st.session_state.selected_plan = 'Pro'
+            st.session_state.auth_mode = 'signup'
+            st.query_params.clear()
+            st.rerun()
+        elif action == 'enterprise':
+            st.session_state.current_page = 'auth'
+            st.session_state.selected_plan = 'Enterprise'
+            st.session_state.auth_mode = 'signup'
+            st.query_params.clear()
+            st.rerun()
+    
     st.markdown("""
     <div class="nav-container">
     <nav>
@@ -926,43 +930,15 @@ else:
     <span>CrypticX</span>
     </div>
     <div class="nav-links">
-    <a href="#home" class="nav-link">Home</a>
-    <a href="#pricing" class="nav-link">Pricing</a>
-    <a href="#dashboard" class="nav-link">Dashboard</a>
-    <a href="#login" class="nav-link" id="nav-login-link">Login</a>
-    <button class="nav-cta" id="nav-signup-btn">Sign Up</button>
+    <span class="nav-link">Home</span>
+    <span class="nav-link">Pricing</span>
+    <span class="nav-link">Dashboard</span>
+    <span class="nav-link" onclick="window.location.href='?action=auth'">Login</span>
+    <button class="nav-cta" onclick="window.location.href='?action=auth'">Sign Up</button>
     </div>
     </nav>
     </div>
-    
-    <script>
-    document.getElementById('nav-login-link').addEventListener('click', function(e) {
-        e.preventDefault();
-        const buttons = window.parent.document.querySelectorAll('button');
-        buttons.forEach(btn => {
-            if (btn.textContent.includes('nav_auth')) {
-                btn.click();
-            }
-        });
-    });
-    
-    document.getElementById('nav-signup-btn').addEventListener('click', function(e) {
-        e.preventDefault();
-        const buttons = window.parent.document.querySelectorAll('button');
-        buttons.forEach(btn => {
-            if (btn.textContent.includes('nav_auth')) {
-                btn.click();
-            }
-        });
-    });
-    </script>
     """, unsafe_allow_html=True)
-    
-    # Hidden navigation button
-    if st.button("nav_auth", key="nav_auth_btn"):
-        st.session_state.current_page = 'auth'
-        st.session_state.auth_mode = 'login'
-        st.rerun()
 
     st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 
@@ -972,7 +948,7 @@ else:
     <div class="welcome-badge">✨ Welcome to CrypticX - The Ultimate Study Tool</div>
     <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
     <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
-    <button class="hero-cta" id="hero-cta-btn">Start Learning Free</button>
+    <button class="hero-cta" onclick="window.location.href='?action=hero'">Start Learning Free</button>
     <div class="stats-section">
         <div class="stat-item">
             <div class="stat-number">50K+</div>
@@ -988,25 +964,7 @@ else:
         </div>
     </div>
     </div>
-    
-    <script>
-    document.getElementById('hero-cta-btn').addEventListener('click', function() {
-        const buttons = window.parent.document.querySelectorAll('button');
-        buttons.forEach(btn => {
-            if (btn.textContent.includes('hero_cta')) {
-                btn.click();
-            }
-        });
-    });
-    </script>
     """, unsafe_allow_html=True)
-    
-    # Hidden button for hero CTA
-    if st.button("hero_cta", key="hero_cta_btn"):
-        st.session_state.current_page = 'auth'
-        st.session_state.selected_plan = 'Free'
-        st.session_state.auth_mode = 'signup'
-        st.rerun()
 
     # Why Choose Us Section
     st.markdown('<div id="why-choose" class="section">', unsafe_allow_html=True)
@@ -1065,7 +1023,7 @@ else:
                 ✓ 5 quizzes/week<br>
                 ✓ Community support
             </div>
-            <button class="pricing-button" id="free-plan-btn">Start Free</button>
+            <button class="pricing-button" onclick="window.location.href='?action=free'">Start Free</button>
         </div>
         <div class="pricing-card featured">
             <div class="pricing-badge">⭐ MOST POPULAR</div>
@@ -1079,7 +1037,7 @@ else:
                 ✓ Priority support<br>
                 ✓ Progress analytics
             </div>
-            <button class="pricing-button" id="pro-plan-btn">Get Pro</button>
+            <button class="pricing-button" onclick="window.location.href='?action=pro'">Get Pro</button>
         </div>
         <div class="pricing-card">
             <h3>Enterprise</h3>
@@ -1092,58 +1050,12 @@ else:
                 ✓ Dedicated support<br>
                 ✓ Unlimited storage
             </div>
-            <button class="pricing-button" id="enterprise-plan-btn">Get Enterprise</button>
+            <button class="pricing-button" onclick="window.location.href='?action=enterprise'">Get Enterprise</button>
         </div>
     </div>
-    
-    <script>
-    document.getElementById('free-plan-btn').addEventListener('click', function() {
-        const buttons = window.parent.document.querySelectorAll('button');
-        buttons.forEach(btn => {
-            if (btn.textContent.includes('free_plan')) {
-                btn.click();
-            }
-        });
-    });
-    
-    document.getElementById('pro-plan-btn').addEventListener('click', function() {
-        const buttons = window.parent.document.querySelectorAll('button');
-        buttons.forEach(btn => {
-            if (btn.textContent.includes('pro_plan')) {
-                btn.click();
-            }
-        });
-    });
-    
-    document.getElementById('enterprise-plan-btn').addEventListener('click', function() {
-        const buttons = window.parent.document.querySelectorAll('button');
-        buttons.forEach(btn => {
-            if (btn.textContent.includes('enterprise_plan')) {
-                btn.click();
-            }
-        });
-    });
-    </script>
     """, unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
-    
-    # Hidden buttons for pricing clicks
-    if st.button("free_plan", key="free_plan_btn"):
-        st.session_state.current_page = 'auth'
-        st.session_state.selected_plan = 'Free'
-        st.session_state.auth_mode = 'signup'
-        st.rerun()
-    if st.button("pro_plan", key="pro_plan_btn"):
-        st.session_state.current_page = 'auth'
-        st.session_state.selected_plan = 'Pro'
-        st.session_state.auth_mode = 'signup'
-        st.rerun()
-    if st.button("enterprise_plan", key="enterprise_plan_btn"):
-        st.session_state.current_page = 'auth'
-        st.session_state.selected_plan = 'Enterprise'
-        st.session_state.auth_mode = 'signup'
-        st.rerun()
 
     st.markdown('</div>', unsafe_allow_html=True)
 
