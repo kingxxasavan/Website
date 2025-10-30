@@ -16,7 +16,7 @@ if 'logged_in' not in st.session_state:
 if 'selected_plan' not in st.session_state:
     st.session_state.selected_plan = None
 if 'auth_mode' not in st.session_state:
-    st.session_state.auth_mode = 'login'
+    st.session_state.auth_mode = 'signup'  # Default to signup for easier onboarding
 if 'user_name' not in st.session_state:
     st.session_state.user_name = None
 
@@ -865,247 +865,130 @@ st.markdown("""
 <div class="glow-orb pink"></div>
 """, unsafe_allow_html=True)
 
-# Check which page to show
-if st.session_state.current_page == 'auth':
-    # AUTHENTICATION PAGE
-    
-    # Check for back navigation
-    query_params = st.query_params
-    if 'action' in query_params and query_params['action'] == 'home':
-        st.session_state.current_page = 'home'
-        st.session_state.selected_plan = None
-        st.query_params.clear()
-    
-    st.markdown("""
-    <div class="nav-container">
-    <nav>
-    <div class="logo" onclick="window.location.href='?action=home'">
-    <span class="logo-icon">⚡</span>
-    <span>CrypticX</span>
-    </div>
-    </nav>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
-    st.markdown('<div class="auth-container">', unsafe_allow_html=True)
-    st.markdown('<div class="auth-box">', unsafe_allow_html=True)
-    
-    # Back link
-    st.markdown("""
-    <div class="back-link" onclick="window.location.href='?action=home'">
-        ← Back to Home
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Show selected plan if any
-    if st.session_state.selected_plan:
-        st.markdown(f'<div class="welcome-badge" style="margin-bottom: 1.5rem;">Selected Plan: {st.session_state.selected_plan}</div>', unsafe_allow_html=True)
-    
-    # Auth header
-    if st.session_state.auth_mode == 'login':
+# Main logic
+if not st.session_state.logged_in:
+    if st.session_state.current_page == 'auth':
+        # AUTH PAGE (integrated from auth.py logic, using st.button for toggles)
         st.markdown("""
-        <div class="auth-header">
-            <h1 class="auth-title">Welcome Back</h1>
-            <p class="auth-subtitle">Sign in to continue your learning journey</p>
+        <div class="nav-container">
+        <nav>
+        <div class="logo" style="cursor: pointer;" onclick="history.back()">
+        <span class="logo-icon">⚡</span>
+        <span>CrypticX</span>
+        </div>
+        </nav>
         </div>
         """, unsafe_allow_html=True)
         
-        # Login form
-        email = st.text_input("Email", key="login_email", placeholder="your@email.com", label_visibility="collapsed")
-        st.markdown('<div style="height: 1rem;"></div>', unsafe_allow_html=True)
-        password = st.text_input("Password", type="password", key="login_password", placeholder="Enter your password", label_visibility="collapsed")
+        st.markdown('<div class="content-wrapper"><div class="auth-container"><div class="auth-box">', unsafe_allow_html=True)
         
-        if st.button("Sign In", key="login_btn", use_container_width=True):
-            if email and password:
-                st.session_state.logged_in = True
-                st.session_state.current_page = 'home'  # Redirect to home after successful login
-                st.query_params.clear()
-            else:
-                st.markdown('<div class="message-box message-error">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
-        
-        # Toggle to signup
-        st.markdown("""
-        <div class="auth-toggle">
-            Don't have an account? <span class="auth-toggle-link" onclick="window.location.href='?action=toggle_signup'">Create one</span>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    else:  # signup mode
-        st.markdown("""
-        <div class="auth-header">
-            <h1 class="auth-title">Create Account</h1>
-            <p class="auth-subtitle">Join thousands of students learning smarter</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Signup form
-        name = st.text_input("Full Name", key="signup_name", placeholder="Enter your name", label_visibility="collapsed")
-        st.markdown('<div style="height: 1rem;"></div>', unsafe_allow_html=True)
-        email = st.text_input("Email", key="signup_email", placeholder="your@email.com", label_visibility="collapsed")
-        st.markdown('<div style="height: 1rem;"></div>', unsafe_allow_html=True)
-        password = st.text_input("Password", type="password", key="signup_password", placeholder="Create a password", label_visibility="collapsed")
-        
-        if st.button("Create Account", key="signup_btn", use_container_width=True):
-            if name and email and password:
-                st.session_state.logged_in = True
-                st.session_state.user_name = name  # Store user name
-                st.session_state.current_page = 'home'  # Redirect to home after successful signup
-                st.query_params.clear()
-            else:
-                st.markdown('<div class="message-box message-error">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
-        
-        # Toggle to login
-        st.markdown("""
-        <div class="auth-toggle">
-            Already have an account? <span class="auth-toggle-link" onclick="window.location.href='?action=toggle_login'">Sign in</span>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    # Handle toggle actions
-    query_params = st.query_params
-    if 'action' in query_params:
-        if query_params['action'] == 'toggle_signup':
-            st.session_state.auth_mode = 'signup'
-            st.query_params.clear()
-        elif query_params['action'] == 'toggle_login':
-            st.session_state.auth_mode = 'login'
-            st.query_params.clear()
-    
-    st.markdown('</div>', unsafe_allow_html=True)  # Close auth-box
-    st.markdown('</div>', unsafe_allow_html=True)  # Close auth-container
-    st.markdown('</div>', unsafe_allow_html=True)  # Close content-wrapper
-
-else:
-    # HOME PAGE OR DASHBOARD
-    
-    # Check for navigation clicks via query params
-    query_params = st.query_params
-    if 'action' in query_params:
-        action = query_params['action']
-        if action == 'auth_login':
-            st.session_state.current_page = 'auth'
-            st.session_state.auth_mode = 'login'
-            st.session_state.selected_plan = None
-            st.query_params.clear()
-        elif action == 'auth_signup':
-            st.session_state.current_page = 'auth'
-            st.session_state.auth_mode = 'signup'
-            st.session_state.selected_plan = None
-            st.query_params.clear()
-        elif action == 'hero':
-            if not st.session_state.logged_in:
-                st.session_state.current_page = 'auth'
-                st.session_state.selected_plan = 'Free'
-                st.session_state.auth_mode = 'signup'
-            else:
+        # Back button
+        col_back = st.columns([1, 4])
+        with col_back[0]:
+            if st.button("← Back", key="back_auth"):
                 st.session_state.current_page = 'home'
-            st.query_params.clear()
-        elif action == 'free':
-            if not st.session_state.logged_in:
-                st.session_state.current_page = 'auth'
-                st.session_state.selected_plan = 'Free'
+                st.session_state.selected_plan = None
+                st.rerun()
+        
+        # Show selected plan badge
+        if st.session_state.selected_plan:
+            st.markdown(f'<div class="welcome-badge" style="margin-bottom: 1.5rem;">Selected Plan: {st.session_state.selected_plan}</div>', unsafe_allow_html=True)
+        
+        if st.session_state.auth_mode == 'login':
+            st.markdown("""
+            <div class="auth-header">
+                <h1 class="auth-title">Welcome Back</h1>
+                <p class="auth-subtitle">Sign in to access your dashboard</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            email = st.text_input("Email", key="login_email", placeholder="your@email.com", label_visibility="collapsed")
+            st.markdown('<div style="height: 1rem;"></div>', unsafe_allow_html=True)
+            password = st.text_input("Password", type="password", key="login_password", placeholder="Enter your password", label_visibility="collapsed")
+            
+            if st.button("Sign In", key="login_btn", use_container_width=True):
+                if email and password:
+                    st.session_state.logged_in = True
+                    st.session_state.user_name = email.split('@')[0].title()  # Dummy name from email
+                    st.session_state.current_page = 'dashboard'  # Redirect to dashboard
+                    st.rerun()
+                else:
+                    st.markdown('<div class="message-box message-error">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
+            
+            if st.button("Don't have an account? Create one", key="toggle_to_signup"):
                 st.session_state.auth_mode = 'signup'
-            st.query_params.clear()
-        elif action == 'pro':
-            if not st.session_state.logged_in:
-                st.session_state.current_page = 'auth'
-                st.session_state.selected_plan = 'Pro'
-                st.session_state.auth_mode = 'signup'
-            st.query_params.clear()
-        elif action == 'enterprise':
-            if not st.session_state.logged_in:
-                st.session_state.current_page = 'auth'
-                st.session_state.selected_plan = 'Enterprise'
-                st.session_state.auth_mode = 'signup'
-            st.query_params.clear()
-        elif action == 'dashboard':
-            st.session_state.current_page = 'dashboard'
-            st.query_params.clear()
-        elif action == 'logout':
-            st.session_state.logged_in = False
-            st.session_state.user_name = None
-            st.session_state.selected_plan = None
-            st.session_state.current_page = 'home'
-            st.query_params.clear()
-    
-    # Conditional navigation based on login status - use .format to avoid f-string indentation issues
-    if st.session_state.logged_in:
-        nav_links = """
-        <div class="nav-links">
-        <span class="nav-link" onclick="window.location.href='#home'">Home</span>
-        <span class="nav-link" onclick="window.location.href='#pricing'">Pricing</span>
-        <span class="nav-link active" onclick="window.location.href='?action=dashboard'">Dashboard</span>
-        <span class="user-greeting">Hi, {}!</span>
-        <button class="logout-btn" onclick="window.location.href='?action=logout'">Logout</button>
-        </div>
-        """.format(st.session_state.user_name or 'User')
+                st.rerun()
+                
+        else:  # signup mode
+            st.markdown("""
+            <div class="auth-header">
+                <h1 class="auth-title">Create Account</h1>
+                <p class="auth-subtitle">Join thousands of students learning smarter</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            name = st.text_input("Full Name", key="signup_name", placeholder="Enter your name", label_visibility="collapsed")
+            st.markdown('<div style="height: 1rem;"></div>', unsafe_allow_html=True)
+            email = st.text_input("Email", key="signup_email", placeholder="your@email.com", label_visibility="collapsed")
+            st.markdown('<div style="height: 1rem;"></div>', unsafe_allow_html=True)
+            password = st.text_input("Password", type="password", key="signup_password", placeholder="Create a password", label_visibility="collapsed")
+            
+            if st.button("Create Account", key="signup_btn", use_container_width=True):
+                if name and email and password:
+                    st.session_state.logged_in = True
+                    st.session_state.user_name = name
+                    st.session_state.current_page = 'dashboard'  # Redirect to dashboard
+                    st.rerun()
+                else:
+                    st.markdown('<div class="message-box message-error">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
+            
+            if st.button("Already have an account? Sign In", key="toggle_to_login"):
+                st.session_state.auth_mode = 'login'
+                st.rerun()
+        
+        st.markdown('</div></div></div>', unsafe_allow_html=True)  # Close auth wrappers
     else:
-        nav_links = """
+        # LANDING PAGE (home with st.button for navigation)
+        # Nav (static for not logged in)
+        st.markdown("""
+        <div class="nav-container">
+        <nav>
+        <div class="logo" style="cursor: pointer;">
+        <span class="logo-icon">⚡</span>
+        <span>CrypticX</span>
+        </div>
         <div class="nav-links">
         <span class="nav-link">Home</span>
         <span class="nav-link">Pricing</span>
         <span class="nav-link">Dashboard</span>
-        <span class="nav-link" onclick="window.location.href='?action=auth_login'">Login</span>
-        <button class="nav-cta" onclick="window.location.href='?action=auth_signup'">Sign Up</button>
+        <span class="nav-link">Login</span>
+        <button class="nav-cta">Sign Up</button>
         </div>
-        """
-    
-    # Render nav with st.markdown, stripping whitespace to prevent code block rendering
-    nav_full = """
-<div class="nav-container">
-<nav>
-<div class="logo" onclick="window.location.href='#home'">
-<span class="logo-icon">⚡</span>
-<span>CrypticX</span>
-</div>
-{} 
-</nav>
-</div>
-""".strip().format(nav_links.strip())
-    st.markdown(nav_full, unsafe_allow_html=True)
-
-    st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
-
-    if st.session_state.current_page == 'dashboard' and st.session_state.logged_in:
-        # DASHBOARD PAGE
-        st.markdown(f"""
-        <div class="dashboard-section">
-            <h1 class="dashboard-welcome">Welcome back, {st.session_state.user_name or 'Student'}!</h1>
-            <p class="dashboard-subtitle">Here's a quick overview of your learning progress.</p>
-            <div class="dashboard-stats">
-                <div class="dashboard-stat">
-                    <div class="dashboard-stat-number">42</div>
-                    <div class="dashboard-stat-label">Questions Answered This Week</div>
-                </div>
-                <div class="dashboard-stat">
-                    <div class="dashboard-stat-number">87%</div>
-                    <div class="dashboard-stat-label">Quiz Average</div>
-                </div>
-                <div class="dashboard-stat">
-                    <div class="dashboard-stat-number">5</div>
-                    <div class="dashboard-stat-label">Active Courses</div>
-                </div>
-                <div class="dashboard-stat">
-                    <div class="dashboard-stat-number">2h 30m</div>
-                    <div class="dashboard-stat-label">Study Time Today</div>
-                </div>
-            </div>
-            <button class="hero-cta" onclick="window.location.href='#home'">Explore More</button>
+        </nav>
         </div>
         """, unsafe_allow_html=True)
-    else:
-        # HERO / HOME PAGE
+        
+        st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
+        
         # Hero Section
         hero_badge_text = "✨ Welcome to CrypticX - The Ultimate Study Tool"
-        if st.session_state.logged_in:
-            hero_badge_text += f" for {st.session_state.user_name}!"
         st.markdown(f"""
         <div id="home" class="hero-section">
         <div class="welcome-badge">{hero_badge_text}</div>
         <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
         <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
-        <button class="hero-cta" onclick="window.location.href='?action=hero'">Start Learning Free</button>
+        """, unsafe_allow_html=True)
+        
+        col_hero = st.columns([3, 1])
+        with col_hero[0]:
+            st.empty()  # Spacer
+        with col_hero[1]:
+            if st.button("Start Learning Free", key="hero_free"):
+                st.session_state.selected_plan = 'Free'
+                st.session_state.current_page = 'auth'
+                st.rerun()
+        
+        st.markdown("""
         <div class="stats-section">
             <div class="stat-item">
                 <div class="stat-number">50K+</div>
@@ -1123,7 +1006,7 @@ else:
         </div>
         """, unsafe_allow_html=True)
 
-        # Why Choose Us Section
+        # Why Choose Us Section (unchanged)
         st.markdown('<div id="why-choose" class="section">', unsafe_allow_html=True)
         st.markdown('<h2 class="section-title">Why Choose CrypticX</h2>', unsafe_allow_html=True)
         st.markdown('<p class="section-subtitle">The smartest way to study in 2025</p>', unsafe_allow_html=True)
@@ -1164,13 +1047,14 @@ else:
 
         st.markdown('</div></div>', unsafe_allow_html=True)
 
-        # Pricing Section
+        # Pricing Section (with st.button for each)
         st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
         st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
         st.markdown('<p class="section-subtitle">Start free, upgrade when you are ready</p>', unsafe_allow_html=True)
-
-        st.markdown("""
-        <div class="pricing-grid">
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.markdown("""
             <div class="pricing-card">
                 <h3>Free</h3>
                 <div class="price">$0<span class="price-period">/mo</span></div>
@@ -1180,8 +1064,15 @@ else:
                     ✓ 5 quizzes/week<br>
                     ✓ Community support
                 </div>
-                <button class="pricing-button" onclick="window.location.href='?action=free'">Start Free</button>
             </div>
+            """, unsafe_allow_html=True)
+            if st.button("Start Free", key="price_free"):
+                st.session_state.selected_plan = 'Free'
+                st.session_state.current_page = 'auth'
+                st.rerun()
+        
+        with col2:
+            st.markdown("""
             <div class="pricing-card featured">
                 <div class="pricing-badge">⭐ MOST POPULAR</div>
                 <h3>Pro</h3>
@@ -1194,8 +1085,15 @@ else:
                     ✓ Priority support<br>
                     ✓ Progress analytics
                 </div>
-                <button class="pricing-button" onclick="window.location.href='?action=pro'">Get Pro</button>
             </div>
+            """, unsafe_allow_html=True)
+            if st.button("Get Pro", key="price_pro"):
+                st.session_state.selected_plan = 'Pro'
+                st.session_state.current_page = 'auth'
+                st.rerun()
+        
+        with col3:
+            st.markdown("""
             <div class="pricing-card">
                 <h3>Enterprise</h3>
                 <div class="price">$35<span class="price-period">/mo</span></div>
@@ -1207,13 +1105,80 @@ else:
                     ✓ Dedicated support<br>
                     ✓ Unlimited storage
                 </div>
-                <button class="pricing-button" onclick="window.location.href='?action=enterprise'">Get Enterprise</button>
             </div>
-        </div>
-        """, unsafe_allow_html=True)
-
+            """, unsafe_allow_html=True)
+            if st.button("Get Enterprise", key="price_enterprise"):
+                st.session_state.selected_plan = 'Enterprise'
+                st.session_state.current_page = 'auth'
+                st.rerun()
+        
         st.markdown('</div>', unsafe_allow_html=True)
 
+        st.markdown('</div>', unsafe_allow_html=True)  # Close content-wrapper
+
+else:
+    # LOGGED IN - DASHBOARD (main product page)
+    # Nav
+    st.markdown(f"""
+    <div class="nav-container">
+    <nav>
+    <div class="logo" style="cursor: pointer;">
+    <span class="logo-icon">⚡</span>
+    <span>CrypticX</span>
+    </div>
+    <div class="nav-links">
+    <span class="nav-link" onclick="window.location.href='#home'">Home</span>
+    <span class="nav-link" onclick="window.location.href='#pricing'">Pricing</span>
+    <span class="nav-link active">Dashboard</span>
+    <span class="user-greeting">Hi, {st.session_state.user_name}!</span>
+    <button class="logout-btn">Logout</button>
+    </div>
+    </nav>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
+    
+    # Dashboard content
+    plan_text = f" (Plan: {st.session_state.selected_plan})" if st.session_state.selected_plan else ""
+    st.markdown(f"""
+    <div class="dashboard-section">
+        <h1 class="dashboard-welcome">Welcome back, {st.session_state.user_name}!</h1>
+        <p class="dashboard-subtitle">Here's a quick overview of your learning progress{plan_text}.</p>
+        <div class="dashboard-stats">
+            <div class="dashboard-stat">
+                <div class="dashboard-stat-number">42</div>
+                <div class="dashboard-stat-label">Questions Answered This Week</div>
+            </div>
+            <div class="dashboard-stat">
+                <div class="dashboard-stat-number">87%</div>
+                <div class="dashboard-stat-label">Quiz Average</div>
+            </div>
+            <div class="dashboard-stat">
+                <div class="dashboard-stat-number">5</div>
+                <div class="dashboard-stat-label">Active Courses</div>
+            </div>
+            <div class="dashboard-stat">
+                <div class="dashboard-stat-number">2h 30m</div>
+                <div class="dashboard-stat-label">Study Time Today</div>
+            </div>
+        </div>
+        <button class="hero-cta">Explore More</button>
+        <!-- Add main product AI features here, e.g., st.chat_input("Ask AI...") -->
+        <div style="margin-top: 2rem; text-align: center;">
+            <h3>Ask your AI study buddy:</h3>
+            {st.chat_input("e.g., Explain calculus simply")}
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    if st.button("Logout", key="logout_btn"):
+        st.session_state.logged_in = False
+        st.session_state.user_name = None
+        st.session_state.selected_plan = None
+        st.session_state.current_page = 'home'
+        st.rerun()
+    
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Footer
