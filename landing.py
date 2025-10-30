@@ -8,21 +8,14 @@ st.set_page_config(
 )
 
 # Initialize session state
-if 'current_section' not in st.session_state:
-    st.session_state.current_section = 'home'
+if 'current_page' not in st.session_state:
+    st.session_state.current_page = 'home'
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
-if 'show_signup' not in st.session_state:
-    st.session_state.show_signup = False
 if 'selected_plan' not in st.session_state:
     st.session_state.selected_plan = None
 
-def navigate_to_signup(plan=None):
-    st.session_state.current_section = 'signup'
-    st.session_state.selected_plan = plan
-    st.rerun()
-
-# Enhanced CSS
+# Enhanced CSS (same as before)
 st.markdown("""
 <style>
     /* Hide Streamlit elements */
@@ -604,6 +597,15 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# JavaScript for navigation
+st.markdown("""
+<script>
+function navigateToSignup(plan) {
+    window.parent.postMessage({type: 'streamlit:setComponentValue', value: {page: 'signup', plan: plan}}, '*');
+}
+</script>
+""", unsafe_allow_html=True)
+
 # Background elements
 st.markdown("""
 <div class="grid-background"></div>
@@ -611,43 +613,38 @@ st.markdown("""
 <div class="glow-orb pink"></div>
 """, unsafe_allow_html=True)
 
-# Check if we're on the signup page
-if st.session_state.current_section == 'signup':
-    # Navigation for signup page
-    st.markdown(f"""
+# Check which page to show
+if st.session_state.current_page == 'signup':
+    # SIGNUP PAGE
+    st.markdown("""
     <div class="nav-container">
     <nav>
-    <div class="logo" onclick="window.location.reload()">
+    <div class="logo">
     <span class="logo-icon">⚡</span>
     <span>CrypticX</span>
-    </div>
-    <div class="nav-links">
-    <a href="?page=home" class="nav-link" onclick="window.location.reload()">← Back to Home</a>
     </div>
     </nav>
     </div>
     """, unsafe_allow_html=True)
     
-    # Content wrapper
+    # Add back button
+    if st.button("← Back to Home", key="back_home"):
+        st.session_state.current_page = 'home'
+        st.rerun()
+    
     st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
+    st.markdown('<div id="login" class="section" style="padding: 4rem 2rem;">', unsafe_allow_html=True)
     
-    # Login/Signup Section
-    st.markdown('<div id="login" class="section" style="padding: 4rem 2rem; min-height: calc(100vh - 80px); display: flex; flex-direction: column; justify-content: center;">', unsafe_allow_html=True)
-    
-    # Show selected plan if any
     if st.session_state.selected_plan:
         st.markdown(f'<div class="welcome-badge">Selected Plan: {st.session_state.selected_plan}</div>', unsafe_allow_html=True)
     
     st.markdown('<h2 class="section-title" style="font-size: 2.5rem;">Get Started Today</h2>', unsafe_allow_html=True)
     st.markdown('<p class="section-subtitle">Create your account or sign in to continue</p>', unsafe_allow_html=True)
 
-    # Auth form container
     col1, col2, col3 = st.columns([1, 1.5, 1])
-
     with col2:
         st.markdown('<div class="auth-form">', unsafe_allow_html=True)
         
-        # Tabs
         tab1, tab2 = st.tabs(["Sign Up", "Login"])
         
         with tab1:
@@ -674,16 +671,12 @@ if st.session_state.current_section == 'signup':
                     st.markdown('<div class="error-message">⚠ Please fill in all fields</div>', unsafe_allow_html=True)
         
         st.markdown('</div>', unsafe_allow_html=True)
+    
+    st.markdown('</div></div>', unsafe_allow_html=True)
 
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    # Close content wrapper
-    st.markdown('</div>', unsafe_allow_html=True)
-    
 else:
-    # HOME PAGE
-    # Navigation
-    st.markdown(f"""
+    # HOME PAGE - EXACTLY AS ORIGINAL
+    st.markdown("""
     <div class="nav-container">
     <nav>
     <div class="logo">
@@ -694,36 +687,32 @@ else:
     <a href="#home" class="nav-link">Home</a>
     <a href="#pricing" class="nav-link">Pricing</a>
     <a href="#dashboard" class="nav-link">Dashboard</a>
+    <a href="#login" class="nav-link">Login</a>
+    <button class="nav-cta">Sign Up</button>
     </div>
     </nav>
     </div>
     """, unsafe_allow_html=True)
     
-    # Add signup button to nav
-    col_nav1, col_nav2, col_nav3 = st.columns([6, 1, 1])
-    with col_nav2:
-        if st.button("Login", key="nav_login", use_container_width=True):
-            navigate_to_signup()
-    with col_nav3:
-        if st.button("Sign Up", key="nav_signup", use_container_width=True):
-            navigate_to_signup()
+    # Hidden buttons to capture clicks
+    col1, col2 = st.columns([8, 1])
+    with col2:
+        if st.button("Nav Login", key="nav_login_hidden"):
+            st.session_state.current_page = 'signup'
+            st.rerun()
+        if st.button("Nav Signup", key="nav_signup_hidden"):
+            st.session_state.current_page = 'signup'
+            st.rerun()
 
-    # Content wrapper
     st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 
-    # Hero Section
+    # Hero Section - EXACTLY AS ORIGINAL
     st.markdown("""
     <div id="home" class="hero-section">
     <div class="welcome-badge">✨ Welcome to CrypticX - The Ultimate Study Tool</div>
     <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
     <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
-    """, unsafe_allow_html=True)
-    
-    # Hero CTA button
-    if st.button("Start Learning Free", key="hero_cta", use_container_width=False):
-        navigate_to_signup("Free")
-    
-    st.markdown("""
+    <button class="hero-cta">Start Learning Free</button>
     <div class="stats-section">
         <div class="stat-item">
             <div class="stat-number">50K+</div>
@@ -740,8 +729,14 @@ else:
     </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    # Hidden button for hero CTA
+    if st.button("Hero CTA Hidden", key="hero_cta_hidden"):
+        st.session_state.current_page = 'signup'
+        st.session_state.selected_plan = 'Free'
+        st.rerun()
 
-    # Why Choose Us Section
+    # Why Choose Us Section - EXACTLY AS ORIGINAL
     st.markdown('<div id="why-choose" class="section">', unsafe_allow_html=True)
     st.markdown('<h2 class="section-title">Why Choose CrypticX</h2>', unsafe_allow_html=True)
     st.markdown('<p class="section-subtitle">The smartest way to study in 2025</p>', unsafe_allow_html=True)
@@ -782,7 +777,7 @@ else:
 
     st.markdown('</div></div>', unsafe_allow_html=True)
 
-    # Pricing Section
+    # Pricing Section - EXACTLY AS ORIGINAL
     st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
     st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
     st.markdown('<p class="section-subtitle">Start free, upgrade when you are ready</p>', unsafe_allow_html=True)
@@ -798,12 +793,7 @@ else:
                 ✓ 5 quizzes/week<br>
                 ✓ Community support
             </div>
-    """, unsafe_allow_html=True)
-    
-    if st.button("Start Free", key="free_plan", use_container_width=True):
-        navigate_to_signup("Free")
-    
-    st.markdown("""
+            <button class="pricing-button">Start Free</button>
         </div>
         <div class="pricing-card featured">
             <div class="pricing-badge">⭐ MOST POPULAR</div>
@@ -817,12 +807,7 @@ else:
                 ✓ Priority support<br>
                 ✓ Progress analytics
             </div>
-    """, unsafe_allow_html=True)
-    
-    if st.button("Get Pro", key="pro_plan", use_container_width=True):
-        navigate_to_signup("Pro")
-    
-    st.markdown("""
+            <button class="pricing-button">Get Pro</button>
         </div>
         <div class="pricing-card">
             <h3>Enterprise</h3>
@@ -835,19 +820,31 @@ else:
                 ✓ Dedicated support<br>
                 ✓ Unlimited storage
             </div>
-    """, unsafe_allow_html=True)
-    
-    if st.button("Get Enterprise", key="enterprise_plan", use_container_width=True):
-        navigate_to_signup("Enterprise")
-    
-    st.markdown("""
+            <button class="pricing-button">Get Enterprise</button>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # Close content wrapper
+    # Hidden buttons for pricing clicks
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        if st.button("Free Plan Hidden", key="free_plan_hidden"):
+            st.session_state.current_page = 'signup'
+            st.session_state.selected_plan = 'Free'
+            st.rerun()
+    with col2:
+        if st.button("Pro Plan Hidden", key="pro_plan_hidden"):
+            st.session_state.current_page = 'signup'
+            st.session_state.selected_plan = 'Pro'
+            st.rerun()
+    with col3:
+        if st.button("Enterprise Plan Hidden", key="enterprise_plan_hidden"):
+            st.session_state.current_page = 'signup'
+            st.session_state.selected_plan = 'Enterprise'
+            st.rerun()
+
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Footer
