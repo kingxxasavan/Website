@@ -696,7 +696,7 @@ st.markdown('<div id="pricing" class="section">', unsafe_allow_html=True)
 st.markdown('<h2 class="section-title">Choose Your Plan</h2>', unsafe_allow_html=True)
 st.markdown('<p class="section-subtitle">Start free, upgrade when you are ready</p>', unsafe_allow_html=True)
 
-pricing_html = """
+st.markdown("""
 <div class="pricing-grid">
     <div class="pricing-card">
         <h3>Free</h3>
@@ -737,9 +737,8 @@ pricing_html = """
         <button class="pricing-button">Contact Us</button>
     </div>
 </div>
-"""
+""", unsafe_allow_html=True)
 
-st.markdown(pricing_html, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
 # Login/Signup Section
