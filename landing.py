@@ -764,6 +764,33 @@ st.markdown("""
             ✓ 5 quizzes/week<br>
             ✓ Community support
         </div>
+        <button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Start Free</button>
+    </div>
+    <div class="pricing-card featured">
+        <div class="pricing-badge">⭐ MOST POPULAR</div>
+        <h3>Pro</h3>
+        <div class="price">$15<span class="price-period">/mo</span></div>
+        <div class="feature-list">
+            ✓ Unlimited AI questions<br>
+            ✓ Advanced summaries<br>
+            ✓ Unlimited quizzes<br>
+            ✓ PDF upload (100MB)<br>
+            ✓ Priority support<br>
+            ✓ Progress analytics
+        </div>
+        <button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Get Pro</button>
+    </div>
+    <div class="pricing-card">
+        <h3>Enterprise</h3>
+        <div class="price">$35<span class="price-period">/mo</span></div>
+        <div class="feature-list">
+            ✓ Everything in Pro<br>
+            ✓ Team accounts<br>
+            ✓ Advanced analytics<br>
+            ✓ Custom integrations<br>
+            ✓ Dedicated support<br>
+            ✓ Unlimited storage
+        </div>
         <button class="pricing-button" onclick="document.getElementById('login').scrollIntoView({behavior: 'smooth'})">Contact Us</button>
     </div>
 </div>
