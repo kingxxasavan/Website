@@ -174,6 +174,9 @@ st.markdown("""
     /* Responsive */
     @media (max-width: 1024px) {.features-grid, .pricing-grid {grid-template-columns: repeat(2, 1fr);} .dashboard-stats {grid-template-columns: 1fr;} }
     @media (max-width: 768px) {nav {padding: 1rem 1.5rem;} .nav-links {display: none;} .hero-title {font-size: 2.5rem;} .hero-subtitle {font-size: 1.1rem;} .features-grid, .pricing-grid, .stats-section {grid-template-columns: 1fr;} .section-title {font-size: 2rem;} .pricing-card.featured {transform: scale(1);} .dashboard-welcome {font-size: 2rem;} .auth-box {padding: 2rem; margin: 1rem;} }
+
+    /* Unhide specific buttons */
+    .hero-cta, [key="hero_start"], [key="plan_free"], [key="plan_pro"], [key="plan_enterprise"] { display: inline-block !important; visibility: visible !important; position: relative !important; width: auto !important; height: auto !important; opacity: 1 !important; }
 </style>
 """, unsafe_allow_html=True)
 
