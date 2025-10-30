@@ -1035,39 +1035,41 @@ else:
             st.query_params.clear()
             st.rerun()
     
-    # Render navigation using components.html with appropriate height
+    # Conditional navigation based on login status - use .format to avoid f-string indentation issues
     if st.session_state.logged_in:
-        nav_html = f"""
+        nav_links = """
         <div class="nav-links">
-            <span class="nav-link" onclick="window.location.href='#home'">Home</span>
-            <span class="nav-link" onclick="window.location.href='#pricing'">Pricing</span>
-            <span class="nav-link active" onclick="window.location.href='?action=dashboard'">Dashboard</span>
-            <span class="user-greeting">Hi, {st.session_state.user_name or 'User'}!</span>
-            <button class="logout-btn" onclick="window.location.href='?action=logout'">Logout</button>
+        <span class="nav-link" onclick="window.location.href='#home'">Home</span>
+        <span class="nav-link" onclick="window.location.href='#pricing'">Pricing</span>
+        <span class="nav-link active" onclick="window.location.href='?action=dashboard'">Dashboard</span>
+        <span class="user-greeting">Hi, {}!</span>
+        <button class="logout-btn" onclick="window.location.href='?action=logout'">Logout</button>
         </div>
-        """
+        """.format(st.session_state.user_name or 'User')
     else:
-        nav_html = """
+        nav_links = """
         <div class="nav-links">
-            <span class="nav-link">Home</span>
-            <span class="nav-link">Pricing</span>
-            <span class="nav-link">Dashboard</span>
-            <span class="nav-link" onclick="window.location.href='?action=auth'">Login</span>
-            <button class="nav-cta" onclick="window.location.href='?action=auth'">Sign Up</button>
+        <span class="nav-link">Home</span>
+        <span class="nav-link">Pricing</span>
+        <span class="nav-link">Dashboard</span>
+        <span class="nav-link" onclick="window.location.href='?action=auth'">Login</span>
+        <button class="nav-cta" onclick="window.location.href='?action=auth'">Sign Up</button>
         </div>
         """
     
-    components.html(f"""
-    <div class="nav-container">
-        <nav>
-            <div class="logo" onclick="window.location.href='#home'">
-                <span class="logo-icon">⚡</span>
-                <span>CrypticX</span>
-            </div>
-            {nav_html}
-        </nav>
-    </div>
-    """, height=80)
+    # Render nav with st.markdown, stripping whitespace to prevent code block rendering
+    nav_full = """
+<div class="nav-container">
+<nav>
+<div class="logo" onclick="window.location.href='#home'">
+<span class="logo-icon">⚡</span>
+<span>CrypticX</span>
+</div>
+{} 
+</nav>
+</div>
+""".strip().format(nav_links.strip())
+    st.markdown(nav_full, unsafe_allow_html=True)
 
     st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
 
@@ -1101,9 +1103,12 @@ else:
     else:
         # HERO / HOME PAGE
         # Hero Section
+        hero_badge_text = "✨ Welcome to CrypticX - The Ultimate Study Tool"
+        if st.session_state.logged_in:
+            hero_badge_text += f" for {st.session_state.user_name}!"
         st.markdown(f"""
         <div id="home" class="hero-section">
-        <div class="welcome-badge">✨ Welcome to CrypticX - The Ultimate Study Tool""" + (f" for {st.session_state.user_name}!" if st.session_state.logged_in else "") + """</div>
+        <div class="welcome-badge">{hero_badge_text}</div>
         <h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1>
         <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
         <button class="hero-cta" onclick="window.location.href='?action=hero'">Start Learning Free</button>
