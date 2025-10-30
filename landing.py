@@ -41,7 +41,7 @@ if 'action' in query_params:
         del st.query_params['action']
         st.rerun()
 
-# Full CSS (original + auth, removed button hiding)
+# Full CSS (original + auth)
 st.markdown("""
 <style>
     /* Hide Streamlit elements */
@@ -62,6 +62,9 @@ st.markdown("""
     .stApp {margin: 0 !important; padding: 0 !important;}
     section.main > div {padding: 0 !important;}
     div[data-testid="stAppViewContainer"] {padding: 0 !important; margin: 0 !important;}
+    
+    /* Hide all Streamlit buttons completely */
+    .stButton {display: none !important; visibility: hidden !important; position: absolute !important; width: 0 !important; height: 0 !important; opacity: 0 !important;}
     
     /* Base styles */
     * {margin: 0; padding: 0; box-sizing: border-box;}
@@ -141,25 +144,6 @@ st.markdown("""
     .pricing-button:hover {background: rgba(139, 92, 246, 0.3); border-color: #8b5cf6; transform: translateY(-2px);}
     .pricing-card.featured .pricing-button {background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none;}
     
-    /* Style Streamlit buttons to match hero-cta */
-    .stButton > button {
-        padding: 1rem 2.5rem;
-        border-radius: 50px;
-        background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-        color: #fff;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
-        border: none;
-        font-size: 1.1rem;
-        box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
-        margin: 1rem 0;
-    }
-    .stButton > button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 40px rgba(139, 92, 246, 0.6);
-    }
-    
     /* Dashboard styles */
     .dashboard-section {min-height: calc(100vh - 80px); display: flex; flex-direction: column; justify-content: flex-start; align-items: center; text-align: center; padding: 4rem 2rem; position: relative;}
     .dashboard-welcome {font-size: 3rem; font-weight: 700; margin-bottom: 1rem; color: #fff;}
@@ -200,12 +184,10 @@ if not st.session_state.logged_in:
     if st.session_state.current_page == 'auth':
         st.markdown('<div class="nav-container"><nav><div class="logo" onclick="history.back()"><span class="logo-icon">⚡</span><span>CrypticX</span></div></nav></div>', unsafe_allow_html=True)
         st.markdown('<div class="content-wrapper"><div class="auth-container"><div class="auth-box">', unsafe_allow_html=True)
-        col_back, _ = st.columns([1, 3])
-        with col_back:
-            if st.button("← Back to Home", key="back_home"):
-                st.session_state.current_page = 'home'
-                st.session_state.selected_plan = None
-                st.rerun()
+        if st.button("← Back to Home", key="back_home"):
+            st.session_state.current_page = 'home'
+            st.session_state.selected_plan = None
+            st.rerun()
         if st.session_state.selected_plan:
             st.markdown(f'<div class="welcome-badge" style="margin-bottom: 1.5rem;">Selected Plan: {st.session_state.selected_plan}</div>', unsafe_allow_html=True)
         if st.session_state.auth_mode == 'login':
@@ -245,37 +227,33 @@ if not st.session_state.logged_in:
         st.markdown('<div class="nav-container"><nav><div class="logo" onclick="window.location.href=\'#home\'"><span class="logo-icon">⚡</span><span>CrypticX</span></div><div class="nav-links"><span class="nav-link active" onclick="window.location.href=\'#home\'">Home</span><span class="nav-link" onclick="window.location.href=\'#pricing\'">Pricing</span><span class="nav-link" onclick="window.location.href=\'?action=dashboard\'">Dashboard</span><span class="nav-link" onclick="window.location.href=\'?action=auth\'">Login</span><button class="nav-cta" onclick="window.location.href=\'?action=auth\'">Sign Up</button></div></nav></div>', unsafe_allow_html=True)
         st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
         st.markdown('<div id="home" class="hero-section"><div class="welcome-badge">✨ Welcome to CrypticX - The Ultimate Study Tool</div><h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1><p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>', unsafe_allow_html=True)
-        col_hero_btn, _ = st.columns([1, 4])
-        with col_hero_btn:
-            st.markdown('<div style="text-align: center;">', unsafe_allow_html=True)
-            if st.button("Start Learning Free", key="hero_start"):
-                st.session_state.selected_plan = 'Free'
-                st.session_state.current_page = 'auth'
-                st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
+        if st.button("Start Learning Free", key="hero_start"):
+            st.session_state.selected_plan = 'Free'
+            st.session_state.current_page = 'auth'
+            st.rerun()
         st.markdown('<div class="stats-section"><div class="stat-item"><div class="stat-number">50K+</div><div class="stat-label">Active Students</div></div><div class="stat-item"><div class="stat-number">95%</div><div class="stat-label">Satisfaction Rate</div></div><div class="stat-item"><div class="stat-number">1M+</div><div class="stat-label">Questions Answered</div></div></div></div>', unsafe_allow_html=True)
         st.markdown('<div id="why-choose" class="section"><h2 class="section-title">Why Choose CrypticX</h2><p class="section-subtitle">The smartest way to study in 2025</p><div class="features-grid">', unsafe_allow_html=True)
         st.markdown('<div class="feature-card"><span class="feature-icon">⚡</span><h3>Lightning Fast</h3><p>Get instant answers to your questions. No more waiting hours for tutors or searching through endless resources.</p></div><div class="feature-card"><span class="feature-icon">🎯</span><h3>Personalized Learning</h3><p>AI adapts to your learning style and pace, providing customized explanations that make sense to you.</p></div><div class="feature-card"><span class="feature-icon">💰</span><h3>Affordable Excellence</h3><p>Get premium tutoring quality at a fraction of the cost. Start free and upgrade only when you\'re ready.</p></div><div class="feature-card"><span class="feature-icon">📱</span><h3>Study Anywhere</h3><p>Access your learning tools from any device, anytime. Study on your schedule, not someone else\'s.</p></div><div class="feature-card"><span class="feature-icon">🔬</span><h3>Proven Methods</h3><p>Built on learning science and cognitive psychology principles that are proven to improve retention and understanding.</p></div><div class="feature-card"><span class="feature-icon">🌟</span><h3>Student Success</h3><p>Join thousands of students who\'ve improved their grades and confidence with CrypticX\'s intelligent tools.</p></div></div></div>', unsafe_allow_html=True)
         st.markdown('<div id="pricing" class="section"><h2 class="section-title">Choose Your Plan</h2><p class="section-subtitle">Start free, upgrade when you are ready</p><div class="pricing-grid">', unsafe_allow_html=True)
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.markdown('<div class="pricing-card"><h3>Free</h3><div class="price">$0<span class="price-period">/mo</span></div><div class="feature-list">✓ 10 AI questions/day<br>✓ Basic summaries<br>✓ 5 quizzes/week<br>✓ Community support</div></div>', unsafe_allow_html=True)
             if st.button("Start Free", key="plan_free"):
                 st.session_state.selected_plan = 'Free'
                 st.session_state.current_page = 'auth'
                 st.rerun()
+            st.markdown('<div class="pricing-card"><h3>Free</h3><div class="price">$0<span class="price-period">/mo</span></div><div class="feature-list">✓ 10 AI questions/day<br>✓ Basic summaries<br>✓ 5 quizzes/week<br>✓ Community support</div><button class="pricing-button">Start Free</button></div>', unsafe_allow_html=True)
         with col2:
-            st.markdown('<div class="pricing-card featured"><div class="pricing-badge">⭐ MOST POPULAR</div><h3>Pro</h3><div class="price">$15<span class="price-period">/mo</span></div><div class="feature-list">✓ Unlimited AI questions<br>✓ Advanced summaries<br>✓ Unlimited quizzes<br>✓ PDF upload (100MB)<br>✓ Priority support<br>✓ Progress analytics</div></div>', unsafe_allow_html=True)
             if st.button("Get Pro", key="plan_pro"):
                 st.session_state.selected_plan = 'Pro'
                 st.session_state.current_page = 'auth'
                 st.rerun()
+            st.markdown('<div class="pricing-card featured"><div class="pricing-badge">⭐ MOST POPULAR</div><h3>Pro</h3><div class="price">$15<span class="price-period">/mo</span></div><div class="feature-list">✓ Unlimited AI questions<br>✓ Advanced summaries<br>✓ Unlimited quizzes<br>✓ PDF upload (100MB)<br>✓ Priority support<br>✓ Progress analytics</div><button class="pricing-button">Get Pro</button></div>', unsafe_allow_html=True)
         with col3:
-            st.markdown('<div class="pricing-card"><h3>Enterprise</h3><div class="price">$35<span class="price-period">/mo</span></div><div class="feature-list">✓ Everything in Pro<br>✓ Team accounts<br>✓ Advanced analytics<br>✓ Custom integrations<br>✓ Dedicated support<br>✓ Unlimited storage</div></div>', unsafe_allow_html=True)
             if st.button("Get Enterprise", key="plan_enterprise"):
                 st.session_state.selected_plan = 'Enterprise'
                 st.session_state.current_page = 'auth'
                 st.rerun()
+            st.markdown('<div class="pricing-card"><h3>Enterprise</h3><div class="price">$35<span class="price-period">/mo</span></div><div class="feature-list">✓ Everything in Pro<br>✓ Team accounts<br>✓ Advanced analytics<br>✓ Custom integrations<br>✓ Dedicated support<br>✓ Unlimited storage</div><button class="pricing-button">Get Enterprise</button></div>', unsafe_allow_html=True)
         st.markdown('</div></div></div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 else:
