@@ -171,7 +171,7 @@ st.markdown("""
     @media (max-width: 1024px) {.features-grid, .pricing-grid {grid-template-columns: repeat(2, 1fr);} .dashboard-stats {grid-template-columns: 1fr;} }
     @media (max-width: 768px) {nav {padding: 1rem 1.5rem;} .nav-links {display: none;} .hero-title {font-size: 2.5rem;} .hero-subtitle {font-size: 1.1rem;} .features-grid, .pricing-grid, .stats-section {grid-template-columns: 1fr;} .section-title {font-size: 2rem;} .pricing-card.featured {transform: scale(1);} .dashboard-welcome {font-size: 2rem;} .auth-box {padding: 2rem; margin: 1rem;} }
     /* Unhide specific buttons */
-    .hero-cta, .pricing-button, [key="back_home"], [key="login_submit"], [key="signup_submit"], [key="toggle_signup"], [key="toggle_login"], [key="logout"] { display: inline-block !important; visibility: visible !important; position: relative !important; width: auto !important; height: auto !important; opacity: 1 !important; }
+    .hero-cta, [key="hero_start"], [key="plan_free"], [key="plan_pro"], [key="plan_enterprise"] { display: inline-block !important; visibility: visible !important; position: relative !important; width: auto !important; height: auto !important; opacity: 1 !important; }
 </style>
 """, unsafe_allow_html=True)
 # Background elements
@@ -184,7 +184,6 @@ if not st.session_state.logged_in:
             st.session_state.current_page = 'home'
             st.session_state.selected_plan = None
             st.rerun()
-        st.markdown('<button class="stButton > button" style="width: 100%; padding: 1rem; border-radius: 12px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: #fff; font-weight: 600; border: none; margin-top: 1rem; transition: all 0.3s; cursor: pointer;">← Back to Home</button>', unsafe_allow_html=True)
         if st.session_state.selected_plan:
             st.markdown(f'<div class="welcome-badge" style="margin-bottom: 1.5rem;">Selected Plan: {st.session_state.selected_plan}</div>', unsafe_allow_html=True)
         if st.session_state.auth_mode == 'login':
@@ -228,7 +227,6 @@ if not st.session_state.logged_in:
             st.session_state.selected_plan = 'Free'
             st.session_state.current_page = 'auth'
             st.rerun()
-        st.markdown('<button class="hero-cta">Start Learning Free</button>', unsafe_allow_html=True)
         st.markdown('<div class="stats-section"><div class="stat-item"><div class="stat-number">50K+</div><div class="stat-label">Active Students</div></div><div class="stat-item"><div class="stat-number">95%</div><div class="stat-label">Satisfaction Rate</div></div><div class="stat-item"><div class="stat-number">1M+</div><div class="stat-label">Questions Answered</div></div></div></div>', unsafe_allow_html=True)
         st.markdown('<div id="why-choose" class="section"><h2 class="section-title">Why Choose CrypticX</h2><p class="section-subtitle">The smartest way to study in 2025</p><div class="features-grid">', unsafe_allow_html=True)
         st.markdown('<div class="feature-card"><span class="feature-icon">⚡</span><h3>Lightning Fast</h3><p>Get instant answers to your questions. No more waiting hours for tutors or searching through endless resources.</p></div><div class="feature-card"><span class="feature-icon">🎯</span><h3>Personalized Learning</h3><p>AI adapts to your learning style and pace, providing customized explanations that make sense to you.</p></div><div class="feature-card"><span class="feature-icon">💰</span><h3>Affordable Excellence</h3><p>Get premium tutoring quality at a fraction of the cost. Start free and upgrade only when you\'re ready.</p></div><div class="feature-card"><span class="feature-icon">📱</span><h3>Study Anywhere</h3><p>Access your learning tools from any device, anytime. Study on your schedule, not someone else\'s.</p></div><div class="feature-card"><span class="feature-icon">🔬</span><h3>Proven Methods</h3><p>Built on learning science and cognitive psychology principles that are proven to improve retention and understanding.</p></div><div class="feature-card"><span class="feature-icon">🌟</span><h3>Student Success</h3><p>Join thousands of students who\'ve improved their grades and confidence with CrypticX\'s intelligent tools.</p></div></div></div>', unsafe_allow_html=True)
@@ -265,7 +263,6 @@ else:
             st.session_state.current_page = 'home'
             st.session_state.logged_in = False
             st.rerun()
-    st.markdown('<button class="stButton > button" style="width: auto; padding: 0.7rem 1.8rem; border-radius: 50px; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); color: #fff; font-weight: 600; border: none; margin-left: auto; transition: all 0.3s; cursor: pointer;">Logout</button>', unsafe_allow_html=True)
     st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
     if st.session_state.current_page == 'dashboard':
         plan_badge = f" | Plan: {st.session_state.selected_plan}" if st.session_state.selected_plan else ""
@@ -275,4 +272,4 @@ else:
         st.session_state.current_page = 'dashboard'
         st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
-st.markdown('<div class="custom-footer"><p>&copy; 2025 CrypticX. All rights reserved.</p><div class="footer-links"><a href="#" class="footer-link">Privacy</a><a href="#" class="footer-link">Terms</a><a href="#" class="footer-link">Contact</a></div></div>', unsafe_allow_html=True)
+st.markdown('<div class="custom-footer"><p>&copy; 2025 CrypticX. All rights reserved.</p><div class="footer-links"><a href="#" class="footer-link">Privacy</a><a href="#" class="footer-link">Terms</a><a href="#" class="footer-link">Contact</a></div></div>', unsafe_allow_html=True) all my button are there other than starting for free button which is hidden
