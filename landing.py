@@ -435,6 +435,10 @@ st.markdown("""
         text-align: center;
         transition: all 0.4s;
         position: relative;
+        min-height: 500px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
     
     .pricing-card.featured {
@@ -491,6 +495,7 @@ st.markdown("""
         color: rgba(255, 255, 255, 0.7);
         line-height: 2.2;
         font-size: 0.95rem;
+        flex-grow: 1;
     }
     
     .pricing-button {
@@ -1035,10 +1040,9 @@ if not st.session_state.logged_in:
         <p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>
         """, unsafe_allow_html=True)
         
-        col_hero = st.columns([3, 1])
-        with col_hero[0]:
-            st.empty()  # Spacer
-        with col_hero[1]:
+        # Centered hero button
+        col_left, col_mid, col_right = st.columns([4, 1, 4])
+        with col_mid:
             if st.button("Start Learning Free", key="hero_free"):
                 st.session_state.selected_plan = 'Free'
                 st.session_state.current_page = 'auth'
@@ -1114,12 +1118,12 @@ if not st.session_state.logged_in:
             <div class="pricing-card">
                 <h3>Free</h3>
                 <div class="price">$0<span class="price-period">/mo</span></div>
-                <div class="feature-list">
-                    ✓ 10 AI questions/day<br>
-                    ✓ Basic summaries<br>
-                    ✓ 5 quizzes/week<br>
-                    ✓ Community support
-                </div>
+                <ul class="feature-list">
+                    <li>✓ 10 AI questions/day</li>
+                    <li>✓ Basic summaries</li>
+                    <li>✓ 5 quizzes/week</li>
+                    <li>✓ Community support</li>
+                </ul>
             </div>
             """, unsafe_allow_html=True)
             st.markdown('<div class="primary-container">', unsafe_allow_html=True)
@@ -1135,14 +1139,14 @@ if not st.session_state.logged_in:
                 <div class="pricing-badge">⭐ MOST POPULAR</div>
                 <h3>Pro</h3>
                 <div class="price">$15<span class="price-period">/mo</span></div>
-                <div class="feature-list">
-                    ✓ Unlimited AI questions<br>
-                    ✓ Advanced summaries<br>
-                    ✓ Unlimited quizzes<br>
-                    ✓ PDF upload (100MB)<br>
-                    ✓ Priority support<br>
-                    ✓ Progress analytics
-                </div>
+                <ul class="feature-list">
+                    <li>✓ Unlimited AI questions</li>
+                    <li>✓ Advanced summaries</li>
+                    <li>✓ Unlimited quizzes</li>
+                    <li>✓ PDF upload (100MB)</li>
+                    <li>✓ Priority support</li>
+                    <li>✓ Progress analytics</li>
+                </ul>
             </div>
             """, unsafe_allow_html=True)
             st.markdown('<div class="primary-container">', unsafe_allow_html=True)
@@ -1157,14 +1161,14 @@ if not st.session_state.logged_in:
             <div class="pricing-card">
                 <h3>Enterprise</h3>
                 <div class="price">$35<span class="price-period">/mo</span></div>
-                <div class="feature-list">
-                    ✓ Everything in Pro<br>
-                    ✓ Team accounts<br>
-                    ✓ Advanced analytics<br>
-                    ✓ Custom integrations<br>
-                    ✓ Dedicated support<br>
-                    ✓ Unlimited storage
-                </div>
+                <ul class="feature-list">
+                    <li>✓ Everything in Pro</li>
+                    <li>✓ Team accounts</li>
+                    <li>✓ Advanced analytics</li>
+                    <li>✓ Custom integrations</li>
+                    <li>✓ Dedicated support</li>
+                    <li>✓ Unlimited storage</li>
+                </ul>
             </div>
             """, unsafe_allow_html=True)
             st.markdown('<div class="primary-container">', unsafe_allow_html=True)
@@ -1233,6 +1237,8 @@ else:
     </div>
     """, unsafe_allow_html=True)
     
+    st.chat_input("e.g., Explain calculus simply")
+    
     st.markdown('<div class="logout-container">', unsafe_allow_html=True)
     if st.button("Logout", key="logout_btn", use_container_width=False):
         st.session_state.logged_in = False
@@ -1241,8 +1247,6 @@ else:
         st.session_state.current_page = 'home'
         st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
-    
-    st.markdown(f'{st.chat_input("e.g., Explain calculus simply")}', unsafe_allow_html=False)
     
     st.markdown('</div>', unsafe_allow_html=True)
 
