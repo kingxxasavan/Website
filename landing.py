@@ -45,9 +45,11 @@ if 'action' in query_params:
             st.session_state.current_page = 'auth'
             handled = True
         if handled:
+            # Use pop for safer removal (avoids KeyError)
             query_params.pop('action', None)
             st.rerun()
     except Exception:
+        # Fallback to prevent stuck state
         st.session_state.current_page = 'home'
         query_params.pop('action', None)
         st.rerun()
@@ -57,7 +59,7 @@ if 'plan' in query_params:
     query_params.pop('plan', None)
     st.rerun()
 
-# Full CSS (fixed: targeted unhides, pointer-events, no key reliance)
+# Full CSS (enhanced with stability fixes for buttons/columns during reruns + pointer-events for clicks)
 st.markdown("""
 <style>
     /* Hide Streamlit elements */
@@ -76,8 +78,18 @@ st.markdown("""
     .stApp {margin: 0 !important; padding: 0 !important;}
     section.main > div {padding: 0 !important;}
     div[data-testid="stAppViewContainer"] {padding: 0 !important; margin: 0 !important;}
-    /* Hide all Streamlit buttons - but unhide via classes below */
+    /* Hide all Streamlit buttons completely - but unhide specific ones below */
     .stButton {display: none !important; visibility: hidden !important; position: absolute !important; width: 0 !important; height: 0 !important; opacity: 0 !important;}
+    /* Stabilize buttons during rerun - prevent glitch/disappear/shifts */
+    .stButton > button, button.pricing-button, button.hero-cta { transition: all 0.1s ease !important; position: relative !important; z-index: 20 !important; }
+    /* Ensure all buttons are clickable */
+    button, .stButton button { pointer-events: auto !important; cursor: pointer !important; }
+    .hero-cta, .pricing-button { pointer-events: auto !important; cursor: pointer !important; }
+    /* Lock column positions - no shifts on responsive/rerun */
+    .stColumns > div { flex: none !important; min-width: 0 !important; } /* Fixes column flex wobble */
+    /* Auth-specific: Keep back/toggle buttons pinned left/right */
+    [data-testid="column"] > div:first-child { justify-content: flex-start !important; }
+    [data-testid="column"] > div:last-child { justify-content: flex-end !important; }
     /* Base styles */
     * {margin: 0; padding: 0; box-sizing: border-box;}
     html, body {margin: 0 !important; padding: 0 !important; overflow-x: hidden; scroll-behavior: smooth;}
@@ -141,7 +153,7 @@ st.markdown("""
     .price {font-size: 3.5rem; font-weight: 800; margin: 1.5rem 0; background: linear-gradient(135deg, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
     .price-period {font-size: 1rem; color: rgba(255, 255, 255, 0.5);}
     .feature-list {text-align: left; margin: 2rem 0; color: rgba(255, 255, 255, 0.7); line-height: 2.2; font-size: 0.95rem;}
-    .pricing-button {width: 100%; padding: 0.9rem; border-radius: 12px; background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.3); color: #fff; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-top: 1rem;}
+    .pricing-button {width: 100%; padding: 0.9rem; border-radius: 12px; background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.3); color: #fff; font-weight: 600; cursor: pointer !important; transition: all 0.3s; margin-top: 1rem; pointer-events: auto !important;}
     .pricing-button:hover {background: rgba(139, 92, 246, 0.3); border-color: #8b5cf6; transform: translateY(-2px);}
     .pricing-card.featured .pricing-button {background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none;}
     /* Dashboard styles */
@@ -160,32 +172,9 @@ st.markdown("""
     .auth-subtitle {color: rgba(255, 255, 255, 0.6); font-size: 1.1rem;}
     .stTextInput > div > div > input {background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; color: #fff; padding: 1rem;}
     .stTextInput > div > div > input::placeholder {color: rgba(255, 255, 255, 0.5);}
-    .stButton > button {width: 100%; padding: 1rem; border-radius: 12px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: #fff; font-weight: 600; border: none; margin-top: 1rem; transition: all 0.3s;}
+    .stButton > button {width: 100%; padding: 1rem; border-radius: 12px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: #fff; font-weight: 600; border: none; margin-top: 1rem; transition: all 0.3s; cursor: pointer !important; pointer-events: auto !important;}
     .stButton > button:hover {transform: translateY(-2px); box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);}
     .stError {color: #ef4444; text-align: center;}
-    /* Custom button unhides - use classes instead of keys */
-    .custom-btn {display: inline-block !important; visibility: visible !important; position: relative !important; width: auto !important; height: auto !important; opacity: 1 !important; pointer-events: auto !important; cursor: pointer !important; z-index: 20 !important; transition: all 0.1s ease !important;}
-    .custom-btn button {pointer-events: auto !important; cursor: pointer !important;}
-    /* Logout specific - fixed position in nav */
-    .logout-container {position: fixed !important; top: 25px !important; right: 50px !important; z-index: 1001 !important; display: block !important;}
-    .logout-container .stButton {display: block !important; visibility: visible !important; position: relative !important; width: auto !important; height: auto !important; opacity: 1 !important;}
-    .logout-container button {padding: 0.7rem 1.8rem !important; border-radius: 50px !important; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%) !important; color: #fff !important; font-weight: 600 !important; cursor: pointer !important; transition: all 0.3s !important; border: none !important; font-size: 0.9rem !important; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4) !important; margin: 0 !important;}
-    .logout-container button:hover {transform: translateY(-2px) !important; box-shadow: 0 6px 25px rgba(139, 92, 246, 0.6) !important;}
-    /* Auth buttons - wrap in custom divs */
-    .auth-btn-container {display: flex !important; justify-content: flex-start !important; width: 100% !important; margin-bottom: 1rem !important;}
-    .toggle-btn-container {display: flex !important; justify-content: flex-end !important; width: 100% !important; margin-top: 1rem !important;}
-    .auth-btn-container .stButton, .toggle-btn-container .stButton {display: inline-block !important; visibility: visible !important; position: relative !important; width: auto !important; height: auto !important; opacity: 1 !important; pointer-events: auto !important; cursor: pointer !important;}
-    .auth-btn-container button, .toggle-btn-container button {width: auto !important; padding: 0.5rem 1rem !important; border-radius: 8px !important; background: rgba(139, 92, 246, 0.2) !important; color: #fff !important; font-weight: 500 !important; border: 1px solid rgba(139, 92, 246, 0.3) !important; transition: all 0.3s !important;}
-    .auth-btn-container button:hover, .toggle-btn-container button:hover {background: rgba(139, 92, 246, 0.4) !important; transform: translateY(-1px) !important;}
-    /* Back button specific */
-    .back-btn-container {display: flex !important; justify-content: flex-start !important; width: 100% !important; margin-bottom: 1rem !important;}
-    .back-btn-container .stButton {display: inline-block !important; visibility: visible !important; position: relative !important; width: auto !important; height: auto !important; opacity: 1 !important; pointer-events: auto !important; cursor: pointer !important;}
-    .back-btn-container button {padding: 0.5rem 1rem !important; border-radius: 8px !important; background: rgba(139, 92, 246, 0.2) !important; color: #fff !important; font-weight: 500 !important; border: 1px solid rgba(139, 92, 246, 0.3) !important; transition: all 0.3s !important;}
-    .back-btn-container button:hover {background: rgba(139, 92, 246, 0.4) !important; transform: translateY(-1px) !important;}
-    /* Submit buttons in auth */
-    .submit-btn-container .stButton {display: block !important; visibility: visible !important; position: relative !important; width: 100% !important; height: auto !important; opacity: 1 !important; pointer-events: auto !important; cursor: pointer !important; margin-top: 1rem !important;}
-    .submit-btn-container button {width: 100% !important; padding: 1rem !important; border-radius: 12px !important; background: linear-gradient(135deg, #8b5cf6, #ec4899) !important; color: #fff !important; font-weight: 600 !important; border: none !important; transition: all 0.3s !important;}
-    .submit-btn-container button:hover {transform: translateY(-2px) !important; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4) !important;}
     /* Footer */
     .custom-footer {position: relative; z-index: 10; border-top: 1px solid rgba(139, 92, 246, 0.1); margin-top: 5rem; padding: 3rem 2rem; text-align: center; color: rgba(255, 255, 255, 0.4); background: rgba(10, 10, 15, 0.5);}
     .footer-links {display: flex; justify-content: center; gap: 2rem; margin-top: 1rem;}
@@ -193,7 +182,15 @@ st.markdown("""
     .footer-link:hover {color: #8b5cf6;}
     /* Responsive */
     @media (max-width: 1024px) {.features-grid, .pricing-grid {grid-template-columns: repeat(2, 1fr);} .dashboard-stats {grid-template-columns: 1fr;} }
-    @media (max-width: 768px) {nav {padding: 1rem 1.5rem;} .nav-links {display: none;} .hero-title {font-size: 2.5rem;} .hero-subtitle {font-size: 1.1rem;} .features-grid, .pricing-grid, .stats-section {grid-template-columns: 1fr;} .section-title {font-size: 2rem;} .pricing-card.featured {transform: scale(1);} .dashboard-welcome {font-size: 2rem;} .auth-box {padding: 2rem; margin: 1rem;} .logout-container {right: 20px !important; top: 15px !important;} }
+    @media (max-width: 768px) {nav {padding: 1rem 1.5rem;} .nav-links {display: none;} .hero-title {font-size: 2.5rem;} .hero-subtitle {font-size: 1.1rem;} .features-grid, .pricing-grid, .stats-section {grid-template-columns: 1fr;} .section-title {font-size: 2rem;} .pricing-card.featured {transform: scale(1);} .dashboard-welcome {font-size: 2rem;} .auth-box {padding: 2rem; margin: 1rem;} [key="logout"] {right: 20px !important; top: 15px !important;} }
+    /* Unhide specific buttons - added for all actual st.button keys without changing positions/design */
+    [key="back_home"], [key="login_submit"], [key="toggle_signup"], [key="signup_submit"], [key="toggle_login"], [key="logout"] { display: inline-block !important; visibility: visible !important; position: relative !important; width: auto !important; height: auto !important; opacity: 1 !important; pointer-events: auto !important; cursor: pointer !important; }
+    /* Also unhide hero-cta and pricing buttons as before (though they're HTML, for safety) */
+    .hero-cta, [key="hero_start"], [key="plan_free"], [key="plan_pro"], [key="plan_enterprise"] { display: inline-block !important; visibility: visible !important; position: relative !important; width: auto !important; height: auto !important; opacity: 1 !important; }
+    /* Style and position logout button as part of nav */
+    [key="logout"] { position: fixed !important; top: 25px !important; right: 50px !important; z-index: 1001 !important; display: block !important; }
+    [key="logout"] button { padding: 0.7rem 1.8rem !important; border-radius: 50px !important; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%) !important; color: #fff !important; font-weight: 600 !important; cursor: pointer !important; transition: all 0.3s !important; border: none !important; font-size: 0.9rem !important; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4) !important; margin: 0 !important; pointer-events: auto !important; }
+    [key="logout"] button:hover { transform: translateY(-2px) !important; box-shadow: 0 6px 25px rgba(139, 92, 246, 0.6) !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -204,20 +201,18 @@ if not st.session_state.logged_in:
     if st.session_state.current_page == 'auth':
         st.markdown('<div class="nav-container"><nav><div class="logo" onclick="window.location.href=\'?action=home\'"><span class="logo-icon">⚡</span><span>CrypticX</span></div></nav></div>', unsafe_allow_html=True)
         st.markdown('<div class="content-wrapper"><div class="auth-container"><div class="auth-box">', unsafe_allow_html=True)
-        # Back button with custom container for targeting
-        st.markdown('<div class="back-btn-container custom-btn">', unsafe_allow_html=True)
-        if st.button("← Back to Home", key="back_home"):
-            st.session_state.current_page = 'home'
-            st.session_state.selected_plan = None
-            st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
+        col_back, _ = st.columns([1, 4])  # Use columns to maintain position without changing design
+        with col_back:
+            if st.button("← Back to Home", key="back_home"):
+                st.session_state.current_page = 'home'
+                st.session_state.selected_plan = None
+                st.rerun()
         if st.session_state.selected_plan:
             st.markdown(f'<div class="welcome-badge" style="margin-bottom: 1.5rem;">Selected Plan: {st.session_state.selected_plan}</div>', unsafe_allow_html=True)
         if st.session_state.auth_mode == 'login':
             st.markdown('<div class="auth-header"><h1 class="auth-title">Welcome Back</h1><p class="auth-subtitle">Sign in to access your dashboard</p></div>', unsafe_allow_html=True)
             email = st.text_input("Email", key="login_email", placeholder="your@email.com")
             password = st.text_input("Password", type="password", key="login_password", placeholder="Enter your password")
-            st.markdown('<div class="submit-btn-container">', unsafe_allow_html=True)
             if st.button("Sign In", key="login_submit"):
                 if email and password and re.match(r'^[^@]+@[^@]+\.[^@]+$', email):
                     with st.spinner("Signing in..."):
@@ -232,18 +227,16 @@ if not st.session_state.logged_in:
                         st.error("⚠ Invalid email format")
                     else:
                         st.error("⚠ Please fill all fields")
-            st.markdown('</div>', unsafe_allow_html=True)
-            st.markdown('<div class="toggle-btn-container custom-btn">', unsafe_allow_html=True)
-            if st.button("Don't have an account? Create one", key="toggle_signup"):
-                st.session_state.auth_mode = 'signup'
-                st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
+            col_toggle, _ = st.columns([3, 1])  # Maintain position
+            with col_toggle:
+                if st.button("Don't have an account? Create one", key="toggle_signup"):
+                    st.session_state.auth_mode = 'signup'
+                    st.rerun()
         else:
             st.markdown('<div class="auth-header"><h1 class="auth-title">Create Account</h1><p class="auth-subtitle">Join and start your AI learning journey</p></div>', unsafe_allow_html=True)
             name = st.text_input("Full Name", key="signup_name", placeholder="Enter your name")
             email = st.text_input("Email", key="signup_email", placeholder="your@email.com")
             password = st.text_input("Password", type="password", key="signup_password", placeholder="Create a password")
-            st.markdown('<div class="submit-btn-container">', unsafe_allow_html=True)
             if st.button("Create Account", key="signup_submit"):
                 if name and email and password and re.match(r'^[^@]+@[^@]+\.[^@]+$', email):
                     with st.spinner("Creating account..."):
@@ -259,14 +252,14 @@ if not st.session_state.logged_in:
                         st.error("⚠ Invalid email format")
                     else:
                         st.error("⚠ Please fill all fields")
-            st.markdown('</div>', unsafe_allow_html=True)
-            st.markdown('<div class="toggle-btn-container custom-btn">', unsafe_allow_html=True)
-            if st.button("Already have an account? Sign In", key="toggle_login"):
-                st.session_state.auth_mode = 'login'
-                st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
+            col_toggle2, _ = st.columns([3, 1])  # Maintain position
+            with col_toggle2:
+                if st.button("Already have an account? Sign In", key="toggle_login"):
+                    st.session_state.auth_mode = 'login'
+                    st.rerun()
         st.markdown('</div></div></div>', unsafe_allow_html=True)
     else:
+        # Handle home vs pricing based on current_page
         st.markdown('<div class="nav-container"><nav><div class="logo" onclick="window.location.href=\'?action=home\'"><span class="logo-icon">⚡</span><span>CrypticX</span></div><div class="nav-links"><span class="nav-link ' + ('active' if st.session_state.current_page == 'home' else '') + '" onclick="window.location.href=\'?action=home\'">Home</span><span class="nav-link ' + ('active' if st.session_state.current_page == 'pricing' else '') + '" onclick="window.location.href=\'?action=pricing\'">Pricing</span><span class="nav-link" onclick="window.location.href=\'?action=dashboard\'">Dashboard</span><span class="nav-link" onclick="window.location.href=\'?action=auth\'">Login</span><button class="nav-cta" onclick="window.location.href=\'?action=auth\'">Sign Up</button></div></nav></div>', unsafe_allow_html=True)
         st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
         if st.session_state.current_page == 'home':
@@ -274,42 +267,42 @@ if not st.session_state.logged_in:
             st.markdown('<div class="stats-section"><div class="stat-item"><div class="stat-number">50K+</div><div class="stat-label">Active Students</div></div><div class="stat-item"><div class="stat-number">95%</div><div class="stat-label">Satisfaction Rate</div></div><div class="stat-item"><div class="stat-number">1M+</div><div class="stat-label">Questions Answered</div></div></div></div>', unsafe_allow_html=True)
             st.markdown('<div id="why-choose" class="section"><h2 class="section-title">Why Choose CrypticX</h2><p class="section-subtitle">The smartest way to study in 2025</p><div class="features-grid">', unsafe_allow_html=True)
             st.markdown('<div class="feature-card"><span class="feature-icon">⚡</span><h3>Lightning Fast</h3><p>Get instant answers to your questions. No more waiting hours for tutors or searching through endless resources.</p></div><div class="feature-card"><span class="feature-icon">🎯</span><h3>Personalized Learning</h3><p>AI adapts to your learning style and pace, providing customized explanations that make sense to you.</p></div><div class="feature-card"><span class="feature-icon">💰</span><h3>Affordable Excellence</h3><p>Get premium tutoring quality at a fraction of the cost. Start free and upgrade only when you\'re ready.</p></div><div class="feature-card"><span class="feature-icon">📱</span><h3>Study Anywhere</h3><p>Access your learning tools from any device, anytime. Study on your schedule, not someone else\'s.</p></div><div class="feature-card"><span class="feature-icon">🔬</span><h3>Proven Methods</h3><p>Built on learning science and cognitive psychology principles that are proven to improve retention and understanding.</p></div><div class="feature-card"><span class="feature-icon">🌟</span><h3>Student Success</h3><p>Join thousands of students who\'ve improved their grades and confidence with CrypticX\'s intelligent tools.</p></div></div></div>', unsafe_allow_html=True)
-        if st.session_state.current_page == 'pricing':  # Only show pricing on pricing page
-            st.markdown('<div id="pricing" class="section"><h2 class="section-title">Choose Your Plan</h2><p class="section-subtitle">Start free, upgrade when you are ready</p><div class="pricing-grid">', unsafe_allow_html=True)
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.markdown('<div class="pricing-card"><h3>Free</h3><div class="price">$0<span class="price-period">/mo</span></div><div class="feature-list">✓ 10 AI questions/day<br>✓ Basic summaries<br>✓ 5 quizzes/week<br>✓ Community support</div><button class="pricing-button" onclick="window.location.href=\'?action=auth&plan=Free\'">Start Free</button></div>', unsafe_allow_html=True)
-            with col2:
-                st.markdown('<div class="pricing-card featured"><div class="pricing-badge">⭐ MOST POPULAR</div><h3>Pro</h3><div class="price">$15<span class="price-period">/mo</span></div><div class="feature-list">✓ Unlimited AI questions<br>✓ Advanced summaries<br>✓ Unlimited quizzes<br>✓ PDF upload (100MB)<br>✓ Priority support<br>✓ Progress analytics</div><button class="pricing-button" onclick="window.location.href=\'?action=auth&plan=Pro\'">Get Pro</button></div>', unsafe_allow_html=True)
-            with col3:
-                st.markdown('<div class="pricing-card"><h3>Enterprise</h3><div class="price">$35<span class="price-period">/mo</span></div><div class="feature-list">✓ Everything in Pro<br>✓ Team accounts<br>✓ Advanced analytics<br>✓ Custom integrations<br>✓ Dedicated support<br>✓ Unlimited storage</div><button class="pricing-button" onclick="window.location.href=\'?action=auth&plan=Enterprise\'">Get Enterprise</button></div>', unsafe_allow_html=True)
-            st.markdown('</div></div>', unsafe_allow_html=True)
+        # Pricing section (rendered on both home and pricing for consistency; on pricing, it starts higher due to no hero)
+        st.markdown('<div id="pricing" class="section"><h2 class="section-title">Choose Your Plan</h2><p class="section-subtitle">Start free, upgrade when you are ready</p><div class="pricing-grid">', unsafe_allow_html=True)
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.markdown('<div class="pricing-card"><h3>Free</h3><div class="price">$0<span class="price-period">/mo</span></div><div class="feature-list">✓ 10 AI questions/day<br>✓ Basic summaries<br>✓ 5 quizzes/week<br>✓ Community support</div><button class="pricing-button" onclick="window.location.href=\'?action=auth&plan=Free\'">Start Free</button></div>', unsafe_allow_html=True)
+        with col2:
+            st.markdown('<div class="pricing-card featured"><div class="pricing-badge">⭐ MOST POPULAR</div><h3>Pro</h3><div class="price">$15<span class="price-period">/mo</span></div><div class="feature-list">✓ Unlimited AI questions<br>✓ Advanced summaries<br>✓ Unlimited quizzes<br>✓ PDF upload (100MB)<br>✓ Priority support<br>✓ Progress analytics</div><button class="pricing-button" onclick="window.location.href=\'?action=auth&plan=Pro\'">Get Pro</button></div>', unsafe_allow_html=True)
+        with col3:
+            st.markdown('<div class="pricing-card"><h3>Enterprise</h3><div class="price">$35<span class="price-period">/mo</span></div><div class="feature-list">✓ Everything in Pro<br>✓ Team accounts<br>✓ Advanced analytics<br>✓ Custom integrations<br>✓ Dedicated support<br>✓ Unlimited storage</div><button class="pricing-button" onclick="window.location.href=\'?action=auth&plan=Enterprise\'">Get Enterprise</button></div>', unsafe_allow_html=True)
+        st.markdown('</div></div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 else:
-    # Logout button first, with custom container for targeting
-    st.markdown('<div class="logout-container">', unsafe_allow_html=True)
+    # Logged-in nav without JS logout button
+    st.markdown(f'<div class="nav-container"><nav><div class="logo" onclick="window.location.href=\'?action=dashboard\'"><span class="logo-icon">⚡</span><span>CrypticX</span></div><div class="nav-links"><span class="nav-link" onclick="window.location.href=\'?action=home\'">Home</span><span class="nav-link" onclick="window.location.href=\'?action=pricing\'">Pricing</span><span class="nav-link active" onclick="window.location.href=\'?action=dashboard\'">Dashboard</span><span class="user-greeting">Hi, {st.session_state.user_name}</span></div></nav></div>', unsafe_allow_html=True)
+    # Server-side logout button, positioned via CSS
     if st.button("Logout", key="logout"):
-        st.warning("Logging out...")  # UX feedback
         for key in list(st.session_state.keys()):
             if key not in ['current_page', 'logged_in']:
                 del st.session_state[key]
         st.session_state.current_page = 'home'
         st.session_state.logged_in = False
         st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
-    # Logged-in nav
-    st.markdown(f'<div class="nav-container"><nav><div class="logo" onclick="window.location.href=\'?action=dashboard\'"><span class="logo-icon">⚡</span><span>CrypticX</span></div><div class="nav-links"><span class="nav-link" onclick="window.location.href=\'?action=home\'">Home</span><span class="nav-link" onclick="window.location.href=\'?action=pricing\'">Pricing</span><span class="nav-link active" onclick="window.location.href=\'?action=dashboard\'">Dashboard</span><span class="user-greeting">Hi, {st.session_state.user_name}</span></div></nav></div>', unsafe_allow_html=True)
     st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
     if st.session_state.current_page == 'dashboard':
         plan_badge = f" | Plan: {st.session_state.user_plan}" if st.session_state.user_plan else ""
         st.markdown(f'<div class="dashboard-section"><h1 class="dashboard-welcome">Welcome back, {st.session_state.user_name}!</h1><p class="dashboard-subtitle">Your AI study dashboard{plan_badge}</p><div class="dashboard-stats"><div class="dashboard-stat"><div class="dashboard-stat-number">42</div><div class="dashboard-stat-label">Questions Answered This Week</div></div><div class="dashboard-stat"><div class="dashboard-stat-number">87%</div><div class="dashboard-stat-label">Quiz Average</div></div><div class="dashboard-stat"><div class="dashboard-stat-number">5</div><div class="dashboard-stat-label">Active Courses</div></div><div class="dashboard-stat"><div class="dashboard-stat-number">2h 30m</div><div class="dashboard-stat-label">Study Time Today</div></div></div><div style="text-align: center; margin-top: 2rem;"><h3>Ask your AI study buddy:</h3></div>', unsafe_allow_html=True)
-        user_input = st.chat_input("e.g., Explain quantum physics simply")
+        user_input = st.chat_input("e.g., Explain quantum physics simply")  # Moved outside markdown
         if user_input:
             st.write(f"You asked: {user_input}")  # Placeholder - integrate AI here
+            # TODO: Integrate real AI response
         st.markdown('<button class="hero-cta" onclick="window.location.reload()">Refresh Progress</button></div>', unsafe_allow_html=True)
+        # Basic plan gating example (minimal, no placement change)
         if st.session_state.user_plan == 'Pro':
             st.markdown('<div style="text-align: center; margin-top: 1rem; color: #8b5cf6;">Unlimited mode active! 🚀</div>', unsafe_allow_html=True)
     else:
+        # Redirect logged-in users to dashboard for home/pricing
         st.session_state.current_page = 'dashboard'
         st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
