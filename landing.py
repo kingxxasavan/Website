@@ -169,9 +169,17 @@ st.markdown("""
     @media (max-width: 1024px) {.features-grid, .pricing-grid {grid-template-columns: repeat(2, 1fr);} .dashboard-stats {grid-template-columns: 1fr;} }
     @media (max-width: 768px) {nav {padding: 1rem 1.5rem;} .nav-links {display: none;} .hero-title {font-size: 2.5rem;} .hero-subtitle {font-size: 1.1rem;} .features-grid, .pricing-grid, .stats-section {grid-template-columns: 1fr;} .section-title {font-size: 2rem;} .pricing-card.featured {transform: scale(1);} .dashboard-welcome {font-size: 2rem;} .auth-box {padding: 2rem; margin: 1rem;} }
     /* Unhide specific buttons - added for all actual st.button keys without changing positions/design */
-    [key="back_home"], [key="login_submit"], [key="toggle_signup"], [key="signup_submit"], [key="toggle_login"], [key="logout"] { display: inline-block !important; visibility: visible !important; position: relative !important; width: auto !important; height: auto !important; opacity: 1 !important; }
-    /* Also unhide hero-cta and pricing buttons as before */
-    .hero-cta, [key="hero_start"], [key="plan_free"], [key="plan_pro"], [key="plan_enterprise"] { display: inline-block !important; visibility: visible !important; position: relative !important; width: auto !important; height: auto !important; opacity: 1 !important; }
+    [key="back_home"], [key="login_submit"], [key="toggle_signup"], [key="signup_submit"], [key="toggle_login"], [key="logout"], [key="hero_start"], [key="plan_free"], [key="plan_pro"], [key="plan_enterprise"] { display: inline-block !important; visibility: visible !important; position: relative !important; width: auto !important; height: auto !important; opacity: 1 !important; margin: 0 !important; }
+    /* Style Streamlit buttons to match hero-cta and pricing-button */
+    [key="hero_start"] {padding: 1rem 2.5rem !important; border-radius: 50px !important; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%) !important; color: #fff !important; font-weight: 600 !important; cursor: pointer !important; transition: all 0.3s !important; border: none !important; font-size: 1.1rem !important; box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4) !important; animation: fadeInUp 1.2s ease-out 0.6s backwards !important; display: block !important; margin: 0 auto !important; }
+    [key="hero_start"]:hover {transform: translateY(-3px) !important; box-shadow: 0 12px 40px rgba(139, 92, 246, 0.6) !important; }
+    [key="plan_free"], [key="plan_pro"], [key="plan_enterprise"] {width: 100% !important; padding: 0.9rem !important; border-radius: 12px !important; color: #fff !important; font-weight: 600 !important; cursor: pointer !important; transition: all 0.3s !important; margin-top: 1rem !important; border: none !important; font-size: 0.95rem !important; }
+    [key="plan_free"] {background: rgba(139, 92, 246, 0.2) !important; border: 1px solid rgba(139, 92, 246, 0.3) !important; }
+    [key="plan_free"]:hover {background: rgba(139, 92, 246, 0.3) !important; border-color: #8b5cf6 !important; transform: translateY(-2px) !important; }
+    [key="plan_pro"] {background: linear-gradient(135deg, #8b5cf6, #ec4899) !important; }
+    [key="plan_pro"]:hover {transform: translateY(-2px) !important; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4) !important; }
+    [key="plan_enterprise"] {background: rgba(139, 92, 246, 0.2) !important; border: 1px solid rgba(139, 92, 246, 0.3) !important; }
+    [key="plan_enterprise"]:hover {background: rgba(139, 92, 246, 0.3) !important; border-color: #8b5cf6 !important; transform: translateY(-2px) !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -244,19 +252,36 @@ if not st.session_state.logged_in:
         st.markdown('<div class="nav-container"><nav><div class="logo" onclick="window.location.href=\'?action=home\'"><span class="logo-icon">⚡</span><span>CrypticX</span></div><div class="nav-links"><span class="nav-link ' + ('active' if st.session_state.current_page == 'home' else '') + '" onclick="window.location.href=\'?action=home\'">Home</span><span class="nav-link ' + ('active' if st.session_state.current_page == 'pricing' else '') + '" onclick="window.location.href=\'?action=pricing\'">Pricing</span><span class="nav-link" onclick="window.location.href=\'?action=dashboard\'">Dashboard</span><span class="nav-link" onclick="window.location.href=\'?action=auth\'">Login</span><button class="nav-cta" onclick="window.location.href=\'?action=auth\'">Sign Up</button></div></nav></div>', unsafe_allow_html=True)
         st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
         if st.session_state.current_page == 'home':
-            st.markdown('<div id="home" class="hero-section"><div class="welcome-badge">✨ Welcome to CrypticX - The Ultimate Study Tool</div><h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1><p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p><button class="hero-cta" onclick="window.location.href=\'?action=auth&plan=Free\'">Start Learning Free</button></div>', unsafe_allow_html=True)
+            st.markdown('<div id="home" class="hero-section"><div class="welcome-badge">✨ Welcome to CrypticX - The Ultimate Study Tool</div><h1 class="hero-title">Master Your Studies with AI-Powered Learning</h1><p class="hero-subtitle">Transform the way you learn with intelligent tools designed to help you understand faster, remember longer, and achieve academic excellence.</p>', unsafe_allow_html=True)
+            if st.button("Start Learning Free", key="hero_start"):
+                st.session_state.selected_plan = "Free"
+                st.session_state.current_page = 'auth'
+                st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
             st.markdown('<div class="stats-section"><div class="stat-item"><div class="stat-number">50K+</div><div class="stat-label">Active Students</div></div><div class="stat-item"><div class="stat-number">95%</div><div class="stat-label">Satisfaction Rate</div></div><div class="stat-item"><div class="stat-number">1M+</div><div class="stat-label">Questions Answered</div></div></div></div>', unsafe_allow_html=True)
             st.markdown('<div id="why-choose" class="section"><h2 class="section-title">Why Choose CrypticX</h2><p class="section-subtitle">The smartest way to study in 2025</p><div class="features-grid">', unsafe_allow_html=True)
             st.markdown('<div class="feature-card"><span class="feature-icon">⚡</span><h3>Lightning Fast</h3><p>Get instant answers to your questions. No more waiting hours for tutors or searching through endless resources.</p></div><div class="feature-card"><span class="feature-icon">🎯</span><h3>Personalized Learning</h3><p>AI adapts to your learning style and pace, providing customized explanations that make sense to you.</p></div><div class="feature-card"><span class="feature-icon">💰</span><h3>Affordable Excellence</h3><p>Get premium tutoring quality at a fraction of the cost. Start free and upgrade only when you\'re ready.</p></div><div class="feature-card"><span class="feature-icon">📱</span><h3>Study Anywhere</h3><p>Access your learning tools from any device, anytime. Study on your schedule, not someone else\'s.</p></div><div class="feature-card"><span class="feature-icon">🔬</span><h3>Proven Methods</h3><p>Built on learning science and cognitive psychology principles that are proven to improve retention and understanding.</p></div><div class="feature-card"><span class="feature-icon">🌟</span><h3>Student Success</h3><p>Join thousands of students who\'ve improved their grades and confidence with CrypticX\'s intelligent tools.</p></div></div></div>', unsafe_allow_html=True)
         st.markdown('<div id="pricing" class="section"><h2 class="section-title">Choose Your Plan</h2><p class="section-subtitle">Start free, upgrade when you are ready</p><div class="pricing-grid">', unsafe_allow_html=True)
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.markdown('<div class="pricing-card"><h3>Free</h3><div class="price">$0<span class="price-period">/mo</span></div><div class="feature-list">✓ 10 AI questions/day<br>✓ Basic summaries<br>✓ 5 quizzes/week<br>✓ Community support</div><button class="pricing-button" onclick="window.location.href=\'?action=auth&plan=Free\'">Start Free</button></div>', unsafe_allow_html=True)
+            st.markdown('<div class="pricing-card"><h3>Free</h3><div class="price">$0<span class="price-period">/mo</span></div><div class="feature-list">✓ 10 AI questions/day<br>✓ Basic summaries<br>✓ 5 quizzes/week<br>✓ Community support</div>', unsafe_allow_html=True)
+            if st.button("Start Free", key="plan_free"):
+                st.session_state.selected_plan = "Free"
+                st.session_state.current_page = 'auth'
+                st.rerun()
         with col2:
-            st.markdown('<div class="pricing-card featured"><div class="pricing-badge">⭐ MOST POPULAR</div><h3>Pro</h3><div class="price">$15<span class="price-period">/mo</span></div><div class="feature-list">✓ Unlimited AI questions<br>✓ Advanced summaries<br>✓ Unlimited quizzes<br>✓ PDF upload (100MB)<br>✓ Priority support<br>✓ Progress analytics</div><button class="pricing-button" onclick="window.location.href=\'?action=auth&plan=Pro\'">Get Pro</button></div>', unsafe_allow_html=True)
+            st.markdown('<div class="pricing-card featured"><div class="pricing-badge">⭐ MOST POPULAR</div><h3>Pro</h3><div class="price">$15<span class="price-period">/mo</span></div><div class="feature-list">✓ Unlimited AI questions<br>✓ Advanced summaries<br>✓ Unlimited quizzes<br>✓ PDF upload (100MB)<br>✓ Priority support<br>✓ Progress analytics</div>', unsafe_allow_html=True)
+            if st.button("Get Pro", key="plan_pro"):
+                st.session_state.selected_plan = "Pro"
+                st.session_state.current_page = 'auth'
+                st.rerun()
         with col3:
-            st.markdown('<div class="pricing-card"><h3>Enterprise</h3><div class="price">$35<span class="price-period">/mo</span></div><div class="feature-list">✓ Everything in Pro<br>✓ Team accounts<br>✓ Advanced analytics<br>✓ Custom integrations<br>✓ Dedicated support<br>✓ Unlimited storage</div><button class="pricing-button" onclick="window.location.href=\'?action=auth&plan=Enterprise\'">Get Enterprise</button></div>', unsafe_allow_html=True)
-        st.markdown('</div></div>', unsafe_allow_html=True)
+            st.markdown('<div class="pricing-card"><h3>Enterprise</h3><div class="price">$35<span class="price-period">/mo</span></div><div class="feature-list">✓ Everything in Pro<br>✓ Team accounts<br>✓ Advanced analytics<br>✓ Custom integrations<br>✓ Dedicated support<br>✓ Unlimited storage</div>', unsafe_allow_html=True)
+            if st.button("Get Enterprise", key="plan_enterprise"):
+                st.session_state.selected_plan = "Enterprise"
+                st.session_state.current_page = 'auth'
+                st.rerun()
+        st.markdown('</div></div></div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 else:
     st.markdown(f'<div class="nav-container"><nav><div class="logo" onclick="window.location.href=\'?action=home\'"><span class="logo-icon">⚡</span><span>CrypticX</span></div><div class="nav-links"><span class="nav-link" onclick="window.location.href=\'?action=home\'">Home</span><span class="nav-link" onclick="window.location.href=\'?action=pricing\'">Pricing</span><span class="nav-link active" onclick="window.location.href=\'?action=dashboard\'">Dashboard</span><span class="user-greeting">Hi, {st.session_state.user_name}</span></div></nav></div>', unsafe_allow_html=True)
