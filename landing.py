@@ -23,38 +23,43 @@ if 'auth_mode' not in st.session_state:
 if 'user_name' not in st.session_state:
     st.session_state.user_name = None
 
-# Global navigation handling via query params
+# Global navigation handling via query params (with error handling for stability)
 query_params = st.query_params
 if 'action' in query_params:
-    action = query_params.get('action', [''])[0]
-    handled = False
-    if action == 'home':
+    try:
+        action = query_params.get('action', [''])[0]
+        handled = False
+        if action == 'home':
+            st.session_state.current_page = 'home'
+            handled = True
+        elif action == 'pricing':
+            st.session_state.current_page = 'pricing'
+            handled = True
+        elif action == 'dashboard':
+            if st.session_state.logged_in:
+                st.session_state.current_page = 'dashboard'
+            else:
+                st.session_state.current_page = 'home'  # Redirect to home if not logged in
+            handled = True
+        elif action == 'auth':
+            st.session_state.current_page = 'auth'
+            handled = True
+        if handled:
+            # Use pop for safer removal (avoids KeyError)
+            query_params.pop('action', None)
+            st.rerun()
+    except Exception:
+        # Fallback to prevent stuck state
         st.session_state.current_page = 'home'
-        handled = True
-    elif action == 'pricing':
-        st.session_state.current_page = 'pricing'
-        handled = True
-    elif action == 'dashboard':
-        if st.session_state.logged_in:
-            st.session_state.current_page = 'dashboard'
-            handled = True
-        else:
-            st.session_state.current_page = 'home'  # Redirect to home if not logged in
-            handled = True
-    elif action == 'auth':
-        st.session_state.current_page = 'auth'
-        handled = True
-    if handled:
-        del st.query_params['action']
+        query_params.pop('action', None)
         st.rerun()
 
 if 'plan' in query_params:
-    plan = query_params.get('plan', [''])[0]
-    st.session_state.selected_plan = plan
-    del st.query_params['plan']
+    st.session_state.selected_plan = query_params.get('plan', [''])[0]
+    query_params.pop('plan', None)
     st.rerun()
 
-# Full CSS (original + auth + fixes for unhiding buttons without changing design)
+# Full CSS (enhanced with stability fixes for buttons/columns during reruns)
 st.markdown("""
 <style>
     /* Hide Streamlit elements */
@@ -75,6 +80,13 @@ st.markdown("""
     div[data-testid="stAppViewContainer"] {padding: 0 !important; margin: 0 !important;}
     /* Hide all Streamlit buttons completely - but unhide specific ones below */
     .stButton {display: none !important; visibility: hidden !important; position: absolute !important; width: 0 !important; height: 0 !important; opacity: 0 !important;}
+    /* Stabilize buttons during rerun - prevent glitch/disappear/shifts */
+    .stButton > button, button.pricing-button, button.hero-cta { transition: all 0.1s ease !important; position: relative !important; z-index: 20 !important; }
+    /* Lock column positions - no shifts on responsive/rerun */
+    .stColumns > div { flex: none !important; min-width: 0 !important; } /* Fixes column flex wobble */
+    /* Auth-specific: Keep back/toggle buttons pinned left/right */
+    [data-testid="column"] > div:first-child { justify-content: flex-start !important; }
+    [data-testid="column"] > div:last-child { justify-content: flex-end !important; }
     /* Base styles */
     * {margin: 0; padding: 0; box-sizing: border-box;}
     html, body {margin: 0 !important; padding: 0 !important; overflow-x: hidden; scroll-behavior: smooth;}
@@ -98,8 +110,8 @@ st.markdown("""
     .nav-link {color: rgba(255, 255, 255, 0.7); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: all 0.3s; cursor: pointer; padding: 0.5rem 0; border-bottom: 2px solid transparent; position: relative;}
     .nav-link:hover {color: #fff; border-bottom-color: #8b5cf6;}
     .nav-link.active {color: #fff; border-bottom-color: #8b5cf6;}
-    .nav-cta {padding: 0.7rem 1.8rem !important; border-radius: 50px; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); color: #fff; font-weight: 600; cursor: pointer; transition: all 0.3s; border: none; font-size: 0.9rem; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);}
-    .nav-cta:hover {transform: translateY(-2px); box-shadow: 0 6px 25px rgba(139, 92, 246, 0.6);}
+    .nav-cta, .nav-logout {padding: 0.7rem 1.8rem !important; border-radius: 50px; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); color: #fff; font-weight: 600; cursor: pointer; transition: all 0.3s; border: none; font-size: 0.9rem; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);}
+    .nav-cta:hover, .nav-logout:hover {transform: translateY(-2px); box-shadow: 0 6px 25px rgba(139, 92, 246, 0.6);}
     .user-greeting {color: #8b5cf6; font-weight: 600;}
     /* Main content */
     .content-wrapper {position: relative; z-index: 10; padding-top: 80px;}
@@ -170,7 +182,7 @@ st.markdown("""
     @media (max-width: 768px) {nav {padding: 1rem 1.5rem;} .nav-links {display: none;} .hero-title {font-size: 2.5rem;} .hero-subtitle {font-size: 1.1rem;} .features-grid, .pricing-grid, .stats-section {grid-template-columns: 1fr;} .section-title {font-size: 2rem;} .pricing-card.featured {transform: scale(1);} .dashboard-welcome {font-size: 2rem;} .auth-box {padding: 2rem; margin: 1rem;} }
     /* Unhide specific buttons - added for all actual st.button keys without changing positions/design */
     [key="back_home"], [key="login_submit"], [key="toggle_signup"], [key="signup_submit"], [key="toggle_login"], [key="logout"] { display: inline-block !important; visibility: visible !important; position: relative !important; width: auto !important; height: auto !important; opacity: 1 !important; }
-    /* Also unhide hero-cta and pricing buttons as before */
+    /* Also unhide hero-cta and pricing buttons as before (though they're HTML, for safety) */
     .hero-cta, [key="hero_start"], [key="plan_free"], [key="plan_pro"], [key="plan_enterprise"] { display: inline-block !important; visibility: visible !important; position: relative !important; width: auto !important; height: auto !important; opacity: 1 !important; }
 </style>
 """, unsafe_allow_html=True)
@@ -248,6 +260,7 @@ if not st.session_state.logged_in:
             st.markdown('<div class="stats-section"><div class="stat-item"><div class="stat-number">50K+</div><div class="stat-label">Active Students</div></div><div class="stat-item"><div class="stat-number">95%</div><div class="stat-label">Satisfaction Rate</div></div><div class="stat-item"><div class="stat-number">1M+</div><div class="stat-label">Questions Answered</div></div></div></div>', unsafe_allow_html=True)
             st.markdown('<div id="why-choose" class="section"><h2 class="section-title">Why Choose CrypticX</h2><p class="section-subtitle">The smartest way to study in 2025</p><div class="features-grid">', unsafe_allow_html=True)
             st.markdown('<div class="feature-card"><span class="feature-icon">⚡</span><h3>Lightning Fast</h3><p>Get instant answers to your questions. No more waiting hours for tutors or searching through endless resources.</p></div><div class="feature-card"><span class="feature-icon">🎯</span><h3>Personalized Learning</h3><p>AI adapts to your learning style and pace, providing customized explanations that make sense to you.</p></div><div class="feature-card"><span class="feature-icon">💰</span><h3>Affordable Excellence</h3><p>Get premium tutoring quality at a fraction of the cost. Start free and upgrade only when you\'re ready.</p></div><div class="feature-card"><span class="feature-icon">📱</span><h3>Study Anywhere</h3><p>Access your learning tools from any device, anytime. Study on your schedule, not someone else\'s.</p></div><div class="feature-card"><span class="feature-icon">🔬</span><h3>Proven Methods</h3><p>Built on learning science and cognitive psychology principles that are proven to improve retention and understanding.</p></div><div class="feature-card"><span class="feature-icon">🌟</span><h3>Student Success</h3><p>Join thousands of students who\'ve improved their grades and confidence with CrypticX\'s intelligent tools.</p></div></div></div>', unsafe_allow_html=True)
+        # Pricing section (rendered on both home and pricing for consistency; on pricing, it starts higher due to no hero)
         st.markdown('<div id="pricing" class="section"><h2 class="section-title">Choose Your Plan</h2><p class="section-subtitle">Start free, upgrade when you are ready</p><div class="pricing-grid">', unsafe_allow_html=True)
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -259,16 +272,8 @@ if not st.session_state.logged_in:
         st.markdown('</div></div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 else:
-    st.markdown(f'<div class="nav-container"><nav><div class="logo" onclick="window.location.href=\'?action=home\'"><span class="logo-icon">⚡</span><span>CrypticX</span></div><div class="nav-links"><span class="nav-link" onclick="window.location.href=\'?action=home\'">Home</span><span class="nav-link" onclick="window.location.href=\'?action=pricing\'">Pricing</span><span class="nav-link active" onclick="window.location.href=\'?action=dashboard\'">Dashboard</span><span class="user-greeting">Hi, {st.session_state.user_name}</span></div></nav></div>', unsafe_allow_html=True)
-    col_logout, _ = st.columns([1, 4])
-    with col_logout:
-        if st.button("Logout", key="logout"):
-            for key in list(st.session_state.keys()):
-                if key not in ['current_page', 'logged_in']:
-                    del st.session_state[key]
-            st.session_state.current_page = 'home'
-            st.session_state.logged_in = False
-            st.rerun()
+    # Logged-in nav with integrated logout button for consistency/professional look
+    st.markdown(f'<div class="nav-container"><nav><div class="logo" onclick="window.location.href=\'?action=dashboard\'"><span class="logo-icon">⚡</span><span>CrypticX</span></div><div class="nav-links"><span class="nav-link" onclick="window.location.href=\'?action=home\'">Home</span><span class="nav-link" onclick="window.location.href=\'?action=pricing\'">Pricing</span><span class="nav-link active" onclick="window.location.href=\'?action=dashboard\'">Dashboard</span><span class="user-greeting">Hi, {st.session_state.user_name}</span><button class="nav-logout" onclick="if(confirm(\'Log out?\')){{for(let k in st.session_state){if(k!==\'current_page\'&&k!==\'logged_in\')delete st.session_state[k];}st.session_state.current_page=\'home\';st.session_state.logged_in=false;window.location.href=\'?action=home\';}}">Logout</button></div></nav></div>', unsafe_allow_html=True)
     st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
     if st.session_state.current_page == 'dashboard':
         plan_badge = f" | Plan: {st.session_state.user_plan}" if st.session_state.user_plan else ""
