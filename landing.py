@@ -110,8 +110,8 @@ st.markdown("""
     .nav-link {color: rgba(255, 255, 255, 0.7); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: all 0.3s; cursor: pointer; padding: 0.5rem 0; border-bottom: 2px solid transparent; position: relative;}
     .nav-link:hover {color: #fff; border-bottom-color: #8b5cf6;}
     .nav-link.active {color: #fff; border-bottom-color: #8b5cf6;}
-    .nav-cta, .nav-logout {padding: 0.7rem 1.8rem !important; border-radius: 50px; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); color: #fff; font-weight: 600; cursor: pointer; transition: all 0.3s; border: none; font-size: 0.9rem; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);}
-    .nav-cta:hover, .nav-logout:hover {transform: translateY(-2px); box-shadow: 0 6px 25px rgba(139, 92, 246, 0.6);}
+    .nav-cta {padding: 0.7rem 1.8rem !important; border-radius: 50px; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); color: #fff; font-weight: 600; cursor: pointer; transition: all 0.3s; border: none; font-size: 0.9rem; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);}
+    .nav-cta:hover {transform: translateY(-2px); box-shadow: 0 6px 25px rgba(139, 92, 246, 0.6);}
     .user-greeting {color: #8b5cf6; font-weight: 600;}
     /* Main content */
     .content-wrapper {position: relative; z-index: 10; padding-top: 80px;}
@@ -179,11 +179,15 @@ st.markdown("""
     .footer-link:hover {color: #8b5cf6;}
     /* Responsive */
     @media (max-width: 1024px) {.features-grid, .pricing-grid {grid-template-columns: repeat(2, 1fr);} .dashboard-stats {grid-template-columns: 1fr;} }
-    @media (max-width: 768px) {nav {padding: 1rem 1.5rem;} .nav-links {display: none;} .hero-title {font-size: 2.5rem;} .hero-subtitle {font-size: 1.1rem;} .features-grid, .pricing-grid, .stats-section {grid-template-columns: 1fr;} .section-title {font-size: 2rem;} .pricing-card.featured {transform: scale(1);} .dashboard-welcome {font-size: 2rem;} .auth-box {padding: 2rem; margin: 1rem;} }
+    @media (max-width: 768px) {nav {padding: 1rem 1.5rem;} .nav-links {display: none;} .hero-title {font-size: 2.5rem;} .hero-subtitle {font-size: 1.1rem;} .features-grid, .pricing-grid, .stats-section {grid-template-columns: 1fr;} .section-title {font-size: 2rem;} .pricing-card.featured {transform: scale(1);} .dashboard-welcome {font-size: 2rem;} .auth-box {padding: 2rem; margin: 1rem;} [key="logout"] {right: 20px !important; top: 15px !important;} }
     /* Unhide specific buttons - added for all actual st.button keys without changing positions/design */
     [key="back_home"], [key="login_submit"], [key="toggle_signup"], [key="signup_submit"], [key="toggle_login"], [key="logout"] { display: inline-block !important; visibility: visible !important; position: relative !important; width: auto !important; height: auto !important; opacity: 1 !important; }
     /* Also unhide hero-cta and pricing buttons as before (though they're HTML, for safety) */
     .hero-cta, [key="hero_start"], [key="plan_free"], [key="plan_pro"], [key="plan_enterprise"] { display: inline-block !important; visibility: visible !important; position: relative !important; width: auto !important; height: auto !important; opacity: 1 !important; }
+    /* Style and position logout button as part of nav */
+    [key="logout"] { position: fixed !important; top: 25px !important; right: 50px !important; z-index: 1001 !important; }
+    [key="logout"] button { padding: 0.7rem 1.8rem !important; border-radius: 50px !important; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%) !important; color: #fff !important; font-weight: 600 !important; cursor: pointer !important; transition: all 0.3s !important; border: none !important; font-size: 0.9rem !important; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4) !important; margin: 0 !important; }
+    [key="logout"] button:hover { transform: translateY(-2px) !important; box-shadow: 0 6px 25px rgba(139, 92, 246, 0.6) !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -272,8 +276,16 @@ if not st.session_state.logged_in:
         st.markdown('</div></div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 else:
-    # Logged-in nav with integrated logout button for consistency/professional look
-    st.markdown(f'<div class="nav-container"><nav><div class="logo" onclick="window.location.href=\'?action=dashboard\'"><span class="logo-icon">⚡</span><span>CrypticX</span></div><div class="nav-links"><span class="nav-link" onclick="window.location.href=\'?action=home\'">Home</span><span class="nav-link" onclick="window.location.href=\'?action=pricing\'">Pricing</span><span class="nav-link active" onclick="window.location.href=\'?action=dashboard\'">Dashboard</span><span class="user-greeting">Hi, {st.session_state.user_name}</span><button class="nav-logout" onclick="if(confirm(\'Log out?\')){{for(let k in st.session_state){if(k!==\'current_page\'&&k!==\'logged_in\')delete st.session_state[k];}st.session_state.current_page=\'home\';st.session_state.logged_in=false;window.location.href=\'?action=home\';}}">Logout</button></div></nav></div>', unsafe_allow_html=True)
+    # Logged-in nav without JS logout button
+    st.markdown(f'<div class="nav-container"><nav><div class="logo" onclick="window.location.href=\'?action=dashboard\'"><span class="logo-icon">⚡</span><span>CrypticX</span></div><div class="nav-links"><span class="nav-link" onclick="window.location.href=\'?action=home\'">Home</span><span class="nav-link" onclick="window.location.href=\'?action=pricing\'">Pricing</span><span class="nav-link active" onclick="window.location.href=\'?action=dashboard\'">Dashboard</span><span class="user-greeting">Hi, {st.session_state.user_name}</span></div></nav></div>', unsafe_allow_html=True)
+    # Server-side logout button, positioned via CSS
+    if st.button("Logout", key="logout"):
+        for key in list(st.session_state.keys()):
+            if key not in ['current_page', 'logged_in']:
+                del st.session_state[key]
+        st.session_state.current_page = 'home'
+        st.session_state.logged_in = False
+        st.rerun()
     st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
     if st.session_state.current_page == 'dashboard':
         plan_badge = f" | Plan: {st.session_state.user_plan}" if st.session_state.user_plan else ""
