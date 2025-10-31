@@ -59,7 +59,7 @@ if 'plan' in query_params:
     query_params.pop('plan', None)
     st.rerun()
 
-# Full CSS (enhanced with stability fixes for buttons/columns during reruns)
+# Full CSS (enhanced with stability fixes for buttons/columns during reruns + pointer-events for clicks)
 st.markdown("""
 <style>
     /* Hide Streamlit elements */
@@ -82,6 +82,9 @@ st.markdown("""
     .stButton {display: none !important; visibility: hidden !important; position: absolute !important; width: 0 !important; height: 0 !important; opacity: 0 !important;}
     /* Stabilize buttons during rerun - prevent glitch/disappear/shifts */
     .stButton > button, button.pricing-button, button.hero-cta { transition: all 0.1s ease !important; position: relative !important; z-index: 20 !important; }
+    /* Ensure all buttons are clickable */
+    button, .stButton button { pointer-events: auto !important; cursor: pointer !important; }
+    .hero-cta, .pricing-button { pointer-events: auto !important; cursor: pointer !important; }
     /* Lock column positions - no shifts on responsive/rerun */
     .stColumns > div { flex: none !important; min-width: 0 !important; } /* Fixes column flex wobble */
     /* Auth-specific: Keep back/toggle buttons pinned left/right */
@@ -150,7 +153,7 @@ st.markdown("""
     .price {font-size: 3.5rem; font-weight: 800; margin: 1.5rem 0; background: linear-gradient(135deg, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
     .price-period {font-size: 1rem; color: rgba(255, 255, 255, 0.5);}
     .feature-list {text-align: left; margin: 2rem 0; color: rgba(255, 255, 255, 0.7); line-height: 2.2; font-size: 0.95rem;}
-    .pricing-button {width: 100%; padding: 0.9rem; border-radius: 12px; background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.3); color: #fff; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-top: 1rem;}
+    .pricing-button {width: 100%; padding: 0.9rem; border-radius: 12px; background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.3); color: #fff; font-weight: 600; cursor: pointer !important; transition: all 0.3s; margin-top: 1rem; pointer-events: auto !important;}
     .pricing-button:hover {background: rgba(139, 92, 246, 0.3); border-color: #8b5cf6; transform: translateY(-2px);}
     .pricing-card.featured .pricing-button {background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none;}
     /* Dashboard styles */
@@ -169,7 +172,7 @@ st.markdown("""
     .auth-subtitle {color: rgba(255, 255, 255, 0.6); font-size: 1.1rem;}
     .stTextInput > div > div > input {background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; color: #fff; padding: 1rem;}
     .stTextInput > div > div > input::placeholder {color: rgba(255, 255, 255, 0.5);}
-    .stButton > button {width: 100%; padding: 1rem; border-radius: 12px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: #fff; font-weight: 600; border: none; margin-top: 1rem; transition: all 0.3s;}
+    .stButton > button {width: 100%; padding: 1rem; border-radius: 12px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: #fff; font-weight: 600; border: none; margin-top: 1rem; transition: all 0.3s; cursor: pointer !important; pointer-events: auto !important;}
     .stButton > button:hover {transform: translateY(-2px); box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);}
     .stError {color: #ef4444; text-align: center;}
     /* Footer */
@@ -181,12 +184,12 @@ st.markdown("""
     @media (max-width: 1024px) {.features-grid, .pricing-grid {grid-template-columns: repeat(2, 1fr);} .dashboard-stats {grid-template-columns: 1fr;} }
     @media (max-width: 768px) {nav {padding: 1rem 1.5rem;} .nav-links {display: none;} .hero-title {font-size: 2.5rem;} .hero-subtitle {font-size: 1.1rem;} .features-grid, .pricing-grid, .stats-section {grid-template-columns: 1fr;} .section-title {font-size: 2rem;} .pricing-card.featured {transform: scale(1);} .dashboard-welcome {font-size: 2rem;} .auth-box {padding: 2rem; margin: 1rem;} [key="logout"] {right: 20px !important; top: 15px !important;} }
     /* Unhide specific buttons - added for all actual st.button keys without changing positions/design */
-    [key="back_home"], [key="login_submit"], [key="toggle_signup"], [key="signup_submit"], [key="toggle_login"], [key="logout"] { display: inline-block !important; visibility: visible !important; position: relative !important; width: auto !important; height: auto !important; opacity: 1 !important; }
+    [key="back_home"], [key="login_submit"], [key="toggle_signup"], [key="signup_submit"], [key="toggle_login"], [key="logout"] { display: inline-block !important; visibility: visible !important; position: relative !important; width: auto !important; height: auto !important; opacity: 1 !important; pointer-events: auto !important; cursor: pointer !important; }
     /* Also unhide hero-cta and pricing buttons as before (though they're HTML, for safety) */
     .hero-cta, [key="hero_start"], [key="plan_free"], [key="plan_pro"], [key="plan_enterprise"] { display: inline-block !important; visibility: visible !important; position: relative !important; width: auto !important; height: auto !important; opacity: 1 !important; }
     /* Style and position logout button as part of nav */
-    [key="logout"] { position: fixed !important; top: 25px !important; right: 50px !important; z-index: 1001 !important; }
-    [key="logout"] button { padding: 0.7rem 1.8rem !important; border-radius: 50px !important; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%) !important; color: #fff !important; font-weight: 600 !important; cursor: pointer !important; transition: all 0.3s !important; border: none !important; font-size: 0.9rem !important; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4) !important; margin: 0 !important; }
+    [key="logout"] { position: fixed !important; top: 25px !important; right: 50px !important; z-index: 1001 !important; display: block !important; }
+    [key="logout"] button { padding: 0.7rem 1.8rem !important; border-radius: 50px !important; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%) !important; color: #fff !important; font-weight: 600 !important; cursor: pointer !important; transition: all 0.3s !important; border: none !important; font-size: 0.9rem !important; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4) !important; margin: 0 !important; pointer-events: auto !important; }
     [key="logout"] button:hover { transform: translateY(-2px) !important; box-shadow: 0 6px 25px rgba(139, 92, 246, 0.6) !important; }
 </style>
 """, unsafe_allow_html=True)
