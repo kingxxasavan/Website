@@ -1,7 +1,7 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="Academic Services - Get Expert Help",
+    page_title="StudyHub - Academic Services",
     page_icon="📚",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -11,349 +11,309 @@ st.set_page_config(
 if 'current_page' not in st.session_state:
     st.session_state.current_page = 'home'
 
-# Navigation
-query_params = st.query_params
-if 'page' in query_params:
-    page = query_params.get('page', ['home'])[0]
-    if page in ['home', 'services', 'how-it-works']:
-        st.session_state.current_page = page
-        query_params.pop('page', None)
-        st.rerun()
-
-# CSS - Simplified and compelling
+# CSS - Original design with Discord integration
 st.markdown("""
 <style>
     /* Hide Streamlit elements */
-    #MainMenu, footer, header, .stDeployButton, .stDecoration {visibility: hidden !important;}
-    section[data-testid="stSidebar"], .stSidebar, [data-testid="collapsedControl"] {display: none !important;}
-    .block-container {padding: 0 !important; margin: 0 !important; max-width: 100% !important;}
+    #MainMenu {visibility: hidden !important;}
+    footer {visibility: hidden !important;}
+    header {visibility: hidden !important;}
+    .stDeployButton {display: none !important;}
+    .stDecoration {display: none !important;}
+    section[data-testid="stSidebar"] {display: none !important;}
+    .stSidebar {display: none !important;}
+    [data-testid="collapsedControl"] {display: none !important;}
+    .block-container {padding: 0 !important; margin: 0 !important;}
+    .main .block-container {max-width: 100% !important; padding: 0 !important;}
     .stApp {margin: 0 !important; padding: 0 !important;}
+    section.main > div {padding: 0 !important;}
+    div[data-testid="stAppViewContainer"] {padding: 0 !important; margin: 0 !important;}
     
-    /* Base */
+    /* Base styles */
     * {margin: 0; padding: 0; box-sizing: border-box;}
-    body {font-family: 'Inter', -apple-system, sans-serif; overflow-x: hidden;}
-    .stApp {background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff;}
+    html, body {margin: 0 !important; padding: 0 !important; overflow-x: hidden; scroll-behavior: smooth;}
+    .stApp {background: #0a0a0f; color: #fff; font-family: 'Inter', 'Segoe UI', sans-serif;}
+    
+    /* Grid background */
+    .grid-background {position: fixed; inset: 0; background-image: linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px); background-size: 50px 50px; z-index: 0;}
+    
+    /* Animated glow effects */
+    .glow-orb {position: fixed; width: 800px; height: 800px; border-radius: 50%; filter: blur(120px); opacity: 0.3; z-index: 1; pointer-events: none;}
+    .glow-orb.purple {background: radial-gradient(circle, rgba(139, 92, 246, 0.6), transparent); top: -200px; left: 50%; transform: translateX(-50%); animation: float 20s ease-in-out infinite;}
+    .glow-orb.pink {background: radial-gradient(circle, rgba(236, 72, 153, 0.4), transparent); bottom: -300px; right: -200px; animation: float 25s ease-in-out infinite reverse;}
+    @keyframes float {0%, 100% { transform: translate(-50%, 0) scale(1); } 50% { transform: translate(-50%, -50px) scale(1.1); } }
+    @keyframes fadeInUp {from {opacity: 0; transform: translateY(30px);} to {opacity: 1; transform: translateY(0);} }
+    .fade-in-up {animation: fadeInUp 0.6s ease-out forwards;}
     
     /* Navigation */
-    .nav {position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.1); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center;}
-    .logo {font-size: 1.5rem; font-weight: 800; color: #667eea; cursor: pointer;}
-    .nav-links {display: flex; gap: 2rem; align-items: center;}
-    .nav-link {color: #333; text-decoration: none; font-weight: 600; cursor: pointer; transition: color 0.3s;}
-    .nav-link:hover {color: #667eea;}
-    .discord-btn {background: #5865F2; color: white; padding: 0.7rem 1.5rem; border-radius: 8px; font-weight: 700; cursor: pointer; transition: transform 0.2s;}
-    .discord-btn:hover {transform: translateY(-2px); box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);}
+    .nav-container {position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: transparent; backdrop-filter: blur(20px); border-bottom: 1px solid rgba(139, 92, 246, 0.1); transition: all 0.3s ease;}
+    nav {position: relative; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 4rem; max-width: 1400px; margin: 0 auto;}
+    .logo {display: flex; align-items: center; gap: 0.75rem; font-size: 1.5rem; font-weight: 700; color: #8b5cf6; cursor: pointer; letter-spacing: 0.5px;}
+    .logo-icon {font-size: 1.8rem; filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.8)); animation: pulse 2s ease-in-out infinite;}
+    @keyframes pulse {0%, 100% { filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.8)); } 50% { filter: drop-shadow(0 0 20px rgba(139, 92, 246, 1)); } }
+    .nav-links {display: flex; gap: 2.5rem; align-items: center;}
+    .discord-cta {padding: 0.7rem 1.8rem !important; border-radius: 50px; background: #5865F2; color: #fff; font-weight: 600; cursor: pointer; transition: all 0.3s; border: none; font-size: 0.9rem; box-shadow: 0 4px 20px rgba(88, 101, 242, 0.4); text-decoration: none; display: inline-block;}
+    .discord-cta:hover {transform: translateY(-2px); box-shadow: 0 6px 25px rgba(88, 101, 242, 0.6);}
     
-    /* Hero Section */
-    .hero {min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 6rem 2rem 4rem;}
-    .hero-title {font-size: 4rem; font-weight: 900; margin-bottom: 1.5rem; line-height: 1.1; text-shadow: 0 2px 20px rgba(0,0,0,0.1);}
-    .hero-subtitle {font-size: 1.4rem; margin-bottom: 2rem; opacity: 0.95; max-width: 700px;}
-    .hero-cta {background: white; color: #667eea; padding: 1.2rem 3rem; border-radius: 50px; font-size: 1.2rem; font-weight: 800; cursor: pointer; transition: all 0.3s; box-shadow: 0 8px 30px rgba(0,0,0,0.2); border: none;}
-    .hero-cta:hover {transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.3);}
-    .trust-badges {display: flex; gap: 3rem; margin-top: 3rem; flex-wrap: wrap; justify-content: center;}
-    .badge {text-align: center;}
-    .badge-number {font-size: 2.5rem; font-weight: 800;}
-    .badge-label {opacity: 0.9; margin-top: 0.5rem;}
+    /* Main content */
+    .content-wrapper {position: relative; z-index: 10; padding-top: 80px;}
     
-    /* Services Grid */
-    .section {padding: 5rem 2rem; max-width: 1200px; margin: 0 auto;}
-    .section-dark {background: rgba(0,0,0,0.2); backdrop-filter: blur(10px);}
-    .section-title {font-size: 3rem; font-weight: 800; text-align: center; margin-bottom: 3rem;}
-    .services-grid {display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 2rem;}
-    .service-card {background: white; color: #333; border-radius: 20px; padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.1); transition: transform 0.3s; cursor: pointer;}
-    .service-card:hover {transform: translateY(-10px); box-shadow: 0 20px 60px rgba(0,0,0,0.2);}
-    .service-icon {font-size: 3rem; margin-bottom: 1rem;}
-    .service-title {font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: #667eea;}
-    .service-price {font-size: 1.8rem; font-weight: 800; color: #333; margin: 1rem 0;}
-    .service-desc {color: #666; line-height: 1.6; margin-bottom: 1.5rem;}
-    .service-features {text-align: left; color: #666; line-height: 2; margin-bottom: 1.5rem; font-size: 0.95rem;}
-    .order-btn {width: 100%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 1rem; border-radius: 12px; font-weight: 700; border: none; cursor: pointer; transition: all 0.3s;}
-    .order-btn:hover {transform: translateY(-2px); box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);}
+    /* Hero section */
+    .hero-section {min-height: calc(100vh - 80px); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 4rem 2rem; position: relative;}
+    .welcome-badge {display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 0.6rem 1.5rem; border-radius: 50px; font-size: 0.9rem; color: #fff; font-weight: 500; margin-bottom: 2rem; backdrop-filter: blur(10px); animation: fadeInUp 0.6s ease-out;}
+    .hero-title {font-size: 5rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; background: linear-gradient(135deg, #ffffff 0%, #8b5cf6 50%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; max-width: 1000px; animation: fadeInUp 0.8s ease-out 0.2s backwards;}
+    .hero-subtitle {font-size: 1.25rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 3rem; max-width: 700px; line-height: 1.7; animation: fadeInUp 1s ease-out 0.4s backwards;}
+    .hero-cta {padding: 1rem 2.5rem; border-radius: 50px; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); color: #fff; font-weight: 600; cursor: pointer; transition: all 0.3s; border: none; font-size: 1.1rem; box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4); animation: fadeInUp 1.2s ease-out 0.6s backwards; text-decoration: none; display: inline-block;}
+    .hero-cta:hover {transform: translateY(-3px); box-shadow: 0 12px 40px rgba(139, 92, 246, 0.6);}
     
-    /* How It Works */
-    .steps {display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 3rem;}
-    .step {text-align: center; padding: 2rem;}
-    .step-number {width: 60px; height: 60px; background: white; color: #667eea; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; margin: 0 auto 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1);}
-    .step-title {font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem;}
-    .step-desc {opacity: 0.9; line-height: 1.6;}
+    /* Stats section */
+    .stats-section {display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 900px; margin: 4rem auto 0; padding: 0 2rem;}
+    .stat-item {text-align: center;}
+    .stat-number {font-size: 3rem; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem;}
+    .stat-label {color: rgba(255, 255, 255, 0.6); font-size: 0.95rem;}
     
-    /* CTA Section */
-    .cta-section {text-align: center; padding: 6rem 2rem; background: rgba(0,0,0,0.2);}
-    .cta-title {font-size: 3rem; font-weight: 800; margin-bottom: 1.5rem;}
-    .cta-subtitle {font-size: 1.3rem; margin-bottom: 2rem; opacity: 0.9;}
+    /* Section styling */
+    .section {position: relative; z-index: 10; max-width: 1200px; margin: 0 auto; padding: 6rem 2rem; width: 100%; display: flex; flex-direction: column; align-items: center;}
+    .section-title {font-size: 3rem; font-weight: 700; text-align: center; margin-bottom: 1rem; color: #fff;}
+    .section-subtitle {font-size: 1.15rem; color: rgba(255, 255, 255, 0.5); text-align: center; margin-bottom: 4rem;}
+    
+    /* Feature cards */
+    .features-grid {display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; width: 100%;}
+    .feature-card {background: rgba(139, 92, 246, 0.05); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 24px; padding: 2.5rem; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(10px); cursor: pointer; height: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;}
+    .feature-card:hover {transform: translateY(-10px); background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.5); box-shadow: 0 20px 60px rgba(139, 92, 246, 0.2);}
+    .feature-icon {font-size: 3rem; margin-bottom: 1.5rem; display: block; transition: transform 0.3s;}
+    .feature-card:hover .feature-icon {transform: scale(1.1);}
+    .feature-card h3 {font-size: 1.5rem; margin-bottom: 1rem; color: #fff; font-weight: 600;}
+    .feature-card p {color: rgba(255, 255, 255, 0.6); line-height: 1.7; font-size: 0.95rem; flex-grow: 1;}
+    
+    /* Topics section */
+    .topics-grid {display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; width: 100%;}
+    .topic-card {background: rgba(139, 92, 246, 0.05); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 24px; padding: 2rem; transition: all 0.4s; text-align: left;}
+    .topic-card:hover {transform: translateY(-8px); background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.4); box-shadow: 0 15px 50px rgba(139, 92, 246, 0.2);}
+    .topic-icon {font-size: 2.5rem; margin-bottom: 1rem; display: block;}
+    .topic-card h3 {font-size: 1.4rem; margin-bottom: 0.75rem; color: #fff; font-weight: 600;}
+    .topic-card p {color: rgba(255, 255, 255, 0.6); line-height: 1.6; font-size: 0.9rem; margin-bottom: 1rem;}
+    .topic-list {color: rgba(255, 255, 255, 0.5); line-height: 2; font-size: 0.85rem;}
     
     /* Footer */
-    .footer {text-align: center; padding: 3rem 2rem; background: rgba(0,0,0,0.3); font-size: 0.9rem; opacity: 0.8;}
+    .custom-footer {position: relative; z-index: 10; border-top: 1px solid rgba(139, 92, 246, 0.1); margin-top: 5rem; padding: 3rem 2rem; text-align: center; color: rgba(255, 255, 255, 0.4); background: rgba(10, 10, 15, 0.5);}
+    .footer-links {display: flex; justify-content: center; gap: 2rem; margin-top: 1rem;}
+    .footer-link {color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 0.9rem; transition: color 0.3s;}
+    .footer-link:hover {color: #8b5cf6;}
     
     /* Responsive */
+    @media (max-width: 1024px) {
+        .features-grid, .topics-grid {grid-template-columns: repeat(2, 1fr);}
+    }
     @media (max-width: 768px) {
+        nav {padding: 1rem 1.5rem;}
+        .nav-links {display: none;}
         .hero-title {font-size: 2.5rem;}
         .hero-subtitle {font-size: 1.1rem;}
-        .nav-links {display: none;}
+        .features-grid, .topics-grid, .stats-section {grid-template-columns: 1fr;}
         .section-title {font-size: 2rem;}
-        .trust-badges {gap: 2rem;}
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Navigation Bar
-st.markdown(f'''
-<div class="nav">
-    <div class="logo" onclick="window.location.href='?page=home'">📚 StudyHub</div>
-    <div class="nav-links">
-        <span class="nav-link" onclick="window.location.href='?page=home'">Home</span>
-        <span class="nav-link" onclick="window.location.href='?page=services'">Services</span>
-        <span class="nav-link" onclick="window.location.href='?page=how-it-works'">How It Works</span>
-        <a href="https://discord.gg/YOUR_INVITE_LINK" target="_blank" style="text-decoration: none;">
-            <button class="discord-btn">Join Discord →</button>
-        </a>
+# Background elements
+st.markdown('<div class="grid-background"></div><div class="glow-orb purple"></div><div class="glow-orb pink"></div>', unsafe_allow_html=True)
+
+# Navigation
+st.markdown('''
+<div class="nav-container">
+    <nav>
+        <div class="logo">
+            <span class="logo-icon">⚡</span>
+            <span>StudyHub</span>
+        </div>
+        <div class="nav-links">
+            <a href="https://discord.gg/YOUR_INVITE_LINK" target="_blank" class="discord-cta">Join Discord →</a>
+        </div>
+    </nav>
+</div>
+''', unsafe_allow_html=True)
+
+# Main Content
+st.markdown('<div class="content-wrapper">', unsafe_allow_html=True)
+
+# Hero Section
+st.markdown('''
+<div id="home" class="hero-section">
+    <div class="welcome-badge">✨ Get Expert Help with Your Academic Work</div>
+    <h1 class="hero-title">Essays, Projects & Code<br/>Done Right</h1>
+    <p class="hero-subtitle">Professional help with writing, coding projects, and tutoring. Fast delivery, quality guaranteed. Join our Discord to get started.</p>
+    <a href="https://discord.gg/YOUR_INVITE_LINK" target="_blank" class="hero-cta">Join Discord & Order Now</a>
+</div>
+''', unsafe_allow_html=True)
+
+# Stats Section
+st.markdown('''
+<div class="stats-section">
+    <div class="stat-item">
+        <div class="stat-number">50+</div>
+        <div class="stat-label">Happy Students</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number">24-48hr</div>
+        <div class="stat-label">Average Delivery</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Original Work</div>
+    </div>
+</div>
+</div>
+''', unsafe_allow_html=True)
+
+# Features Section
+st.markdown('''
+<div id="features" class="section">
+    <h2 class="section-title">Why Choose Us</h2>
+    <p class="section-subtitle">Fast, reliable, and quality-focused academic support</p>
+    <div class="features-grid">
+        <div class="feature-card">
+            <span class="feature-icon">⚡</span>
+            <h3>Fast Delivery</h3>
+            <p>Get your work done quickly. Most orders delivered within 24-48 hours. Rush options available for urgent deadlines.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">🎯</span>
+            <h3>Quality Guaranteed</h3>
+            <p>Every project is carefully reviewed for quality. One free revision included to ensure you're 100% satisfied.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">💰</span>
+            <h3>Affordable Pricing</h3>
+            <p>Student-friendly rates starting at just $20. Pay securely via CashApp, Venmo, or Zelle.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">💬</span>
+            <h3>Direct Communication</h3>
+            <p>Chat with us directly on Discord. Ask questions, share files, and get real-time updates on your order.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">🔒</span>
+            <h3>100% Original</h3>
+            <p>All work is created from scratch. Plagiarism-free guarantee with proper citations and references.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">🌟</span>
+            <h3>Expert Help</h3>
+            <p>Get help from experienced tutors and professionals who understand your subject matter inside and out.</p>
+        </div>
     </div>
 </div>
 ''', unsafe_allow_html=True)
 
-# HOME PAGE
-if st.session_state.current_page == 'home':
-    st.markdown('''
-    <div class="hero">
-        <h1 class="hero-title">Get Your Projects Done Right</h1>
-        <p class="hero-subtitle">Expert help with essays, coding, tutoring, and more. Fast delivery. Quality guaranteed. Join our Discord community.</p>
-        <a href="https://discord.gg/YOUR_INVITE_LINK" target="_blank" style="text-decoration: none;">
-            <button class="hero-cta">Join Discord & Order Now</button>
-        </a>
-        <div class="trust-badges">
-            <div class="badge">
-                <div class="badge-number">50+</div>
-                <div class="badge-label">Happy Customers</div>
-            </div>
-            <div class="badge">
-                <div class="badge-number">24-48hr</div>
-                <div class="badge-label">Delivery Time</div>
-            </div>
-            <div class="badge">
-                <div class="badge-number">100%</div>
-                <div class="badge-label">Original Work</div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="section section-dark">
-        <h2 class="section-title">Our Services</h2>
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="service-icon">✍️</div>
-                <h3 class="service-title">Essay Editing</h3>
-                <div class="service-price">$20-40</div>
-                <p class="service-desc">Professional proofreading and editing to perfect your essays.</p>
-                <div class="service-features">
-                    ✓ Grammar & spelling<br>
-                    ✓ Structure feedback<br>
-                    ✓ Citation formatting<br>
-                    ✓ 1 free revision
-                </div>
-                <a href="https://discord.gg/YOUR_INVITE_LINK" target="_blank" style="text-decoration: none;">
-                    <button class="order-btn">Order on Discord</button>
-                </a>
-            </div>
-            
-            <div class="service-card">
-                <div class="service-icon">💻</div>
-                <h3 class="service-title">Code Help</h3>
-                <div class="service-price">$30-60</div>
-                <p class="service-desc">Debug, review, or build your coding projects with expert assistance.</p>
-                <div class="service-features">
-                    ✓ Python, Java, JS<br>
-                    ✓ Debugging & review<br>
-                    ✓ Explanations included<br>
-                    ✓ Fast turnaround
-                </div>
-                <a href="https://discord.gg/YOUR_INVITE_LINK" target="_blank" style="text-decoration: none;">
-                    <button class="order-btn">Order on Discord</button>
-                </a>
-            </div>
-            
-            <div class="service-card">
-                <div class="service-icon">📚</div>
-                <h3 class="service-title">Tutoring</h3>
-                <div class="service-price">$25/hr</div>
-                <p class="service-desc">One-on-one help with homework, test prep, and understanding concepts.</p>
-                <div class="service-features">
-                    ✓ Math, Science, CS<br>
-                    ✓ Flexible scheduling<br>
-                    ✓ Video or text help<br>
-                    ✓ Monthly packages
-                </div>
-                <a href="https://discord.gg/YOUR_INVITE_LINK" target="_blank" style="text-decoration: none;">
-                    <button class="order-btn">Order on Discord</button>
-                </a>
-            </div>
-            
-            <div class="service-card">
-                <div class="service-icon">🎨</div>
-                <h3 class="service-title">Presentations</h3>
-                <div class="service-price">$30-50</div>
-                <p class="service-desc">Create compelling PowerPoint or Google Slides presentations.</p>
-                <div class="service-features">
-                    ✓ Professional design<br>
-                    ✓ Custom templates<br>
-                    ✓ Unlimited revisions<br>
-                    ✓ Quick delivery
-                </div>
-                <a href="https://discord.gg/YOUR_INVITE_LINK" target="_blank" style="text-decoration: none;">
-                    <button class="order-btn">Order on Discord</button>
-                </a>
-            </div>
-        </div>
-    </div>
-    
-    <div class="cta-section">
-        <h2 class="cta-title">Ready to Get Started?</h2>
-        <p class="cta-subtitle">Join our Discord community and place your first order today</p>
-        <a href="https://discord.gg/YOUR_INVITE_LINK" target="_blank" style="text-decoration: none;">
-            <button class="hero-cta">Join Discord Community</button>
-        </a>
-    </div>
-    ''', unsafe_allow_html=True)
-
-# SERVICES PAGE
-elif st.session_state.current_page == 'services':
-    st.markdown('''
-    <div style="padding-top: 100px;">
-        <div class="section">
-            <h2 class="section-title">All Services</h2>
-            <p style="text-align: center; font-size: 1.2rem; margin-bottom: 3rem; opacity: 0.9;">
-                Quality work delivered fast. All orders handled through Discord for direct communication.
-            </p>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">✍️</div>
-                    <h3 class="service-title">Essay Editing</h3>
-                    <div class="service-price">Starting at $20</div>
-                    <p class="service-desc">Perfect your essays with professional editing and feedback.</p>
-                    <div class="service-features">
-                        • 1-5 pages: $20<br>
-                        • 6-10 pages: $35<br>
-                        • 10+ pages: $40+<br>
-                        • Delivery: 3-5 days
-                    </div>
-                    <a href="https://discord.gg/YOUR_INVITE_LINK" target="_blank" style="text-decoration: none;">
-                        <button class="order-btn">Order Now</button>
-                    </a>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">💻</div>
-                    <h3 class="service-title">Coding Projects</h3>
-                    <div class="service-price">Starting at $30</div>
-                    <p class="service-desc">Get help with debugging, code review, or building projects.</p>
-                    <div class="service-features">
-                        • Simple fix: $30<br>
-                        • Full project: $50-100<br>
-                        • Monthly help: $120/mo<br>
-                        • Delivery: 2-5 days
-                    </div>
-                    <a href="https://discord.gg/YOUR_INVITE_LINK" target="_blank" style="text-decoration: none;">
-                        <button class="order-btn">Order Now</button>
-                    </a>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">📚</div>
-                    <h3 class="service-title">Tutoring Sessions</h3>
-                    <div class="service-price">$25/session</div>
-                    <p class="service-desc">One-on-one tutoring for homework help and test prep.</p>
-                    <div class="service-features">
-                        • 1 session: $25<br>
-                        • 4 sessions: $90/mo<br>
-                        • Math, CS, Science<br>
-                        • Video or text help
-                    </div>
-                    <a href="https://discord.gg/YOUR_INVITE_LINK" target="_blank" style="text-decoration: none;">
-                        <button class="order-btn">Order Now</button>
-                    </a>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">🎨</div>
-                    <h3 class="service-title">Presentations</h3>
-                    <div class="service-price">Starting at $30</div>
-                    <p class="service-desc">Professional PowerPoint and Google Slides creation.</p>
-                    <div class="service-features">
-                        • 5-10 slides: $30<br>
-                        • 15-20 slides: $45<br>
-                        • Custom design<br>
-                        • Delivery: 2-4 days
-                    </div>
-                    <a href="https://discord.gg/YOUR_INVITE_LINK" target="_blank" style="text-decoration: none;">
-                        <button class="order-btn">Order Now</button>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    ''', unsafe_allow_html=True)
-
-# HOW IT WORKS PAGE
-elif st.session_state.current_page == 'how-it-works':
-    st.markdown('''
-    <div style="padding-top: 100px;">
-        <div class="section">
-            <h2 class="section-title">How It Works</h2>
-            <p style="text-align: center; font-size: 1.2rem; margin-bottom: 3rem; opacity: 0.9;">
-                Simple, fast, and secure. Get your work done in 3 easy steps.
-            </p>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3 class="step-title">Join Discord</h3>
-                    <p class="step-desc">Click the button to join our Discord server. Browse the service channels to see what we offer.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3 class="step-title">Place Your Order</h3>
-                    <p class="step-desc">Post in the relevant channel or DM me with your project details. Send payment via CashApp/Venmo.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3 class="step-title">Get Your Work</h3>
-                    <p class="step-desc">Receive your completed work via Discord DM or email within the agreed timeframe. One free revision included!</p>
-                </div>
+# Topics/Services Section
+st.markdown('''
+<div id="topics" class="section">
+    <h2 class="section-title">What We Help With</h2>
+    <p class="section-subtitle">Comprehensive academic support across multiple subjects</p>
+    <div class="topics-grid">
+        <div class="topic-card">
+            <span class="topic-icon">✍️</span>
+            <h3>Essay Writing & Editing</h3>
+            <p>Professional help with all types of academic writing</p>
+            <div class="topic-list">
+                • Proofreading & editing<br>
+                • Structure & flow improvement<br>
+                • Grammar & spelling checks<br>
+                • Citation formatting (MLA, APA, Chicago)<br>
+                • Argumentative & research essays<br>
+                • College application essays
             </div>
         </div>
         
-        <div class="section section-dark">
-            <h2 class="section-title">Why Discord?</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">💬</div>
-                    <h3 class="service-title">Direct Communication</h3>
-                    <p class="service-desc">Chat directly with me in real-time. Ask questions, share files, and get updates instantly.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">🔒</div>
-                    <h3 class="service-title">Safe & Secure</h3>
-                    <p class="service-desc">All communication is private. Payment through trusted apps like CashApp, Venmo, or Zelle.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">⚡</div>
-                    <h3 class="service-title">Fast Response</h3>
-                    <p class="service-desc">Usually respond within 1 hour during business hours. No waiting days for email replies.</p>
-                </div>
+        <div class="topic-card">
+            <span class="topic-icon">💻</span>
+            <h3>Coding & Programming</h3>
+            <p>Expert assistance with your coding projects</p>
+            <div class="topic-list">
+                • Python, Java, JavaScript, C++<br>
+                • Debugging & code review<br>
+                • Algorithm implementation<br>
+                • Web development projects<br>
+                • Data structures & algorithms<br>
+                • Mobile app development
             </div>
         </div>
         
-        <div class="cta-section">
-            <h2 class="cta-title">Ready to Order?</h2>
-            <p class="cta-subtitle">Join Discord now and get your first order started today</p>
-            <a href="https://discord.gg/YOUR_INVITE_LINK" target="_blank" style="text-decoration: none;">
-                <button class="hero-cta">Join Discord Server</button>
-            </a>
+        <div class="topic-card">
+            <span class="topic-icon">📊</span>
+            <h3>Projects & Presentations</h3>
+            <p>Create compelling projects and presentations</p>
+            <div class="topic-list">
+                • PowerPoint & Google Slides<br>
+                • Research projects<br>
+                • Lab reports & analysis<br>
+                • Case studies<br>
+                • Business presentations<br>
+                • Visual design & formatting
+            </div>
+        </div>
+        
+        <div class="topic-card">
+            <span class="topic-icon">📚</span>
+            <h3>Tutoring & Homework Help</h3>
+            <p>One-on-one academic support</p>
+            <div class="topic-list">
+                • Math (Algebra, Calculus, Statistics)<br>
+                • Computer Science<br>
+                • Physics & Chemistry<br>
+                • Test prep & exam review<br>
+                • Homework explanations<br>
+                • Study guides & notes
+            </div>
+        </div>
+        
+        <div class="topic-card">
+            <span class="topic-icon">🔬</span>
+            <h3>STEM Projects</h3>
+            <p>Science, technology, engineering & math support</p>
+            <div class="topic-list">
+                • Lab report writing<br>
+                • Data analysis & visualization<br>
+                • Scientific research papers<br>
+                • Engineering calculations<br>
+                • Technical documentation<br>
+                • Experiment design
+            </div>
+        </div>
+        
+        <div class="topic-card">
+            <span class="topic-icon">📝</span>
+            <h3>Study Materials</h3>
+            <p>Custom study resources for better learning</p>
+            <div class="topic-list">
+                • Study guides & summaries<br>
+                • Flashcard creation<br>
+                • Practice quizzes<br>
+                • Lecture note organization<br>
+                • Concept explanations<br>
+                • Exam preparation materials
+            </div>
         </div>
     </div>
-    ''', unsafe_allow_html=True)
+</div>
+''', unsafe_allow_html=True)
+
+# CTA Section
+st.markdown('''
+<div class="section" style="text-align: center;">
+    <h2 class="section-title">Ready to Get Started?</h2>
+    <p class="section-subtitle">Join our Discord community and place your first order today</p>
+    <a href="https://discord.gg/YOUR_INVITE_LINK" target="_blank" class="hero-cta">Join Discord Now</a>
+</div>
+''', unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Footer
 st.markdown('''
-<div class="footer">
-    <p>© 2025 StudyHub. Quality academic services. Fast delivery. Satisfaction guaranteed.</p>
-    <p style="margin-top: 1rem; opacity: 0.6;">All work is 100% original. Payment via CashApp, Venmo, or Zelle.</p>
+<div class="custom-footer">
+    <p>&copy; 2025 StudyHub. Quality academic services. Fast delivery. Satisfaction guaranteed.</p>
+    <p style="margin-top: 0.5rem; opacity: 0.6;">Payment via CashApp, Venmo, or Zelle • All work is 100% original</p>
 </div>
 ''', unsafe_allow_html=True)
